@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APPAREL MACHINERY - Industrial Sewing & Garment Equipment</title>
+    <meta name="description" content="Apparel Machinery offers industrial sewing machines, fabric cutting machines, and garment manufacturing equipment. Browse our products and place your order today.">
+    <meta name="description" lang="ur" content="اپیرل مشینری صنعتی سلائی مشینیں، کپڑا کاٹنے والی مشینیں اور گارمنٹ بنانے کے آلات پیش کرتی ہے۔ ہمارے مصنوعات کو براؤز کریں اور اپنا آرڈر آج ہی دیں۔">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --light-blue: #dbeafe;
+            --dark-blue: #1e40af;
+            --accent-blue: #60a5fa;
+            --text-dark: #000000;
+            --text-light: #f8fafc;
+            --background: #ffffff;
+            --card-background: #ffffff;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --border-light: 1px solid #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--background);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: var(--border-light);
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: white;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+        }
+        
+        .tagline {
+            color: var(--text-light);
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .admin-btn:hover {
+            background: var(--light-blue);
+        }
+        
+        .user-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .user-btn {
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .user-btn:hover {
+            background: var(--light-blue);
+        }
+        
+        .cart-btn {
+            position: absolute;
+            top: 15px;
+            right: 120px;
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .cart-btn:hover {
+            background: var(--light-blue);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--error);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .language-toggle {
+            text-align: right;
+            padding: 8px 15px;
+            background: var(--light-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .language-toggle button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+        
+        .language-toggle button:hover {
+            background: var(--dark-blue);
+        }
+        
+        .cart-container {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 12px;
+            width: 320px;
+            z-index: 100;
+            display: none;
+            color: var(--text-dark);
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+        
+        .cart-close {
+            background: var(--error);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .cart-items {
+            max-height: 200px;
+            overflow-y: auto;
+            color: var(--text-dark);
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+        
+        .cart-total {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 2px solid #e2e8f0;
+            font-weight: bold;
+            text-align: right;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+        
+        .cart-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .confirm-order-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .categories-section {
+            padding: 15px;
+            background: var(--card-background);
+            border-radius: 10px;
+            border: var(--border-light);
+        }
+        
+        .categories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .category-btn {
+            padding: 10px 15px;
+            background: var(--light-blue);
+            border: 1px solid var(--primary-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .search-section {
+            padding: 15px;
+            background: var(--card-background);
+            border-radius: 10px;
+            border: var(--border-light);
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .search-btn {
+            padding: 12px 20px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .products-section {
+            padding: 15px;
+            background: var(--card-background);
+            border-radius: 10px;
+            border: var(--border-light);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--light-blue);
+            font-weight: bold;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .product-card {
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
+            border: var(--border-light);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-image {
+            height: 160px;
+            background: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-image i {
+            font-size: 55px;
+            color: var(--primary-blue);
+        }
+        
+        .product-details {
+            padding: 12px;
+        }
+        
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        
+        .product-code, .product-manufacturer {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .product-description {
+            font-size: 13px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        
+        .product-condition {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .condition-new {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .condition-used {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .add-to-cart-checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        .add-to-cart-checkbox input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .add-to-cart-checkbox label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .order-summary {
+            padding: 15px;
+            background: var(--card-background);
+            border-radius: 10px;
+            border: var(--border-light);
+            display: none;
+        }
+        
+        .customer-details {
+            margin-bottom: 15px;
+        }
+        
+        .customer-details h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        
+        .customer-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .info-item {
+            margin-bottom: 8px;
+        }
+        
+        .info-item label {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        
+        .info-item span {
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+        
+        .selected-items {
+            margin-top: 20px;
+        }
+        
+        .selected-items h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        
+        .selected-items-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-dark);
+        }
+        
+        .selected-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-dark);
+        }
+        
+        .selected-item:last-child {
+            border-bottom: none;
+        }
+        
+        .whatsapp-btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: var(--light-blue);
+            color: var(--text-dark);
+            font-size: 13px;
+            border-top: var(--border-light);
+        }
+        
+        /* Assistant Styles */
+        .assistant-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .assistant-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .assistant-btn:hover {
+            transform: scale(1.1);
+            background: var(--dark-blue);
+        }
+        
+        .assistant-btn i {
+            font-size: 24px;
+        }
+        
+        .assistant-panel {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .assistant-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .assistant-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .assistant-messages {
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        
+        .assistant-message {
+            background: var(--light-blue);
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            background: var(--primary-blue);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .assistant-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .assistant-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        
+        .assistant-input button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-submit {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .admin-panel-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .admin-product-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .admin-product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f9fafb;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .admin-product-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .product-info {
+            flex: 1;
+            margin-right: 15px;
+        }
+        
+        .product-info .product-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+        
+        .product-info .product-detail {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .product-actions button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 80px;
+        }
+        
+        .btn-remove {
+            background: var(--error);
+            color: white;
+        }
+        
+        .btn-move {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .admin-search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .image-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .order-input {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .update-order-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .customer-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-actions {
+                position: relative;
+                top: 0;
+                left: 0;
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+            
+            .cart-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                display: block;
+            }
+            
+            .admin-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                display: block;
+            }
+            
+            .cart-container {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 300px;
+            }
+            
+            .categories-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .admin-product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-actions {
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            
+            .product-actions button {
+                width: 48%;
+            }
+            
+            .assistant-panel {
+                width: 90%;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tshirt"></i>
+                <span>APPAREL MACHINERY</span>
+            </div>
+            <p class="tagline">Quality Apparel Machinery Solutions</p>
+            
+            <div class="user-actions">
+                <button class="user-btn" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </button>
+                <button class="user-btn" onclick="showSignupModal()">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </button>
+                <button class="user-btn hidden" id="logoutBtn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+            
+            <button class="cart-btn" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+            
+            <button class="admin-btn" onclick="showAdminLoginModal()">
+                <i class="fas fa-cog"></i>
+                <span>Admin Panel</span>
+            </button>
+            
+            <div class="cart-container" id="cartContainer">
+                <div class="cart-header">
+                    <h3>Your Cart</h3>
+                    <div>
+                        <button onclick="clearCart()" style="background: none; border: none; color: var(--error); cursor: pointer; font-size: 12px; margin-right: 10px;">Clear</button>
+                        <button class="cart-close" onclick="toggleCart()">×</button>
+                    </div>
+                </div>
+                <div class="cart-items" id="cartItems">
+                    <div class="cart-empty">Your cart is empty</div>
+                </div>
+                <div class="cart-actions">
+                    <button class="confirm-order-btn" onclick="confirmOrder()">Confirm Your Order</button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="language-toggle">
+            <div class="welcome-text">Welcome to APPAREL MACHINERY</div>
+            <button onclick="toggleLanguage()">
+                <span>Switch to Urdu</span>
+            </button>
+        </div>
+
+        <div id="userStatus" class="user-status hidden">
+            <span>Welcome, <span id="userName"></span>!</span>
+        </div>
+        
+        <div class="main-content">
+            <div class="categories-section">
+                <h2 class="section-title">Categories</h2>
+                <div class="categories-container">
+                    <button class="category-btn active" data-category="all">All Products</button>
+                    <button class="category-btn" data-category="cuttings">Cuttings</button>
+                    <button class="category-btn" data-category="stitching">Stitching</button>
+                    <button class="category-btn" data-category="pressing">Pressing</button>
+                    <button class="category-btn" data-category="printing">Printing</button>
+                    <button class="category-btn" data-category="embroidery">Embroidery</button>
+                </div>
+            </div>
+            
+            <div class="search-section">
+                <h2 class="section-title">Search Products</h2>
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by product name, code, or manufacturer...">
+                    <button class="search-btn" onclick="searchProducts()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+            
+            <div class="products-section">
+                <h2 class="section-title">Our Products</h2>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <div class="order-summary" id="orderSummary">
+                <div class="customer-details">
+                    <h3>Customer Information</h3>
+                    
+                    <div class="customer-info">
+                        <div class="info-item">
+                            <label>Full Name</label>
+                            <span id="customerName">Not provided</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <label>Mobile Number</label>
+                            <span id="customerMobile">Not provided</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <label>Email</label>
+                            <span id="customerEmail">Not provided</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <label>Address</label>
+                            <span id="customerAddress">Not provided</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="selected-items">
+                    <h3>Selected Items</h3>
+                    
+                    <div class="selected-items-list" id="selectedItemsList">
+                        <div class="cart-empty">No items selected</div>
+                    </div>
+                </div>
+                
+                <div class="whatsapp-btn-container">
+                    <button class="whatsapp-btn" onclick="sendOrderViaWhatsApp()">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Send Order via WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 APPAREL MACHINERY. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Assistant Container -->
+    <div class="assistant-container">
+        <div class="assistant-btn" onclick="toggleAssistant()">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="assistant-panel" id="assistantPanel">
+            <div class="assistant-header">
+                <h3>Your Assistant</h3>
+                <button class="assistant-close" onclick="toggleAssistant()">×</button>
+            </div>
+            <div class="assistant-messages" id="assistantMessages">
+                <div class="message assistant-message">
+                    Hello! How can I help you with your order today?
+                </div>
+            </div>
+            <div class="assistant-input">
+                <input type="text" id="assistantInput" placeholder="Type your question...">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Details Modal -->
+    <div class="modal" id="customerDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Customer Details</h2>
+                <button class="modal-close" onclick="closeModal('customerDetailsModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="customerNameInput">Full Name</label>
+                    <input type="text" id="customerNameInput" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="customerMobileInput">Mobile Number</label>
+                    <input type="tel" id="customerMobileInput" placeholder="Enter your mobile number">
+                </div>
+                <div class="form-group">
+                    <label for="customerEmailInput">Email</label>
+                    <input type="email" id="customerEmailInput" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="customerAddressInput">Address</label>
+                    <textarea id="customerAddressInput" placeholder="Enter your address" rows="2"></textarea>
+                </div>
+                <button class="form-submit" onclick="saveCustomerDetails()">Save Details & Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="modal-close" onclick="closeModal('adminLoginModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" value="MUHAMMAD YAMEEN ANSARI" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="adminMobile">Mobile No</label>
+                    <input type="text" id="adminMobile" value="03155111330" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password">
+                </div>
+                <button class="form-submit" onclick="adminLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div class="modal" id="adminPanelModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <button class="modal-close" onclick="closeAdminPanel()">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <div>
+                    <h3>Add New Product</h3>
+                    <div class="form-group">
+                        <label for="productName">Product Name:</label>
+                        <input type="text" id="productName" placeholder="Enter product name">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCode">Product Code:</label>
+                        <input type="text" id="productCode" placeholder="Enter product code">
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturerName">Manufacturer Name:</label>
+                        <input type="text" id="manufacturerName" placeholder="Enter manufacturer name">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description:</label>
+                        <textarea id="productDescription" placeholder="Enter product description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Product Image (URL or Upload):</label>
+                        <input type="text" id="productImageUrl" placeholder="Enter image URL">
+                        <input type="file" id="productImageFile" accept="image/*" style="margin-top: 5px;" onchange="previewImage(this)">
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productVideo">Product Video (URL or Upload):</label>
+                        <input type="text" id="productVideoUrl" placeholder="Enter video URL">
+                        <input type="file" id="productVideoFile" accept="video/*" style="margin-top: 5px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category:</label>
+                        <select id="productCategory">
+                            <option value="cuttings">Cuttings</option>
+                            <option value="stitching">Stitching</option>
+                            <option value="pressing">Pressing</option>
+                            <option value="printing">Printing</option>
+                            <option value="embroidery">Embroidery</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPricePKR">Price (PKR):</label>
+                        <input type="number" id="productPricePKR" placeholder="Enter price in PKR">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCondition">Condition:</label>
+                        <select id="productCondition">
+                            <option value="new">New</option>
+                            <option value="used">Used</option>
+                        </select>
+                    </div>
+                    <button class="form-submit" onclick="addProduct()">Add Product</button>
+                </div>
+                
+                <div class="admin-panel-section">
+                    <h3>Manage Products</h3>
+                    
+                    <div class="admin-search-bar">
+                        <input type="text" class="search-input" id="adminSearchInput" placeholder="Search products...">
+                        <button class="search-btn" onclick="adminSearchProducts()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    
+                    <div class="admin-product-list" id="adminProductList">
+                        <!-- Admin product list will be loaded here -->
+                    </div>
+                    
+                    <button class="update-order-btn" onclick="updateProductOrder()">Update Display Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <button class="form-submit" onclick="performLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <button class="modal-close" onclick="closeModal('signupModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signupMobile">Mobile Number</label>
+                    <input type="tel" id="signupMobile" placeholder="Enter your mobile number">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupAddress">Address</label>
+                    <textarea id="signupAddress" placeholder="Enter your address" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password">
+                </div>
+                <button class="form-submit" onclick="performSignup()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Industrial Sewing Machine",
+                code: "SM-001",
+                manufacturer: "Brother",
+                description: "Heavy-duty industrial sewing machine for garment production. Perfect for high-volume stitching.",
+                category: "stitching",
+                condition: "new",
+                price: "85,000 PKR"
+            },
+            {
+                id: 2,
+                name: "Fabric Cutting Machine",
+                code: "FC-002",
+                manufacturer: "Juki",
+                description: "Precision fabric cutting machine with automatic features for accurate cuts every time.",
+                category: "cuttings",
+                condition: "new",
+                price: "120,000 PKR"
+            },
+            {
+                id: 3,
+                name: "Steam Pressing Machine",
+                code: "SP-003",
+                manufacturer: "Panasonic",
+                description: "Professional steam pressing machine for wrinkle-free finishing of garments.",
+                category: "pressing",
+                condition: "used",
+                price: "45,000 PKR"
+            },
+            {
+                id: 4,
+                name: "Screen Printing Machine",
+                code: "PR-004",
+                manufacturer: "M&R",
+                description: "Automatic screen printing machine for high-quality garment printing applications.",
+                category: "printing",
+                condition: "new",
+                price: "250,000 PKR"
+            },
+            {
+                id: 5,
+                name: "Embroidery Machine",
+                code: "EM-005",
+                manufacturer: "Tajima",
+                description: "Computerized embroidery machine with multiple needle support for intricate designs.",
+                category: "embroidery",
+                condition: "used",
+                price: "180,000 PKR"
+            },
+            {
+                id: 6,
+                name: "Overlock Machine",
+                code: "OM-006",
+                manufacturer: "Singer",
+                description: "Professional overlock machine for clean finishing of fabric edges.",
+                category: "stitching",
+                condition: "new",
+                price: "65,000 PKR"
+            }
+        ];
+
+        // Cart functionality
+        let cart = [];
+        let currentLanguage = 'en';
+        let customerDetails = {};
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartCount();
+            setupCategoryFilters();
+        });
+        
+        // Render products to the page
+        function renderProducts(filteredProducts = products) {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = '<p class="no-products">No products found matching your criteria.</p>';
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-code">Code: ${product.code}</p>
+                        <p class="product-manufacturer">Manufacturer: ${product.manufacturer}</p>
+                        <p class="product-description">${product.description}</p>
+                        <span class="product-condition ${product.condition === 'new' ? 'condition-new' : 'condition-used'}">${product.condition === 'new' ? 'New' : 'Used'}</span>
+                        <p class="product-price"><strong>Price: ${product.price}</strong></p>
+                        <div class="add-to-cart-checkbox">
+                            <input type="checkbox" id="product-${product.id}" onchange="toggleProductInCart(${product.id})">
+                            <label for="product-${product.id}">Add to Order</label>
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+        
+        // Toggle product in cart
+        function toggleProductInCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const checkbox = document.getElementById(`product-${productId}`);
+            
+            if (checkbox.checked) {
+                cart.push(product);
+            } else {
+                cart = cart.filter(item => item.id !== productId);
+            }
+            
+            updateCartCount();
+        }
+        
+        // Update cart count indicator
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+        
+        // Toggle cart visibility
+        function toggleCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.display = cartContainer.style.display === 'block' ? 'none' : 'block';
+            
+            if (cartContainer.style.display === 'block') {
+                updateCartDisplay();
+            }
+        }
+        
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                return;
+            }
+            
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>${item.price}</span>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        // Clear cart
+        function clearCart() {
+            cart = [];
+            updateCartCount();
+            updateCartDisplay();
+            
+            // Uncheck all checkboxes
+            products.forEach(product => {
+                const checkbox = document.getElementById(`product-${product.id}`);
+                if (checkbox) checkbox.checked = false;
+            });
+        }
+        
+        // Setup category filters
+        function setupCategoryFilters() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Filter products
+                    const category = this.getAttribute('data-category');
+                    filterProductsByCategory(category);
+                });
+            });
+        }
+        
+        // Filter products by category
+        function filterProductsByCategory(category) {
+            if (category === 'all') {
+                renderProducts();
+                return;
+            }
+            
+            const filteredProducts = products.filter(product => product.category === category);
+            renderProducts(filteredProducts);
+        }
+        
+        // Search products
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderProducts();
+                return;
+            }
+            
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.code.toLowerCase().includes(searchTerm) ||
+                product.manufacturer.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
+            
+            renderProducts(filteredProducts);
+        }
+        
+        // Confirm order
+        function confirmOrder() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add products to your order.');
+                return;
+            }
+            
+            showModal('customerDetailsModal');
+        }
+        
+        // Save customer details
+        function saveCustomerDetails() {
+            customerDetails = {
+                name: document.getElementById('customerNameInput').value,
+                mobile: document.getElementById('customerMobileInput').value,
+                email: document.getElementById('customerEmailInput').value,
+                address: document.getElementById('customerAddressInput').value
+            };
+            
+            // Update order summary
+            document.getElementById('customerName').textContent = customerDetails.name || 'Not provided';
+            document.getElementById('customerMobile').textContent = customerDetails.mobile || 'Not provided';
+            document.getElementById('customerEmail').textContent = customerDetails.email || 'Not provided';
+            document.getElementById('customerAddress').textContent = customerDetails.address || 'Not provided';
+            
+            // Update selected items list
+            const selectedItemsList = document.getElementById('selectedItemsList');
+            selectedItemsList.innerHTML = '';
+            
+            cart.forEach(item => {
+                const selectedItem = document.createElement('div');
+                selectedItem.className = 'selected-item';
+                selectedItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>${item.price}</span>
+                `;
+                selectedItemsList.appendChild(selectedItem);
+            });
+            
+            // Show order summary
+            document.getElementById('orderSummary').style.display = 'block';
+            
+            // Scroll to order summary
+            document.getElementById('orderSummary').scrollIntoView({ behavior: 'smooth' });
+            
+            // Close modal
+            closeModal('customerDetailsModal');
+        }
+        
+        // Send order via WhatsApp
+        function sendOrderViaWhatsApp() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add products to your order.');
+                return;
+            }
+            
+            if (!customerDetails.mobile) {
+                alert('Please provide your mobile number in customer details.');
+                return;
+            }
+            
+            // Create order message
+            let message = `Order Details:%0A%0A`;
+            message += `Customer Name: ${customerDetails.name || 'Not provided'}%0A`;
+            message += `Mobile: ${customerDetails.mobile || 'Not provided'}%0A`;
+            message += `Email: ${customerDetails.email || 'Not provided'}%0A`;
+            message += `Address: ${customerDetails.address || 'Not provided'}%0A%0A`;
+            message += `Order Items:%0A`;
+            
+            cart.forEach(item => {
+                message += `- ${item.name} (${item.code}): ${item.price}%0A`;
+            });
+            
+            // Open WhatsApp with pre-filled message
+            window.open(`https://wa.me/923155111330?text=${message}`, '_blank');
+        }
+        
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Admin functions
+        function showAdminLoginModal() {
+            showModal('adminLoginModal');
+        }
+        
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            // Simple password check (in real app, this would be more secure)
+            if (password === 'admin123') {
+                closeModal('adminLoginModal');
+                showModal('adminPanelModal');
+                loadAdminProducts();
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        }
+        
+        function closeAdminPanel() {
+            closeModal('adminPanelModal');
+        }
+        
+        function loadAdminProducts() {
+            // In a real app, this would fetch from a server
+            const adminProductList = document.getElementById('adminProductList');
+            adminProductList.innerHTML = '';
+            
+            products.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.className = 'admin-product-item';
+                productItem.innerHTML = `
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-detail">Code: ${product.code}</div>
+                        <div class="product-detail">Category: ${product.category}</div>
+                        <div class="product-detail">Price: ${product.price}</div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-remove" onclick="removeProduct(${product.id})">Remove</button>
+                        <button class="btn-move" onclick="moveProduct(${product.id})">Move</button>
+                    </div>
+                `;
+                adminProductList.appendChild(productItem);
+            });
+        }
+        
+        function removeProduct(productId) {
+            // In a real app, this would communicate with a server
+            alert(`Product ${productId} would be removed in a real application.`);
+        }
+        
+        function moveProduct(productId) {
+            // In a real app, this would communicate with a server
+            alert(`Product ${productId} would be moved in a real application.`);
+        }
+        
+        function addProduct() {
+            // In a real app, this would communicate with a server
+            alert('Product would be added in a real application.');
+        }
+        
+        function adminSearchProducts() {
+            // In a real app, this would search products in the admin panel
+            const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase();
+            alert(`Would search for: ${searchTerm}`);
+        }
+        
+        function updateProductOrder() {
+            // In a real app, this would update the display order of products
+            alert('Product order would be updated in a real application.');
+        }
+        
+        // User authentication functions
+        function showLoginModal() {
+            showModal('loginModal');
+        }
+        
+        function showSignupModal() {
+            showModal('signupModal');
+        }
+        
+        function performLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation (in real app, this would communicate with a server)
+            if (email && password) {
+                // Simulate successful login
+                document.getElementById('userName').textContent = email.split('@')[0];
+                document.getElementById('userStatus').classList.remove('hidden');
+                document.querySelectorAll('.user-btn').forEach(btn => btn.classList.add('hidden'));
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                
+                closeModal('loginModal');
+                alert('Login successful!');
+            } else {
+                alert('Please enter both email and password.');
+            }
+        }
+        
+        function performSignup() {
+            const name = document.getElementById('signupName').value;
+            const mobile = document.getElementById('signupMobile').value;
+            const email = document.getElementById('signupEmail').value;
+            const address = document.getElementById('signupAddress').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // Simple validation (in real app, this would communicate with a server)
+            if (name && mobile && email && password) {
+                closeModal('signupModal');
+                alert('Sign up successful! Please login with your credentials.');
+                showLoginModal();
+            } else {
+                alert('Please fill all required fields.');
+            }
+        }
+        
+        function logout() {
+            document.getElementById('userStatus').classList.add('hidden');
+            document.querySelectorAll('.user-btn').forEach(btn => btn.classList.remove('hidden'));
+            document.getElementById('logoutBtn').classList.add('hidden');
+            
+            alert('Logged out successfully.');
+        }
+        
+        // Language toggle
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ur' : 'en';
+            const button = document.querySelector('.language-toggle button span');
+            
+            if (currentLanguage === 'ur') {
+                button.textContent = 'Switch to English';
+                // In a real app, this would change all text to Urdu
+                document.querySelector('.welcome-text').textContent = 'اپیرل مشینری میں خوش آمدید';
+            } else {
+                button.textContent = 'Switch to Urdu';
+                // In a real app, this would change all text to English
+                document.querySelector('.welcome-text').textContent = 'Welcome to APPAREL MACHINERY';
+            }
+        }
+        
+        // Assistant functions
+        function toggleAssistant() {
+            const assistantPanel = document.getElementById('assistantPanel');
+            assistantPanel.style.display = assistantPanel.style.display === 'flex' ? 'none' : 'flex';
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('assistantInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            
+            // Clear input
+            input.value = '';
+            
+            // Generate and add assistant response
+            setTimeout(() => {
+                const response = generateAssistantResponse(message);
+                addMessageToChat(response, 'assistant');
+            }, 500);
+        }
+        
+        function addMessageToChat(message, sender) {
+            const messagesContainer = document.getElementById('assistantMessages');
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}-message`;
+            messageElement.textContent = message;
+            
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function generateAssistantResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('order') || lowerMessage.includes('purchase') || lowerMessage.includes('buy')) {
+                return "To place an order, simply browse our products and use the 'Add to Order' checkbox for items you want. Then click the cart icon to review your order and provide your details.";
+            } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return "Our prices vary by product. You can see the price for each item listed on the product card. All prices are in Pakistani Rupees (PKR).";
+            } else if (lowerMessage.includes('contact') || lowerMessage.includes('number') || lowerMessage.includes('call')) {
+                return "You can contact us at 0315-5111330 during business hours (9AM to 6PM, Monday to Saturday).";
+            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping') || lowerMessage.includes('time')) {
+                return "We offer delivery across Pakistan. Delivery times vary by location: 3-5 days for major cities, 5-7 days for other areas. Delivery charges depend on your location.";
+            } else if (lowerMessage.includes('payment') || lowerMessage.includes('pay')) {
+                return "We accept bank transfer, cash on delivery, and JazzCash. For large orders, we may require an advance payment.";
+            } else if (lowerMessage.includes('warranty') || lowerMessage.includes('guarantee')) {
+                return "New machines come with a 1-year warranty. Used machines come with a 3-month service warranty. Please keep your receipt for any warranty claims.";
+            } else {
+                return "I'm here to help you with information about our products, ordering process, delivery, and payment options. How can I assist you today?";
+            }
+        }
+        
+        // Image preview for admin panel
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
