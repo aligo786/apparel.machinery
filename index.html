@@ -47,6 +47,76 @@
             border: var(--border-light);
         }
         
+        /* بینر سیکشن کے نئے اسٹائلز */
+        .banner-section {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .banner-overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        .banner-overlay p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        
+        .banner-upload {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            transition: all 0.3s;
+        }
+        
+        .banner-upload:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        #bannerUpload {
+            display: none;
+        }
+        
         header {
             background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
             color: white;
@@ -851,6 +921,18 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .banner-section {
+                height: 200px;
+            }
+            
+            .banner-overlay h1 {
+                font-size: 1.8rem;
+            }
+            
+            .banner-overlay p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -899,6 +981,20 @@
                 </div>
             </div>
         </header>
+        
+        <!-- بینر سیکشن -->
+        <div class="banner-section">
+            <img id="bannerImg" class="banner-image" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%221200%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%20300%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17e6deb586b%20text%20%7B%20fill%3A%23FFFFFF%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17e6deb586b%22%3E%3Crect%20width%3D%221200%22%20height%3D%22300%22%20fill%3D%22%232563eb%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22480%22%20y%3D%22161%22%3EAPPAREL%20MACHINERY%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Apparel Machinery Banner">
+            <div class="banner-overlay">
+                <h1>APPAREL MACHINERY</h1>
+                <p>Premium Industrial Sewing & Garment Equipment</p>
+            </div>
+            <label class="banner-upload">
+                <i class="fas fa-upload"></i>
+                Upload Banner
+                <input type="file" id="bannerUpload" accept="image/*">
+            </label>
+        </div>
         
         <div class="language-toggle">
             <div class="welcome-text">Welcome to APPAREL MACHINERY</div>
@@ -1301,7 +1397,42 @@
             loadProducts();
             updateCartCount();
             setupCategoryButtons();
+            setupBannerUpload();
+            loadBanner();
         });
+
+        // بینر اپلوڈ کا سیٹ اپ
+        function setupBannerUpload() {
+            const bannerUpload = document.getElementById('bannerUpload');
+            
+            bannerUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        // بینر کی تصویر تبدیل کریں
+                        document.getElementById('bannerImg').src = event.target.result;
+                        
+                        // لوکل اسٹوریج میں محفوظ کریں
+                        localStorage.setItem('apparel_banner', event.target.result);
+                        
+                        // کامیابی کی اطلاع
+                        alert('Banner uploaded successfully!');
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        // بینر لوڈ کریں
+        function loadBanner() {
+            const savedBanner = localStorage.getItem('apparel_banner');
+            if (savedBanner) {
+                document.getElementById('bannerImg').src = savedBanner;
+            }
+        }
 
         // Setup category buttons
         function setupCategoryButtons() {
