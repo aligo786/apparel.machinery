@@ -811,6 +811,8 @@
             align-items: center;
             gap: 5px;
             margin-top: 15px;
+            width: 100%;
+            justify-content: center;
         }
         
         .close-btn:hover {
@@ -1649,19 +1651,11 @@
                                 <th>Product</th>
                                 <th>Code</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="orderItemsBody">
                             <!-- Order items will be loaded here -->
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4" style="text-align: right; font-weight: bold;">Total Amount:</td>
-                                <td id="orderTotalAmount" style="font-weight: bold;"></td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
                 
@@ -1742,9 +1736,9 @@
 
         // Admin credentials
         const adminCredentials = {
-            username: "MUHAMMAD YAMEEN",
+            username: "Muhammad Yameen Ansari",
             password: "Admin@143",
-            email: "aligo786@gmail.com",
+            email: "apparel.machinery.pk@gmail.com",
             mobile: "923155111330"
         };
 
@@ -1851,7 +1845,7 @@
                 } else if (message.toLowerCase().includes('price') || message.toLowerCase().includes('cost')) {
                     response = "Our prices vary depending on the product and specifications. Please contact us for specific pricing information.";
                 } else if (message.toLowerCase().includes('contact') || message.toLowerCase().includes('where')) {
-                    response = "You can reach us at +92 315 5111330 or email us at aligo786@gmail.com. Our team is available to assist you.";
+                    response = "You can reach us at +92 315 5111330 or email us at apparel.machinery.pk@gmail.com. Our team is available to assist you.";
                 } else if (message.toLowerCase().includes('order') || message.toLowerCase().includes('buy')) {
                     response = "To place an order, simply add products to your cart and proceed to checkout. You'll need to provide your contact details for us to confirm your order.";
                 } else {
@@ -2089,13 +2083,9 @@
             const selectedItemsList = document.getElementById('selectedItemsList');
             selectedItemsList.innerHTML = '';
             
-            let totalAmount = 0;
-            
             cart.forEach(item => {
                 const listItem = document.createElement('div');
                 listItem.className = 'selected-item';
-                const itemTotal = item.price * item.quantity;
-                totalAmount += itemTotal;
                 listItem.innerHTML = `
                     <div>${item.name} (x${item.quantity})</div>
                 `;
@@ -2130,10 +2120,7 @@
             message += `Address: ${currentCustomer.address || 'Not provided'}%0A%0A`;
             message += `Order Details:%0A`;
             
-            let totalAmount = 0;
             cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                totalAmount += itemTotal;
                 message += `- ${item.name} (${item.code}) x ${item.quantity}%0A`;
             });
             
@@ -2145,8 +2132,7 @@
                 date: new Date().toISOString(),
                 customer: currentCustomer,
                 products: [...cart],
-                status: 'pending',
-                total: totalAmount
+                status: 'pending'
             };
             
             orders.push(newOrder);
@@ -2296,7 +2282,7 @@
                     <td>${order.customer.name}</td>
                     <td>${formattedDate}</td>
                     <td>${order.products.length} items</td>
-                    <td>Rs. ${order.total.toLocaleString()}</td>
+                    <td>Rs. ${calculateOrderTotal(order).toLocaleString()}</td>
                     <td><span class="order-status ${statusClass}">${order.status}</span></td>
                     <td>
                         <button class="view-order-btn" onclick="viewOrderDetails(${order.id})">
@@ -2307,6 +2293,11 @@
                 
                 ordersTableBody.appendChild(orderRow);
             });
+        }
+
+        // Calculate order total
+        function calculateOrderTotal(order) {
+            return order.products.reduce((total, item) => total + (item.price * item.quantity), 0);
         }
 
         // View order details
@@ -2331,20 +2322,14 @@
             orderItemsBody.innerHTML = '';
             
             order.products.forEach(item => {
-                const itemTotal = item.price * item.quantity;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.name}</td>
                     <td>${item.code}</td>
                     <td>${item.quantity}</td>
-                    <td>Rs. ${item.price.toLocaleString()}</td>
-                    <td>Rs. ${itemTotal.toLocaleString()}</td>
                 `;
                 orderItemsBody.appendChild(row);
             });
-            
-            // Set total amount
-            document.getElementById('orderTotalAmount').textContent = `Rs. ${order.total.toLocaleString()}`;
             
             // Set current status
             document.getElementById('orderStatusSelect').value = order.status;
