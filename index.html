@@ -1,3 +1,19 @@
+کسٹمر کو قیمت کہیں بھی نظر نہ آئے
+قیمٹ صرف ایڈمن سیکشن میں 
+
+کسٹمر سیکشن میں نہیں
+
+مشین کی تعداد کسٹمر ایڈ کر سکے
+
+میں نے جو کوڈ دیا ہے اس میں یہ  
+ساری تبدیلیاں کر کے مجھے  مکمل کوڈدیں شارٹ کوڈ نہیں 
+میری مکمل ویب تمام  میری مطلوبہ تبدیلیوں کے ساتھ
+
+یہ کوڈ نکمل ورک کر رہا ہے 
+مکمل چاہئیے
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -429,7 +445,6 @@
             height: 100%;
             object-fit: contain;
             transition: transform 0.5s;
-            padding: 10px;
         }
         
         .product-card:hover .product-image img {
@@ -485,26 +500,6 @@
         
         .condition-used {
             background-color: var(--warning);
-        }
-        
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .quantity-label {
-            margin-right: 10px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        
-        .quantity-input {
-            width: 70px;
-            padding: 8px;
-            border: 1px solid #e2e8f0;
-            border-radius: 5px;
-            text-align: center;
         }
         
         .add-to-cart-btn {
@@ -1978,10 +1973,6 @@
                         <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
                         <p class="product-description">${product.description}</p>
                         <span class="product-condition condition-${product.condition}">${product.condition}</span>
-                        <div class="quantity-control">
-                            <span class="quantity-label">Quantity:</span>
-                            <input type="number" class="quantity-input" id="quantity-${product.id}" value="1" min="1">
-                        </div>
                         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
                             <i class="fas fa-cart-plus"></i>
                             Add to Cart
@@ -2004,27 +1995,18 @@
             const product = products.find(p => p.id === productId);
             if (!product) return;
             
-            // Get quantity from input
-            const quantityInput = document.getElementById(`quantity-${productId}`);
-            const quantity = parseInt(quantityInput.value) || 1;
-            
-            if (quantity < 1) {
-                alert('Please enter a valid quantity.');
-                return;
-            }
-            
             // Check if product is already in cart
             const existingItem = cart.find(item => item.id === productId);
             
             if (existingItem) {
-                existingItem.quantity += quantity;
+                existingItem.quantity += 1;
             } else {
                 cart.push({
                     id: product.id,
                     name: product.name,
                     code: product.code,
                     price: product.price,
-                    quantity: quantity
+                    quantity: 1
                 });
             }
             
@@ -2033,10 +2015,7 @@
             updateCartCount();
             
             // Show notification
-            alert(`${product.name} (x${quantity}) has been added to your cart!`);
-            
-            // Reset quantity to 1
-            quantityInput.value = 1;
+            alert(`${product.name} has been added to your cart!`);
         }
 
         // Update cart count
@@ -2071,20 +2050,9 @@
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
                     <div>${item.name} (x${item.quantity})</div>
-                    <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: var(--error); cursor: pointer;">
-                        <i class="fas fa-times"></i>
-                    </button>
                 `;
                 cartItems.appendChild(cartItem);
             });
-        }
-
-        // Remove from cart
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            localStorage.setItem('apparel_cart', JSON.stringify(cart));
-            updateCartCount();
-            renderCartItems();
         }
 
         // Confirm order
@@ -2137,12 +2105,15 @@
             const selectedItemsList = document.getElementById('selectedItemsList');
             selectedItemsList.innerHTML = '';
             
+            let totalAmount = 0;
+            
             cart.forEach(item => {
                 const listItem = document.createElement('div');
                 listItem.className = 'selected-item';
+                const itemTotal = item.price * item.quantity;
+                totalAmount += itemTotal;
                 listItem.innerHTML = `
-                    <div>${item.name} (Code: ${item.code})</div>
-                    <div>Quantity: ${item.quantity}</div>
+                    <div>${item.name} (x${item.quantity})</div>
                 `;
                 
                 selectedItemsList.appendChild(listItem);
@@ -2175,7 +2146,10 @@
             message += `Address: ${currentCustomer.address || 'Not provided'}%0A%0A`;
             message += `Order Details:%0A`;
             
+            let totalAmount = 0;
             cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalAmount += itemTotal;
                 message += `- ${item.name} (${item.code}) x ${item.quantity}%0A`;
             });
             
@@ -2188,7 +2162,7 @@
                 customer: currentCustomer,
                 products: [...cart],
                 status: 'pending',
-                total: cart.reduce((total, item) => total + (item.price * item.quantity), 0)
+                total: totalAmount
             };
             
             orders.push(newOrder);
@@ -2705,10 +2679,6 @@
                         <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
                         <p class="product-description">${product.description}</p>
                         <span class="product-condition condition-${product.condition}">${product.condition}</span>
-                        <div class="quantity-control">
-                            <span class="quantity-label">Quantity:</span>
-                            <input type="number" class="quantity-input" id="quantity-${product.id}" value="1" min="1">
-                        </div>
                         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
                             <i class="fas fa-cart-plus"></i>
                             Add to Cart
@@ -2760,7 +2730,7 @@
             const previewContainer = document.getElementById('editImagePreview');
             
             if (input.files && input.files[0]) {
-                const reader = a FileReader();
+                const reader = new FileReader();
                 
                 reader.onload = function(e) {
                     preview.src = e.target.result;
