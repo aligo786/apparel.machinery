@@ -1,139 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Apparel Machinery | Industrial Sewing & Garment Equipment</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <!-- Firebase App & Firestore -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <style>
-        body {background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-        .container {max-width: 1200px; margin:0 auto; background:#fff; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); overflow:hidden; border:1px solid #e2e8f0;}
-        .top-bar {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #2563eb; color: #f8fafc;}
-        .top-buttons { display: flex; gap: 10px;}
-        .top-btn { display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s;}
-        .top-btn:hover { background: #1e40af;}
-        .google-translate {display: flex; align-items: center;}
-        .banner-section {position: relative; height: 300px; overflow: hidden;}
-        .banner-image {width: 100%; height: 100%; object-fit: cover;}
-        .banner-overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.5); color: white;}
-        .banner-overlay h1 {font-size: 36px; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);}
-        .banner-overlay p {font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);}
-        .banner-cart-btn {position: absolute; top: 20px; right: 20px; display: flex; align-items: center; gap: 5px; padding: 10px 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 10;}
-        .cart-count {background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 12px;}
-        .banner-upload {position: absolute; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 10;}
-        .banner-upload input {display: none;}
-        .cart-container {position: absolute; top: 70px; right: 20px; width: 300px; background: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 20; display: none;}
-        .cart-header {display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #e2e8f0;}
-        .cart-close {background: none; border: none; font-size: 20px; cursor: pointer; color: #000;}
-        .cart-items {padding: 15px; max-height: 300px; overflow-y: auto;}
-        .cart-empty {text-align: center; color: #000; padding: 20px;}
-        .cart-item {display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #e2e8f0;}
-        .cart-actions {padding: 15px; border-top: 1px solid #e2e8f0;}
-        .confirm-order-btn {width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px;}
-        .main-content {padding: 20px;}
-        .section-title {font-size: 24px; margin-bottom: 20px; color: #2563eb; text-align: center;}
-        .gallery-section {display: none; margin-bottom: 30px;}
-        .gallery-container {display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;}
-        .gallery-item {height: 200px; overflow: hidden; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);}
-        .gallery-item img {width: 100%; height: 100%; object-fit: cover;}
-        .admin-panel {display: none; margin-bottom: 30px; padding: 20px; background: #dbeafe; border-radius: 10px;}
-        .admin-tabs {display: flex; margin-bottom: 20px; border-bottom: 2px solid #dbeafe;}
-        .admin-tab-btn {padding: 10px 20px; background: none; border: none; cursor: pointer; font-weight: bold;}
-        .admin-tab-btn.active {border-bottom: 3px solid #2563eb;}
-        .admin-tab-content {display: none;}
-        .admin-section {margin-bottom: 30px; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);}
-        .admin-section h3 {margin-bottom: 15px; color: #2563eb;}
-        .form-container {max-width: 600px;}
-        .form-group {margin-bottom: 15px;}
-        .form-group label {display: block; margin-bottom: 5px; font-weight: bold;}
-        .form-group input, .form-group select, .form-group textarea {width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px;}
-        .image-preview, .video-preview {margin-top: 10px; display: none;}
-        .image-preview img, .video-preview video {max-width: 100%; max-height: 200px; border-radius: 5px;}
-        .remove-media {margin-top: 5px; padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 3px; cursor: pointer;}
-        .form-submit {padding: 12px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .admin-product-list {display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;}
-        .admin-product-card {padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);}
-        .admin-product-card h4 {margin-bottom: 10px; color: #2563eb;}
-        .admin-product-actions {display: flex; gap: 10px; margin-top: 15px;}
-        .admin-product-btn {padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .btn-edit {background: #f59e0b; color: white;}
-        .btn-delete {background: #ef4444; color: white;}
-        .orders-container {overflow-x: auto;}
-        .orders-table {width: 100%; border-collapse: collapse;}
-        .orders-table th, .orders-table td {padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;}
-        .orders-table th {background: #dbeafe; font-weight: bold;}
-        .order-status {padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;}
-        .status-pending {background: #fef3c7; color: #92400e;}
-        .status-confirmed {background: #d1fae5; color: #065f46;}
-        .status-completed {background: #dcfce7; color: #166534;}
-        .status-cancelled {background: #fee2e2; color: #991b1b;}
-        .view-order-btn {padding: 6px 12px; background: #3b82f6; color: white; border: none; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .close-btn {padding: 10px 15px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .categories-section {margin-bottom: 30px;}
-        .categories-container {display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;}
-        .category-btn {padding: 10px 20px; background: #dbeafe; color: #2563eb; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s;}
-        .category-btn.active, .category-btn:hover {background: #2563eb; color: white;}
-        .search-section {margin-bottom: 30px;}
-        .search-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
-        .search-bar {display: flex; gap: 10px;}
-        .search-input {padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px; min-width: 300px;}
-        .search-btn {padding: 10px 15px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        .products-section {margin-bottom: 30px;}
-        .products-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;}
-        .product-card {background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); transition: transform 0.3s;}
-        .product-card:hover {transform: translateY(-5px);}
-        .product-image {height: 200px; display: flex; justify-content: center; align-items: center; background: #f8fafc; overflow: hidden;}
-        .product-image img {width: 100%; height: 100%; object-fit: cover;}
-        .product-image i {font-size: 60px; color: #cbd5e1;}
-        .product-details {padding: 15px;}
-        .product-title {font-size: 18px; margin-bottom: 10px; color: #2563eb;}
-        .product-code, .product-manufacturer {font-size: 14px; color: #64748b; margin-bottom: 5px;}
-        .product-description {font-size: 14px; color: #334155; margin-bottom: 10px;}
-        .product-condition {display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px;}
-        .condition-new {background: #d1fae5; color: #065f46;}
-        .condition-used {background: #fef3c7; color: #92400e;}
-        .add-to-cart-btn {width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; transition: background 0.3s;}
-        .add-to-cart-btn:hover {background: #1e40af;}
-        .order-summary {display: none; margin-top: 30px; padding: 20px; background: #dbeafe; border-radius: 10px;}
-        .customer-details, .selected-items {margin-bottom: 20px;}
-        .customer-details h3, .selected-items h3 {margin-bottom: 15px; color: #2563eb;}
-        .customer-info {display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;}
-        .info-item {padding: 10px; background: #fff; border-radius: 5px;}
-        .info-item label {font-weight: bold; display: block; margin-bottom: 5px; color: #2563eb;}
-        .selected-items-list {max-height: 300px; overflow-y: auto;}
-        .selected-item {padding: 10px; background: #fff; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
-        .whatsapp-btn-container {display: flex; gap: 10px;}
-        .whatsapp-btn {padding: 12px 20px; background: #25D366; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-        footer {padding: 20px; text-align: center; background: #2563eb; color: white;}
-        .modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;}
-        .modal-content {background: #fff; border-radius: 10px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
-        .modal-header {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #e2e8f0;}
-        .modal-header h2 {color: #2563eb;}
-        .modal-close {background: none; border: none; font-size: 24px; cursor: pointer; color: #000;}
-        .modal-body {padding: 20px;}
-        @media (max-width: 768px) {
-            .top-bar {flex-direction: column; gap: 10px;}
-            .products-grid {grid-template-columns: 1fr !important;}
-            .search-header {flex-direction: column; gap: 15px;}
-            .search-input {min-width: auto;}
-            .banner-section {height: 200px;}
-            .banner-overlay h1 {font-size: 24px;}
-            .banner-overlay p {font-size: 14px;}
-            .category-btn {padding: 8px 12px; font-size: 14px;}
-            .admin-product-list {grid-template-columns: 1fr;}
-            .customer-info {grid-template-columns: 1fr;}
-            .whatsapp-btn-container {flex-direction: column;}
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apparel Machinery | Industrial Equipment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    .container {max-width: 1100px; margin:0 auto; background:#fff; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); overflow:hidden; border:1px solid #e2e8f0;}
+    .top-bar {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #2563eb; color: #f8fafc;}
+    .top-buttons { display: flex; gap: 10px;}
+    .top-btn { display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s;}
+    .top-btn:hover { background: #1e40af;}
+    .user-info {margin-left:12px; font-size:14px; text-align:right;}
+    .user-info span {display:block;}
+    .google-translate {display: flex; align-items: center; margin-left: 15px;}
+    .banner-section {position: relative; height: 270px; overflow: hidden;}
+    .banner-image {width: 100%; height: 100%; object-fit: cover; border-bottom: 1px solid #e2e8f0;}
+    .banner-overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.45); color: white;}
+    .banner-overlay h1 {font-size: 34px; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);}
+    .banner-overlay p {font-size: 16px; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);}
+    .banner-upload-btn {position: absolute; bottom: 15px; right: 20px;}
+    .main-content {padding: 20px;}
+    .section-title {font-size: 22px; margin-bottom: 20px; color: #2563eb; text-align: center;}
+    .categories-section {margin-bottom: 30px;}
+    .categories-container {display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;}
+    .category-btn {padding: 10px 20px; background: #dbeafe; color: #2563eb; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s;}
+    .category-btn.active, .category-btn:hover {background: #2563eb; color: white;}
+    .search-section {margin-bottom: 30px;}
+    .search-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+    .search-bar {display: flex; gap: 10px;}
+    .search-input {padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px; min-width: 260px;}
+    .search-btn {padding: 10px 15px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
+    .products-section {margin-bottom: 30px;}
+    .products-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px;}
+    .product-card {background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); transition: transform 0.3s;}
+    .product-card:hover {transform: translateY(-5px);}
+    .product-image {height: 180px; display: flex; justify-content: center; align-items: center; background: #f8fafc; overflow: hidden;}
+    .product-image img {width: 100%; height: 100%; object-fit: cover;}
+    .product-image i {font-size: 60px; color: #cbd5e1;}
+    .product-details {padding: 12px;}
+    .product-title {font-size: 17px; margin-bottom: 7px; color: #2563eb;}
+    .product-code, .product-manufacturer {font-size: 13px; color: #64748b; margin-bottom: 2px;}
+    .product-description {font-size: 13px; color: #334155; margin-bottom: 7px;}
+    .product-condition {display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px;}
+    .condition-new {background: #d1fae5; color: #065f46;}
+    .condition-used {background: #fef3c7; color: #92400e;}
+    .add-to-cart-btn {width: 100%; padding: 9px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; transition: background 0.3s;}
+    .add-to-cart-btn:hover {background: #1e40af;}
+    .edit-product-btn, .delete-product-btn, .drag-btn {background: #f59e42; color: #fff; border:none; border-radius:4px; padding:4px 7px; margin:2px; cursor:pointer;}
+    .delete-product-btn {background:#ef4444;}
+    .drag-btn {background:#2563eb;}
+    .gallery-section {margin-bottom: 30px;}
+    .gallery-container {display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 13px;}
+    .gallery-item {height: 160px; overflow: hidden; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);}
+    .gallery-item img {width: 100%; height: 100%; object-fit: cover;}
+    .cart-section, .orders-section {margin-bottom: 30px;}
+    .cart-list, .orders-list {margin:0 auto; max-width:500px;}
+    .cart-item, .order-item {border-bottom:1px solid #e2e8f0; padding:10px 0;}
+    .cart-empty, .orders-empty {text-align: center; color: #000; padding: 20px;}
+    .cart-actions {text-align:right;}
+    .cart-btn, .whatsapp-btn {padding:8px 14px; border:none; border-radius:5px; background: #2563eb; color:#fff; cursor:pointer; margin:3px;}
+    .whatsapp-btn {background:#25d366;}
+    .modal {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:1000;}
+    .modal-content {background:#fff;padding:20px;border-radius:10px;min-width:280px;max-width:420px;position:relative;}
+    .close-modal {position:absolute;top:10px;right:10px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;}
+    .modal input, .modal select, .modal textarea {width:100%;margin-bottom:12px;padding:8px;border-radius:5px;border:1px solid #e2e8f0;}
+    .modal label {font-size:14px;margin-bottom:5px;display:block;}
+    .modal-btn {padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:5px;cursor:pointer;}
+    .modal-btn:disabled {background:#cbd5e1;}
+    .orders-list .order-item {background:#f1f5f9;border-radius:6px;margin-bottom:7px;}
+    .order-status {font-size:13px;padding:3px 8px;border-radius:15px;display:inline-block;}
+    .status-pending {background:#fef3c7;color:#92400e;}
+    .status-confirmed {background:#d1fae5;color:#065f46;}
+    .status-completed {background:#dbeafe;color:#2563eb;}
+    .status-cancelled {background:#fecaca;color:#991b1b;}
+    .order-actions {margin-top:7px;}
+    .admin-panel-section {margin-bottom:30px;}
+    .admin-panel-title {text-align:center;color:#2563eb;font-size:20px;margin-bottom:15px;}
+    .admin-products-list {margin:0 auto;max-width:600px;}
+    .admin-product-row {display:flex;align-items:center;justify-content:space-between;background:#f3f4f6;padding:8px;border-radius:6px;margin-bottom:8px;cursor:grab;}
+    .admin-product-row .drag-btn {margin-right:8px;}
+    .admin-product-row .edit-product-btn, .admin-product-row .delete-product-btn {margin-left:6px;}
+    footer {padding: 20px; text-align: center; background: #2563eb; color: white;}
+    @media (max-width: 768px) {
+      .top-bar {flex-direction: column; gap: 10px;}
+      .products-grid {grid-template-columns: 1fr !important;}
+      .banner-section {height: 150px;}
+      .banner-overlay h1 {font-size: 20px;}
+      .banner-overlay p {font-size: 12px;}
+      .category-btn {padding: 7px 10px; font-size: 13px;}
+      .gallery-container {grid-template-columns: 1fr;}
+      .modal-content {max-width:95vw;}
+    }
+  </style>
+  <!-- Firebase Modular SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <!-- Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ur,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
-    <!-- HTML sections and modals (as per your original code) go here -->
-    <!-- ... For brevity, the modals and forms you already have are unchanged ... -->
-    <script>
-    // ---- Firebase config ----
+  <div class="container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="top-buttons">
+        <button class="top-btn" onclick="showGallery()"><i class="fas fa-images"></i> Gallery</button>
+        <button class="top-btn" onclick="showCart()"><i class="fas fa-shopping-cart"></i> Cart</button>
+        <button class="top-btn" onclick="showOrders()"><i class="fas fa-file-invoice"></i> Orders</button>
+        <button class="top-btn" id="adminPanelBtn" style="display:none;" onclick="showAdminPanel()"><i class="fas fa-tools"></i> Admin Panel</button>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div id="userInfo" class="user-info"></div>
+        <button class="top-btn" id="loginBtn" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button class="top-btn" id="logoutBtn" onclick="logoutUser()" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <div class="google-translate"><div id="google_translate_element"></div></div>
+      </div>
+    </div>
+    <!-- Banner -->
+    <div class="banner-section" id="bannerSection">
+      <img id="bannerImg" class="banner-image" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1100&q=80" alt="Apparel Machinery Banner">
+      <div class="banner-overlay">
+        <h1>APPAREL MACHINERY</h1>
+        <p>Premium Industrial Sewing & Garment Equipment</p>
+      </div>
+      <button id="bannerUploadBtn" class="banner-upload-btn top-btn" style="display:none;" onclick="showBannerUploadModal()"><i class="fas fa-upload"></i> Change Banner</button>
+    </div>
+    <div class="main-content" id="mainContent">
+      <!-- Categories -->
+      <div class="categories-section">
+        <h2 class="section-title">Product Categories</h2>
+        <div class="categories-container" id="categoriesContainer"></div>
+      </div>
+      <!-- Search -->
+      <div class="search-section">
+        <div class="search-header">
+          <h2 class="section-title">Find Products</h2>
+          <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by product name, code, or manufacturer...">
+            <button class="search-btn" onclick="searchProducts()"><i class="fas fa-search"></i> <span>Search</span></button>
+          </div>
+        </div>
+      </div>
+      <!-- Products -->
+      <div class="products-section">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+      <!-- Product Gallery -->
+      <div class="gallery-section" id="gallerySection" style="display:none;">
+        <h2 class="section-title">Product Gallery</h2>
+        <div class="gallery-container" id="galleryContainer"></div>
+        <button class="top-btn" onclick="hideGallery()" style="margin: 20px auto; display:block;"><i class="fas fa-times"></i> Close Gallery</button>
+      </div>
+      <!-- Cart -->
+      <div class="cart-section" id="cartSection" style="display:none;">
+        <h2 class="section-title">Your Cart</h2>
+        <div class="cart-list" id="cartList"></div>
+        <div class="cart-actions">
+          <button class="cart-btn" onclick="placeOrderModal()">Place Order</button>
+          <button class="whatsapp-btn" onclick="orderViaWhatsApp()">Order via WhatsApp</button>
+          <button class="cart-btn" onclick="hideCart()">Close</button>
+        </div>
+      </div>
+      <!-- Orders -->
+      <div class="orders-section" id="ordersSection" style="display:none;">
+        <h2 class="section-title">Your Orders</h2>
+        <div class="orders-list" id="ordersList"></div>
+        <button class="cart-btn" onclick="hideOrders()" style="margin-top:15px;">Close</button>
+      </div>
+      <!-- Admin Panel -->
+      <div class="admin-panel-section" id="adminPanelSection" style="display:none;">
+        <h2 class="admin-panel-title">Admin Panel</h2>
+        <button class="top-btn" onclick="showAddProductModal()"><i class="fas fa-plus"></i> Add Product</button>
+        <div class="admin-products-list" id="adminProductsList"></div>
+        <h2 class="section-title" style="margin-top:20px;">Orders</h2>
+        <div class="orders-list" id="adminOrdersList"></div>
+        <button class="cart-btn" onclick="hideAdminPanel()" style="margin-top:15px;">Close Panel</button>
+      </div>
+    </div>
+    <footer>
+      <p>© 2025 APPAREL MACHINERY. All rights reserved. | Premium Industrial Garment Equipment</p>
+    </footer>
+  </div>
+  <!-- MODALS -->
+  <div id="modalContainer"></div>
+  <!-- SCRIPTS -->
+  <script type="module">
+    // Firebase Modular SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, addDoc, doc, updateDoc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
       authDomain: "apparel-machinery.firebaseapp.com",
@@ -143,80 +209,626 @@
       appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
       measurementId: "G-XHMZ4BP7CW"
     };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
 
-    // References
-    const productsRef = db.collection("products");
-    const ordersRef = db.collection("orders");
-    const bannerRef = db.collection("settings").doc("banner");
+    // Categories
+    const allCategories = [
+      { label: "All Products", value: "all" },
+      { label: "Sewing Machines", value: "stitching" },
+      { label: "Cutting Machines", value: "cuttings" },
+      { label: "Pressing Equipment", value: "pressing" },
+      { label: "Embroidery Machines", value: "embroidery" },
+      { label: "Printing Machines", value: "printing" }
+    ];
 
+    // States
     let products = [];
     let orders = [];
-    let cart = JSON.parse(localStorage.getItem('apparel_cart')) || [];
-    let currentCustomer = JSON.parse(localStorage.getItem('apparel_customer')) || null;
-    let currentCategory = 'all';
+    let bannerImg = "";
+    let currentCategory = "all";
+    let user = null;
+    let isAdmin = false;
+    let cart = [];
 
-    document.addEventListener('DOMContentLoaded', function() {
-        productsRef.orderBy("displayOrder").onSnapshot(snapshot => {
-            products = [];
-            snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-            filterProductsByCategory();
-            loadAdminProducts();
-            loadGallery();
-        });
-        ordersRef.orderBy("date", "desc").onSnapshot(snapshot => {
-            orders = [];
-            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-            loadOrders();
-        });
-        updateCartCount();
-        setupCategoryButtons();
-        setupBannerUpload();
-        loadBannerFromFirebase();
+    // Helper: Modal
+    function showModal(html) {
+      document.getElementById('modalContainer').innerHTML = `<div class="modal"><div class="modal-content">${html}</div></div>`;
+    }
+    function closeModal() {
+      document.getElementById('modalContainer').innerHTML = "";
+    }
+
+    // Auth
+    function updateUserUI() {
+      const userInfo = document.getElementById("userInfo");
+      const loginBtn = document.getElementById("loginBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const adminPanelBtn = document.getElementById("adminPanelBtn");
+      if (user) {
+        userInfo.innerHTML = `<span><b>${user.displayName || user.email}</b></span><span>${user.email}</span>`;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+        if (isAdmin) adminPanelBtn.style.display = "inline-block";
+        else adminPanelBtn.style.display = "none";
+      } else {
+        userInfo.innerHTML = "";
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        adminPanelBtn.style.display = "none";
+      }
+    }
+    window.logoutUser = async function() {
+      await signOut(auth);
+      user = null;
+      isAdmin = false;
+      updateUserUI();
+      closeModal();
+      hideAdminPanel();
+    }
+
+    function showLoginModal() {
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3 style="text-align:center;">Login / Signup</h3>
+        <label>Email:</label><input type="email" id="loginEmail" required>
+        <label>Password:</label><input type="password" id="loginPass" required>
+        <button class="modal-btn" onclick="loginEmail()">Login</button>
+        <button class="modal-btn" onclick="signupEmail()">Sign Up</button>
+        <hr>
+        <button class="modal-btn" onclick="loginGoogle()"><i class="fab fa-google"></i> Login with Google</button>
+      `);
+    }
+    window.closeModal = closeModal;
+
+    window.loginEmail = async function() {
+      let email = document.getElementById("loginEmail").value.trim();
+      let pass = document.getElementById("loginPass").value;
+      if (!email || !pass) return alert("Email and password required!");
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        closeModal();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+    window.signupEmail = async function() {
+      let email = document.getElementById("loginEmail").value.trim();
+      let pass = document.getElementById("loginPass").value;
+      if (!email || !pass) return alert("Email and password required!");
+      try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        closeModal();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+    window.loginGoogle = async function() {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+        closeModal();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    // Auth state change
+    onAuthStateChanged(auth, async (u) => {
+      user = u;
+      isAdmin = (user && user.email && user.email.toLowerCase() === "apparel.machinery.pk@gmail.com");
+      updateUserUI();
+      if (isAdmin) document.getElementById("bannerUploadBtn").style.display = "inline-block";
+      else document.getElementById("bannerUploadBtn").style.display = "none";
+      renderCategories();
+      renderProducts();
+      if (isAdmin) fetchOrdersAdmin();
+      else fetchOrdersCustomer();
     });
 
-    // ... All your JS functions (addProduct, updateProduct, deleteProduct, addToCart, updateCartCount, searchProducts, etc.) remain the same ...
-    // ... Just change product card rendering functions as below ...
+    // Banner
+    async function fetchBanner() {
+      const docRef = doc(db, "banner", "main");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        bannerImg = docSnap.data().url;
+        document.getElementById("bannerImg").src = bannerImg;
+      }
+    }
+    fetchBanner();
 
+    function showBannerUploadModal() {
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3>Change Banner Image</h3>
+        <input type="file" id="bannerFile" accept="image/*">
+        <button class="modal-btn" onclick="uploadBannerImage()">Upload</button>
+      `);
+    }
+    window.showBannerUploadModal = showBannerUploadModal;
+    window.uploadBannerImage = async function() {
+      const fileInput = document.getElementById("bannerFile");
+      if (!fileInput.files[0]) return alert("Select an image!");
+      const file = fileInput.files[0];
+      const refPath = `banner/main_${Date.now()}.${file.name.split('.').pop()}`;
+      const storageReference = storageRef(storage, refPath);
+      await uploadBytes(storageReference, file);
+      const url = await getDownloadURL(storageReference);
+      await setDoc(doc(db, "banner", "main"), {url});
+      bannerImg = url;
+      document.getElementById("bannerImg").src = url;
+      closeModal();
+      alert("Banner updated!");
+    }
+
+    // Categories
+    function renderCategories() {
+      const catContainer = document.getElementById("categoriesContainer");
+      catContainer.innerHTML = allCategories.map(cat =>
+        `<button class="category-btn${cat.value === currentCategory ? " active" : ""}" onclick="filterByCategory('${cat.value}')">${cat.label}</button>`
+      ).join('');
+    }
+    window.filterByCategory = function(category) {
+      currentCategory = category;
+      renderCategories();
+      renderProducts();
+    }
+
+    window.searchProducts = function() {
+      const val = document.getElementById("searchInput").value.trim().toLowerCase();
+      renderProducts(val);
+    }
+
+    // Product card
     function renderProductCard(product) {
-        return `
+      return `
         <div class="product-card">
             <div class="product-image">
                 ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<i class="fas fa-tshirt"></i>`}
             </div>
             <div class="product-details">
-                <h3 class="product-title">${product.name}</h3>
-                <div class="product-code">Code: ${product.code}</div>
-                <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
-                <p class="product-description">${product.description}</p>
-                <span class="product-condition condition-${product.condition}">${product.condition}</span>
+                <h3 class="product-title">${product.name || ""}</h3>
+                <div class="product-code">Code: ${product.code || ""}</div>
+                <div class="product-manufacturer">Manufacturer: ${product.manufacturer || ""}</div>
+                <p class="product-description">${product.description || ""}</p>
+                <span class="product-condition condition-${product.condition || "new"}">${product.condition || ""}</span>
                 <button class="add-to-cart-btn" onclick="addToCart('${product.id}')"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
         </div>
-        `;
+      `;
     }
 
-    function renderAdminProductCard(product) {
-        return `
-        <div class="admin-product-card">
-            <h4>${product.name}</h4>
-            <div><strong>Code:</strong> ${product.code}</div>
-            <div><strong>Manufacturer:</strong> ${product.manufacturer}</div>
-            <div><strong>Category:</strong> ${product.category}</div>
-            <div><strong>Condition:</strong> ${product.condition}</div>
-            <div><strong>Price:</strong> Rs. ${product.price ? product.price.toLocaleString() : 'N/A'}</div>
-            ${product.image ? `<div><img src="${product.image}" alt="${product.name}" style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 5px;"></div>` : ''}
-            <div class="admin-product-actions">
-                <button class="admin-product-btn btn-edit" onclick="openEditModal('${product.id}')"><i class="fas fa-edit"></i> Edit</button>
-                <button class="admin-product-btn btn-delete" onclick="deleteProduct('${product.id}')"><i class="fas fa-trash"></i> Delete</button>
-            </div>
+    function renderProducts(searchVal = "") {
+      let filtered = products;
+      if (currentCategory !== "all") {
+        filtered = filtered.filter(p => p.category === currentCategory);
+      }
+      if (searchVal) {
+        filtered = filtered.filter(p =>
+          (p.name && p.name.toLowerCase().includes(searchVal)) ||
+          (p.code && p.code.toLowerCase().includes(searchVal)) ||
+          (p.manufacturer && p.manufacturer.toLowerCase().includes(searchVal))
+        );
+      }
+      document.getElementById("productsGrid").innerHTML = filtered.length
+        ? filtered.map(renderProductCard).join('')
+        : "<div class='cart-empty'>No products found.</div>";
+    }
+
+    // Product Gallery
+    window.showGallery = function() {
+      document.getElementById("gallerySection").style.display = "block";
+      loadGallery();
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+    window.hideGallery = function() {
+      document.getElementById("gallerySection").style.display = "none";
+    }
+    function loadGallery() {
+      const gallery = document.getElementById("galleryContainer");
+      gallery.innerHTML = products.filter(p => p.image).map(p =>
+        `<div class="gallery-item"><img src="${p.image}" alt="${p.name}"/></div>`
+      ).join('');
+      if (!gallery.innerHTML) gallery.innerHTML = "<div class='cart-empty'>No images found.</div>";
+    }
+
+    // Cart
+    function getCart() {
+      try {
+        cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      } catch { cart = []; }
+      return cart;
+    }
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    window.addToCart = function(pid) {
+      if (!user) return alert("Login required!");
+      const p = products.find(x => x.id === pid);
+      if (!p) return alert("Product not found!");
+      let idx = cart.findIndex(x => x.id === pid);
+      if (idx === -1) cart.push({...p, qty:1});
+      else cart[idx].qty += 1;
+      saveCart();
+      alert("Added to cart!");
+    }
+
+    window.showCart = function() {
+      getCart();
+      document.getElementById("cartSection").style.display = "block";
+      renderCart();
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+    window.hideCart = function() {
+      document.getElementById("cartSection").style.display = "none";
+    }
+    function renderCart() {
+      const clist = document.getElementById("cartList");
+      if (!cart.length) {
+        clist.innerHTML = "<div class='cart-empty'>Your cart is empty.</div>";
+        return;
+      }
+      clist.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <b>${item.name}</b> (${item.code})<br>
+          Qty: <input type="number" min="1" value="${item.qty}" onchange="updateCartQty(${idx},this.value)" style="width:50px;">
+          <button class="cart-btn" onclick="removeCartItem(${idx})">Remove</button>
         </div>
-        `;
+      `).join('');
+    }
+    window.updateCartQty = function(idx, val) {
+      val = parseInt(val);
+      if (isNaN(val) || val < 1) val = 1;
+      cart[idx].qty = val;
+      saveCart();
+      renderCart();
+    }
+    window.removeCartItem = function(idx) {
+      cart.splice(idx,1);
+      saveCart();
+      renderCart();
     }
 
-    // ... باقی code unchanged: category filter, cart, modals, gallery, search, orders, WhatsApp/email order, etc ...
-    // ... If you want complete JS functions pasted, let me know! ...
-    </script>
+    // WhatsApp order
+    window.orderViaWhatsApp = function() {
+      if (!user) return alert("Login first!");
+      if (!cart.length) return alert("Cart is empty!");
+      let text = `Order from Apparel Machinery\nCustomer: ${user.displayName||user.email}\nEmail: ${user.email}\n`;
+      cart.forEach(item=>{
+        text += `\nProduct: ${item.name} (${item.code})\nQty: ${item.qty}\n`;
+      });
+      text += "\nThank you!";
+      let url = "https://wa.me/923155111330?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    // Place order modal (customer)
+    window.placeOrderModal = function() {
+      if (!user) return alert("Login first!");
+      if (!cart.length) return alert("Cart is empty!");
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3>Place Order</h3>
+        <label>Contact Number:</label>
+        <input type="tel" id="orderPhone" required placeholder="03XXXXXXXXX">
+        <label>Order Notes:</label>
+        <textarea id="orderNotes" rows="2" placeholder="Any notes?"></textarea>
+        <button class="modal-btn" onclick="placeOrder()">Confirm Order</button>
+      `);
+    }
+    window.placeOrder = async function() {
+      const phone = document.getElementById("orderPhone").value.trim();
+      const notes = document.getElementById("orderNotes").value.trim();
+      if (!phone) return alert("Phone required!");
+      const order = {
+        userEmail: user.email,
+        userName: user.displayName || user.email,
+        phone,
+        notes,
+        products: cart.map(item=>({id:item.id,name:item.name,code:item.code,qty:item.qty})),
+        status: "pending",
+        createdAt: new Date().toISOString()
+      };
+      await addDoc(collection(db,"orders"), order);
+      alert("Order placed!");
+      cart = [];
+      saveCart();
+      closeModal();
+      hideCart();
+      fetchOrdersCustomer();
+    }
+
+    // Orders (customer)
+    window.showOrders = function() {
+      document.getElementById("ordersSection").style.display = "block";
+      renderOrdersCustomer();
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+    window.hideOrders = function() {
+      document.getElementById("ordersSection").style.display = "none";
+    }
+    async function fetchOrdersCustomer() {
+      if (!user) return;
+      const q = query(collection(db,"orders"));
+      const snapshot = await getDocs(q);
+      orders = [];
+      snapshot.forEach(doc=>{
+        let d = doc.data();
+        if (d.userEmail===user.email) orders.push({...d,id:doc.id});
+      });
+      renderOrdersCustomer();
+    }
+    function renderOrdersCustomer() {
+      const el = document.getElementById("ordersList");
+      if (!orders.length) {
+        el.innerHTML = "<div class='orders-empty'>No orders found.</div>";
+        return;
+      }
+      el.innerHTML = orders.map(order=>`
+        <div class="order-item">
+          <b>Order #${order.id.slice(-6)}</b> <span class="order-status status-${order.status}">${order.status}</span><br>
+          <b>Products:</b> ${order.products.map(p=>`${p.name} (${p.qty})`).join(", ")}<br>
+          <b>Phone:</b> ${order.phone}<br>
+          <b>Notes:</b> ${order.notes||""}<br>
+          <b>Date:</b> ${new Date(order.createdAt).toLocaleString()}
+        </div>
+      `).join('');
+    }
+
+    // Orders (admin)
+    async function fetchOrdersAdmin() {
+      const q = query(collection(db,"orders"));
+      const snapshot = await getDocs(q);
+      orders = [];
+      snapshot.forEach(doc=>{
+        let d = doc.data();
+        orders.push({...d,id:doc.id});
+      });
+      renderOrdersAdmin();
+    }
+    function renderOrdersAdmin() {
+      const el = document.getElementById("adminOrdersList");
+      if (!orders.length) {
+        el.innerHTML = "<div class='orders-empty'>No orders yet.</div>";
+        return;
+      }
+      el.innerHTML = orders.map(order=>`
+        <div class="order-item">
+          <b>Order #${order.id.slice(-6)}</b> <span class="order-status status-${order.status}">${order.status}</span><br>
+          <b>Customer:</b> ${order.userName} (${order.userEmail})<br>
+          <b>Products:</b> ${order.products.map(p=>`${p.name} (${p.qty})`).join(", ")}<br>
+          <b>Phone:</b> ${order.phone}<br>
+          <b>Notes:</b> ${order.notes||""}<br>
+          <b>Date:</b> ${new Date(order.createdAt).toLocaleString()}<br>
+          <div class="order-actions">
+            <select onchange="updateOrderStatus('${order.id}',this.value)">
+              <option ${order.status==="pending"?"selected":""}>pending</option>
+              <option ${order.status==="confirmed"?"selected":""}>confirmed</option>
+              <option ${order.status==="completed"?"selected":""}>completed</option>
+              <option ${order.status==="cancelled"?"selected":""}>cancelled</option>
+            </select>
+          </div>
+        </div>
+      `).join('');
+    }
+    window.updateOrderStatus = async function(orderId, status) {
+      await updateDoc(doc(db,"orders",orderId),{status});
+      fetchOrdersAdmin();
+    }
+
+    // Admin panel (products CRUD, drag & drop order)
+    window.showAdminPanel = function() {
+      document.getElementById("adminPanelSection").style.display = "block";
+      renderAdminProductsList();
+      fetchOrdersAdmin();
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+    window.hideAdminPanel = function() {
+      document.getElementById("adminPanelSection").style.display = "none";
+    }
+    function renderAdminProductsList() {
+      const el = document.getElementById("adminProductsList");
+      if (!products.length) {
+        el.innerHTML = "<div class='cart-empty'>No products. Add new!</div>";
+        return;
+      }
+      el.innerHTML = products.sort((a,b)=>a.displayOrder-b.displayOrder).map((product,idx)=>`
+        <div class="admin-product-row" draggable="true" ondragstart="dragStart(${idx})" ondragover="dragOver(event)" ondrop="dropProduct(${idx})">
+          <button class="drag-btn"><i class="fas fa-arrows-alt"></i></button>
+          <span><b>${product.name}</b> (${product.code})</span>
+          <button class="edit-product-btn" onclick="showEditProductModal('${product.id}')"><i class="fas fa-edit"></i></button>
+          <button class="delete-product-btn" onclick="deleteProduct('${product.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      `).join('');
+    }
+    let dragIdx = null;
+    window.dragStart = function(idx) { dragIdx = idx; }
+    window.dragOver = function(e) { e.preventDefault(); }
+    window.dropProduct = async function(dropIdx) {
+      if (dragIdx===null || dragIdx===dropIdx) return;
+      let sorted = [...products].sort((a,b)=>a.displayOrder-b.displayOrder);
+      let moved = sorted.splice(dragIdx,1)[0];
+      sorted.splice(dropIdx,0,moved);
+      for (let i=0;i<sorted.length;i++) {
+        await updateDoc(doc(db,"products",sorted[i].id), {displayOrder:i+1});
+      }
+      await fetchProductsFromFirebase();
+      renderAdminProductsList();
+      dragIdx = null;
+    }
+
+    window.showAddProductModal = function() {
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3>Add Product</h3>
+        <label>Name:</label><input id="prodName">
+        <label>Code:</label><input id="prodCode">
+        <label>Manufacturer:</label><input id="prodMan">
+        <label>Description:</label><textarea id="prodDesc"></textarea>
+        <label>Condition:</label>
+          <select id="prodCond">
+            <option value="new">New</option>
+            <option value="used">Used</option>
+          </select>
+        <label>Category:</label>
+          <select id="prodCat">
+            ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}">${c.label}</option>`).join('')}
+          </select>
+        <label>Image:</label>
+        <input type="file" id="prodImg" accept="image/*">
+        <button class="modal-btn" onclick="addProduct()">Add</button>
+      `);
+    }
+    window.addProduct = async function() {
+      let name = document.getElementById("prodName").value.trim();
+      let code = document.getElementById("prodCode").value.trim();
+      let manufacturer = document.getElementById("prodMan").value.trim();
+      let desc = document.getElementById("prodDesc").value.trim();
+      let cond = document.getElementById("prodCond").value;
+      let cat = document.getElementById("prodCat").value;
+      let imgInput = document.getElementById("prodImg");
+      let imgUrl = "";
+      if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
+      if (imgInput.files[0]) {
+        const file = imgInput.files[0];
+        const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
+        const storageReference = storageRef(storage, refPath);
+        await uploadBytes(storageReference, file);
+        imgUrl = await getDownloadURL(storageReference);
+      }
+      let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
+      let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
+      await addDoc(collection(db,"products"), prod);
+      await fetchProductsFromFirebase();
+      closeModal();
+      renderAdminProductsList();
+    }
+
+    window.showEditProductModal = function(pid) {
+      let prod = products.find(x=>x.id===pid);
+      if (!prod) return alert("Product not found!");
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3>Edit Product</h3>
+        <label>Name:</label><input id="prodName" value="${prod.name}">
+        <label>Code:</label><input id="prodCode" value="${prod.code}">
+        <label>Manufacturer:</label
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apparel Machinery | Industrial Equipment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- ...your styles... -->
+  <!-- (آپ کے CSS اور head والے سب کچھ وہی رہیں گے جو snippet میں ہے) -->
+  <!-- Firebase Modular SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <!-- Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ur,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+  <!-- ... آپ کی markup ... (Top bar, Banner, Categories, Search, Products, Gallery, Cart, Orders, Admin Panel, Footer, Modals) ... -->
+  <!-- MODALS -->
+  <div id="modalContainer"></div>
+  <!-- SCRIPTS -->
+  <script type="module">
+    // ... آپ کا JavaScript code ... (Firebase imports, states, helpers, auth, banner, categories, products, cart, orders, admin CRUD, drag & drop, modals, etc.) ...
+
+    // (آپ کا code snippet یہاں paste کریں)
+    // اگر code کٹ جائے تو یہیں سے continue کریں:
+
+    window.showEditProductModal = function(pid) {
+      let prod = products.find(x=>x.id===pid);
+      if (!prod) return alert("Product not found!");
+      showModal(`
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <h3>Edit Product</h3>
+        <label>Name:</label><input id="editProdName" value="${prod.name}">
+        <label>Code:</label><input id="editProdCode" value="${prod.code}">
+        <label>Manufacturer:</label><input id="editProdMan" value="${prod.manufacturer}">
+        <label>Description:</label><textarea id="editProdDesc">${prod.description}</textarea>
+        <label>Condition:</label>
+          <select id="editProdCond">
+            <option value="new" ${prod.condition==="new"?"selected":""}>New</option>
+            <option value="used" ${prod.condition==="used"?"selected":""}>Used</option>
+          </select>
+        <label>Category:</label>
+          <select id="editProdCat">
+            ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}" ${prod.category===c.value?"selected":""}>${c.label}</option>`).join('')}
+          </select>
+        <label>Image:</label>
+        <input type="file" id="editProdImg" accept="image/*">
+        <button class="modal-btn" onclick="editProduct('${prod.id}')">Save Changes</button>
+      `);
+    }
+
+    window.editProduct = async function(pid) {
+      let prod = products.find(x=>x.id===pid);
+      if (!prod) return alert("Product not found!");
+      let name = document.getElementById("editProdName").value.trim();
+      let code = document.getElementById("editProdCode").value.trim();
+      let manufacturer = document.getElementById("editProdMan").value.trim();
+      let desc = document.getElementById("editProdDesc").value.trim();
+      let cond = document.getElementById("editProdCond").value;
+      let cat = document.getElementById("editProdCat").value;
+      let imgInput = document.getElementById("editProdImg");
+      let imgUrl = prod.image;
+      if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
+      if (imgInput.files[0]) {
+        const file = imgInput.files[0];
+        const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
+        const storageReference = storageRef(storage, refPath);
+        await uploadBytes(storageReference, file);
+        imgUrl = await getDownloadURL(storageReference);
+      }
+      let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
+      await updateDoc(doc(db,"products",pid), updateObj);
+      await fetchProductsFromFirebase();
+      closeModal();
+      renderAdminProductsList();
+    }
+
+    window.deleteProduct = async function(pid) {
+      if (!confirm("Delete this product?")) return;
+      await deleteDoc(doc(db,"products",pid));
+      await fetchProductsFromFirebase();
+      renderAdminProductsList();
+    }
+
+    // Firebase: Fetch products
+    async function fetchProductsFromFirebase() {
+      const q = query(collection(db, "products"), orderBy("displayOrder"));
+      const snapshot = await getDocs(q);
+      products = [];
+      snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+      renderCategories();
+      renderProducts();
+      renderAdminProductsList();
+      loadGallery();
+    }
+
+    // Initial load
+    fetchProductsFromFirebase();
+
+    // Make available for debugging
+    window.products = products;
+    window.renderProducts = renderProducts;
+
+    // Utility: For modal close on Esc key
+    document.addEventListener("keydown", function(e){
+      if(e.key==="Escape") closeModal();
+    });
+  </script>
 </body>
 </html>
