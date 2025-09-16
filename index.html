@@ -649,6 +649,7 @@
     // Initialize Firebase with error handling
     try {
       firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized successfully");
     } catch (error) {
       console.error("Firebase initialization error:", error);
       document.getElementById('productsError').textContent = "Firebase initialization failed: " + error.message;
