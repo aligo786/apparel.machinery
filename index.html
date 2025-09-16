@@ -94,19 +94,21 @@
       .gallery-container {grid-template-columns: 1fr;}
       .modal-content {max-width:95vw;}
     }
+    .error-message {color: #ef4444; text-align: center; padding: 10px; margin: 10px 0; background: #fee2e2; border-radius: 5px;}
+    .offline-message {color: #f59e0b; text-align: center; padding: 10px; margin: 10px 0; background: #fef3c7; border-radius: 5px;}
   </style>
-  <!-- Firebase compat SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <!-- Firebase compat SDKs - Updated to latest version -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <!-- Google Translate -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ur,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
     }
   </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
   <div class="container">
@@ -125,6 +127,12 @@
         <div class="google-translate"><div id="google_translate_element"></div></div>
       </div>
     </div>
+    
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="offline-message" style="display: none;">
+      <i class="fas fa-wifi"></i> You are currently offline. Some features may not work properly.
+    </div>
+    
     <!-- Banner -->
     <div class="banner-section" id="bannerSection">
       <img id="bannerImg" class="banner-image" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1100&q=80" alt="Apparel Machinery Banner">
@@ -153,6 +161,7 @@
       <!-- Products -->
       <div class="products-section">
         <h2 class="section-title">Featured Products</h2>
+        <div id="productsError" class="error-message" style="display: none;"></div>
         <div class="products-grid" id="productsGrid"></div>
       </div>
       <!-- Product Gallery -->
@@ -200,15 +209,49 @@
       apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
       authDomain: "apparel-machinery.firebaseapp.com",
       projectId: "apparel-machinery",
-      storageBucket: "apparel-machinery.appspot.com",
+      storageBucket: "apparel-machinery.firebasestorage.app",
       messagingSenderId: "165173029685",
       appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
       measurementId: "G-XHMZ4BP7CW"
     };
-    firebase.initializeApp(firebaseConfig);
+    
+    // Initialize Firebase with error handling
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (error) {
+      console.error("Firebase initialization error:", error);
+      document.getElementById('productsError').textContent = "Firebase initialization failed: " + error.message;
+      document.getElementById('productsError').style.display = 'block';
+    }
+    
     const db = firebase.firestore();
     const auth = firebase.auth();
     const storage = firebase.storage();
+    
+    // Enable offline persistence with error handling
+    db.enablePersistence().catch((err) => {
+      if (err.code === 'failed-precondition') {
+        console.warn("Multiple tabs open, persistence can only be enabled in one tab at a time.");
+      } else if (err.code === 'unimplemented') {
+        console.warn("The current browser doesn't support persistence.");
+      }
+    });
+
+    // Network status monitoring
+    window.addEventListener('online', function() {
+      document.getElementById('connectionStatus').style.display = 'none';
+      console.log("Online - connection restored");
+    });
+
+    window.addEventListener('offline', function() {
+      document.getElementById('connectionStatus').style.display = 'block';
+      console.log("Offline - connection lost");
+    });
+
+    // Check initial connection status
+    if (!navigator.onLine) {
+      document.getElementById('connectionStatus').style.display = 'block';
+    }
 
     // Categories
     const allCategories = [
@@ -257,12 +300,17 @@
       }
     }
     window.logoutUser = async function() {
-      await auth.signOut();
-      user = null;
-      isAdmin = false;
-      updateUserUI();
-      window.closeModal();
-      window.hideAdminPanel();
+      try {
+        await auth.signOut();
+        user = null;
+        isAdmin = false;
+        updateUserUI();
+        window.closeModal();
+        window.hideAdminPanel();
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("Logout failed: " + error.message);
+      }
     }
 
     window.showLoginModal = function() {
@@ -286,7 +334,7 @@
         await auth.signInWithEmailAndPassword(email, pass);
         window.closeModal();
       } catch (e) {
-        alert(e.message);
+        alert("Login failed: " + e.message);
       }
     }
     window.signupEmail = async function() {
@@ -297,7 +345,7 @@
         await auth.createUserWithEmailAndPassword(email, pass);
         window.closeModal();
       } catch (e) {
-        alert(e.message);
+        alert("Signup failed: " + e.message);
       }
     }
     window.loginGoogle = async function() {
@@ -306,7 +354,7 @@
         await auth.signInWithPopup(provider);
         window.closeModal();
       } catch (e) {
-        alert(e.message);
+        alert("Google login failed: " + e.message);
       }
     }
 
@@ -325,11 +373,15 @@
 
     // Banner
     window.fetchBanner = async function() {
-      const docRef = db.collection("banner").doc("main");
-      const docSnap = await docRef.get();
-      if (docSnap.exists) {
-        bannerImg = docSnap.data().url;
-        document.getElementById("bannerImg").src = bannerImg;
+      try {
+        const docRef = db.collection("banner").doc("main");
+        const docSnap = await docRef.get();
+        if (docSnap.exists) {
+          bannerImg = docSnap.data().url;
+          document.getElementById("bannerImg").src = bannerImg;
+        }
+      } catch (error) {
+        console.error("Error fetching banner:", error);
       }
     }
     window.fetchBanner();
@@ -347,14 +399,19 @@
       if (!fileInput.files[0]) return alert("Select an image!");
       const file = fileInput.files[0];
       const refPath = `banner/main_${Date.now()}.${file.name.split('.').pop()}`;
-      const storageReference = storage.ref(refPath);
-      await storageReference.put(file);
-      const url = await storageReference.getDownloadURL();
-      await db.collection("banner").doc("main").set({url});
-      bannerImg = url;
-      document.getElementById("bannerImg").src = url;
-      window.closeModal();
-      alert("Banner updated!");
+      try {
+        const storageReference = storage.ref(refPath);
+        await storageReference.put(file);
+        const url = await storageReference.getDownloadURL();
+        await db.collection("banner").doc("main").set({url});
+        bannerImg = url;
+        document.getElementById("bannerImg").src = url;
+        window.closeModal();
+        alert("Banner updated!");
+      } catch (error) {
+        console.error("Error uploading banner:", error);
+        alert("Banner upload failed: " + error.message);
+      }
     }
 
     // Categories
@@ -379,7 +436,7 @@
       return `
         <div class="product-card">
             <div class="product-image">
-                ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<i class="fas fa-tshirt"></i>`}
+                ${product.image ? `<img src="${product.image}" alt="${product.name}" loading="lazy">` : `<i class="fas fa-tshirt"></i>`}
             </div>
             <div class="product-details">
                 <h3 class="product-title">${product.name || ""}</h3>
@@ -422,7 +479,7 @@
     window.loadGallery = function() {
       const gallery = document.getElementById("galleryContainer");
       gallery.innerHTML = products.filter(p => p.image).map(p =>
-        `<div class="gallery-item"><img src="${p.image}" alt="${p.name}"/></div>`
+        `<div class="gallery-item"><img src="${p.image}" alt="${p.name}" loading="lazy"/></div>`
       ).join('');
       if (!gallery.innerHTML) gallery.innerHTML = "<div class='cart-empty'>No images found.</div>";
     }
@@ -515,22 +572,28 @@
       const phone = document.getElementById("orderPhone").value.trim();
       const notes = document.getElementById("orderNotes").value.trim();
       if (!phone) return alert("Phone required!");
-      const order = {
-        userEmail: user.email,
-        userName: user.displayName || user.email,
-        phone,
-        notes,
-        products: cart.map(item=>({id:item.id,name:item.name,code:item.code,qty:item.qty})),
-        status: "pending",
-        createdAt: new Date().toISOString()
-      };
-      await db.collection("orders").add(order);
-      alert("Order placed!");
-      cart = [];
-      window.saveCart();
-      window.closeModal();
-      window.hideCart();
-      window.fetchOrdersCustomer();
+      
+      try {
+        const order = {
+          userEmail: user.email,
+          userName: user.displayName || user.email,
+          phone,
+          notes,
+          products: cart.map(item=>({id:item.id,name:item.name,code:item.code,qty:item.qty})),
+          status: "pending",
+          createdAt: new Date().toISOString()
+        };
+        await db.collection("orders").add(order);
+        alert("Order placed!");
+        cart = [];
+        window.saveCart();
+        window.closeModal();
+        window.hideCart();
+        window.fetchOrdersCustomer();
+      } catch (error) {
+        console.error("Error placing order:", error);
+        alert("Order placement failed: " + error.message);
+      }
     }
 
     // Orders (customer)
@@ -544,13 +607,21 @@
     }
     window.fetchOrdersCustomer = async function() {
       if (!user) return;
-      const snapshot = await db.collection("orders").get();
-      orders = [];
-      snapshot.forEach(doc=>{
-        let d = doc.data();
-        if (d.userEmail===user.email) orders.push({...d,id:doc.id});
-      });
-      window.renderOrdersCustomer();
+      try {
+        const snapshot = await db.collection("orders")
+          .where("userEmail", "==", user.email)
+          .orderBy("createdAt", "desc")
+          .get();
+        orders = [];
+        snapshot.forEach(doc=>{
+          let d = doc.data();
+          orders.push({...d,id:doc.id});
+        });
+        window.renderOrdersCustomer();
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        document.getElementById('ordersList').innerHTML = `<div class="error-message">Error loading orders: ${error.message}</div>`;
+      }
     }
     window.renderOrdersCustomer = function() {
       const el = document.getElementById("ordersList");
@@ -571,13 +642,18 @@
 
     // Orders (admin)
     window.fetchOrdersAdmin = async function() {
-      const snapshot = await db.collection("orders").get();
-      orders = [];
-      snapshot.forEach(doc=>{
-        let d = doc.data();
-        orders.push({...d,id:doc.id});
-      });
-      window.renderOrdersAdmin();
+      try {
+        const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
+        orders = [];
+        snapshot.forEach(doc=>{
+          let d = doc.data();
+          orders.push({...d,id:doc.id});
+        });
+        window.renderOrdersAdmin();
+      } catch (error) {
+        console.error("Error fetching admin orders:", error);
+        document.getElementById('adminOrdersList').innerHTML = `<div class="error-message">Error loading orders: ${error.message}</div>`;
+      }
     }
     window.renderOrdersAdmin = function() {
       const el = document.getElementById("adminOrdersList");
@@ -605,8 +681,13 @@
       `).join('');
     }
     window.updateOrderStatus = async function(orderId, status) {
-      await db.collection("orders").doc(orderId).update({status});
-      window.fetchOrdersAdmin();
+      try {
+        await db.collection("orders").doc(orderId).update({status});
+        window.fetchOrdersAdmin();
+      } catch (error) {
+        console.error("Error updating order status:", error);
+        alert("Failed to update order status: " + error.message);
+      }
     }
 
     // Admin panel (products CRUD, drag & drop order)
@@ -642,11 +723,16 @@
       let sorted = [...products].sort((a,b)=>a.displayOrder-b.displayOrder);
       let moved = sorted.splice(window.dragIdx,1)[0];
       sorted.splice(dropIdx,0,moved);
-      for (let i=0;i<sorted.length;i++) {
-        await db.collection("products").doc(sorted[i].id).update({displayOrder:i+1});
+      try {
+        for (let i=0;i<sorted.length;i++) {
+          await db.collection("products").doc(sorted[i].id).update({displayOrder:i+1});
+        }
+        await window.fetchProductsFromFirebase();
+        window.renderAdminProductsList();
+      } catch (error) {
+        console.error("Error reordering products:", error);
+        alert("Failed to reorder products: " + error.message);
       }
-      await window.fetchProductsFromFirebase();
-      window.renderAdminProductsList();
       window.dragIdx = null;
     }
 
@@ -682,19 +768,25 @@
       let imgInput = document.getElementById("prodImg");
       let imgUrl = "";
       if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
-      if (imgInput.files[0]) {
-        const file = imgInput.files[0];
-        const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-        const storageReference = storage.ref(refPath);
-        await storageReference.put(file);
-        imgUrl = await storageReference.getDownloadURL();
+      
+      try {
+        if (imgInput.files[0]) {
+          const file = imgInput.files[0];
+          const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
+          const storageReference = storage.ref(refPath);
+          await storageReference.put(file);
+          imgUrl = await storageReference.getDownloadURL();
+        }
+        let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
+        let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
+        await db.collection("products").add(prod);
+        await window.fetchProductsFromFirebase();
+        window.closeModal();
+        window.renderAdminProductsList();
+      } catch (error) {
+        console.error("Error adding product:", error);
+        alert("Failed to add product: " + error.message);
       }
-      let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
-      let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
-      await db.collection("products").add(prod);
-      await window.fetchProductsFromFirebase();
-      window.closeModal();
-      window.renderAdminProductsList();
     }
 
     window.showEditProductModal = function(pid) {
@@ -734,36 +826,84 @@
       let imgInput = document.getElementById("editProdImg");
       let imgUrl = prod.image;
       if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
-      if (imgInput.files[0]) {
-        const file = imgInput.files[0];
-        const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-        const storageReference = storage.ref(refPath);
-        await storageReference.put(file);
-        imgUrl = await storageReference.getDownloadURL();
+      
+      try {
+        if (imgInput.files[0]) {
+          const file = imgInput.files[0];
+          const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
+          const storageReference = storage.ref(refPath);
+          await storageReference.put(file);
+          imgUrl = await storageReference.getDownloadURL();
+        }
+        let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
+        await db.collection("products").doc(pid).update(updateObj);
+        await window.fetchProductsFromFirebase();
+        window.closeModal();
+        window.renderAdminProductsList();
+      } catch (error) {
+        console.error("Error updating product:", error);
+        alert("Failed to update product: " + error.message);
       }
-      let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
-      await db.collection("products").doc(pid).update(updateObj);
-      await window.fetchProductsFromFirebase();
-      window.closeModal();
-      window.renderAdminProductsList();
     }
 
     window.deleteProduct = async function(pid) {
       if (!confirm("Delete this product?")) return;
-      await db.collection("products").doc(pid).delete();
-      await window.fetchProductsFromFirebase();
-      window.renderAdminProductsList();
+      try {
+        await db.collection("products").doc(pid).delete();
+        await window.fetchProductsFromFirebase();
+        window.renderAdminProductsList();
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Failed to delete product: " + error.message);
+      }
     }
 
     // Firebase: Fetch products
     window.fetchProductsFromFirebase = async function() {
-      const snapshot = await db.collection("products").orderBy("displayOrder").get();
-      products = [];
-      snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-      window.renderCategories();
-      window.renderProducts();
-      window.renderAdminProductsList();
-      window.loadGallery();
+      try {
+        const snapshot = await db.collection("products").orderBy("displayOrder").get();
+        products = [];
+        snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+        window.renderCategories();
+        window.renderProducts();
+        window.renderAdminProductsList();
+        window.loadGallery();
+        document.getElementById('productsError').style.display = 'none';
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        document.getElementById('productsError').textContent = "Error loading products: " + error.message;
+        document.getElementById('productsError').style.display = 'block';
+        
+        // Load sample data if Firebase fails
+        if (products.length === 0) {
+          products = [
+            {
+              id: "sample1",
+              name: "Industrial Sewing Machine",
+              code: "ISM-2023",
+              manufacturer: "Brother",
+              description: "Heavy duty industrial sewing machine for apparel manufacturing",
+              condition: "new",
+              category: "stitching",
+              displayOrder: 1
+            },
+            {
+              id: "sample2",
+              name: "Fabric Cutting Machine",
+              code: "FCM-2023",
+              manufacturer: "Juki",
+              description: "Automatic fabric cutting machine with precision blades",
+              condition: "used",
+              category: "cuttings",
+              displayOrder: 2
+            }
+          ];
+          window.renderCategories();
+          window.renderProducts();
+          window.renderAdminProductsList();
+          window.loadGallery();
+        }
+      }
     }
 
     // Initial load
