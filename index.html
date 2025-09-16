@@ -9,7 +9,7 @@
     body {
       background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
       min-height: 100vh; 
-      padding: 0; 
+      padding: 20px; 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
     }
@@ -306,11 +306,12 @@
     }
     .cart-empty, .orders-empty {
       text-align: center; 
-      color: #000; 
+      color: #64748b; 
       padding: 20px;
     }
     .cart-actions {
       text-align: right;
+      margin-top: 20px;
     }
     .cart-btn, .whatsapp-btn {
       padding: 8px 14px; 
@@ -326,1080 +327,327 @@
     }
     .modal {
       position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
-      background: rgba(0,0,0,0.4); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 1000;
-    }
-    .modal-content {
-      background: #fff; 
-      padding: 20px; 
-      border-radius: 10px; 
-      min-width: 280px; 
-      max-width: 420px; 
-      position: relative;
-    }
-    .close-modal {
-      position: absolute; 
-      top: 10px; 
-      right: 10px; 
-      background: #ef4444; 
-      color: #fff; 
-      border: none; 
-      border-radius: 50%; 
-      width: 30px; 
-      height: 30px; 
-      font-size: 16px; 
-      cursor: pointer;
-    }
-    .modal input, .modal select, .modal textarea {
-      width: 100%; 
-      margin-bottom: 12px; 
-      padding: 8px; 
-      border-radius: 5px; 
-      border: 1px solid #e2e8f0;
-    }
-    .modal label {
-      font-size: 14px; 
-      margin-bottom: 5px; 
-      display: block;
-    }
-    .modal-btn {
-      padding: 8px 16px; 
-      background: #2563eb; 
-      color: #fff; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer;
-    }
-    .modal-btn:disabled {
-      background: #cbd5e1;
-    }
-    .orders-list .order-item {
-      background: #f1f5f9; 
-      border-radius: 6px; 
-      margin-bottom: 7px;
-    }
-    .order-status {
-      font-size: 13px; 
-      padding: 3px 8px; 
-      border-radius: 15px; 
-      display: inline-block;
-    }
-    .status-pending {
-      background: #fef3c7; 
-      color: #92400e;
-    }
-    .status-confirmed {
-      background: #d1fae5; 
-      color: #065f46;
-    }
-    .status-completed {
-      background: #dbeafe; 
-      color: #2563eb;
-    }
-    .status-cancelled {
-      background: #fecaca; 
-      color: #991b1b;
-    }
-    .order-actions {
-      margin-top: 7px;
-    }
-    .admin-panel-section {
-      margin-bottom: 30px;
-    }
-    .admin-panel-title {
-      text-align: center; 
-      color: #2563eb; 
-      font-size: 20px; 
-      margin-bottom: 15px;
-    }
-    .admin-products-list {
-      margin: 0 auto; 
-      max-width: 600px;
-    }
-    .admin-product-row {
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      background: #f3f4f6; 
-      padding: 8px; 
-      border-radius: 6px; 
-      margin-bottom: 8px; 
-      cursor: grab;
-    }
-    .admin-product-row .drag-btn {
-      margin-right: 8px;
-    }
-    .admin-product-row .edit-product-btn, .admin-product-row .delete-product-btn {
-      margin-left: 6px;
-    }
-    footer {
-      padding: 20px; 
-      text-align: center; 
-      background: #2563eb; 
-      color: white;
-    }
-    @media (max-width: 768px) {
-      .top-bar {
-        flex-direction: column; 
-        gap: 10px;
-      }
-      .products-grid {
-        grid-template-columns: 1fr !important;
-      }
-      .banner-section {
-        height: 150px;
-      }
-      .banner-overlay h1 {
-        font-size: 20px;
-      }
-      .banner-overlay p {
-        font-size: 12px;
-      }
-      .category-btn {
-        padding: 7px 10px; 
-        font-size: 13px;
-      }
-      .gallery-container {
-        grid-template-columns: 1fr;
-      }
-      .modal-content {
-        max-width: 95vw;
-      }
-    }
-    .error-message {
-      color: #ef4444; 
-      text-align: center; 
-      padding: 10px; 
-      margin: 10px 0; 
-      background: #fee2e2; 
-      border-radius: 5px;
-    }
-    .offline-message {
-      color: #f59e0b; 
-      text-align: center; 
-      padding: 10px; 
-      margin: 10px 0; 
-      background: #fef3c7; 
-      border-radius: 5px;
-    }
-    .video-modal {
-      display: none;
-      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 1001;
+      background: rgba(0,0,0,0.7);
+      display: none;
       justify-content: center;
       align-items: center;
+      z-index: 1000;
     }
-    .video-modal-content {
-      position: relative;
-      width: 80%;
-      max-width: 800px;
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
     }
-    .video-modal-close {
-      position: absolute;
-      top: -40px;
-      right: 0;
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: #4ade80;
       color: white;
-      font-size: 30px;
-      cursor: pointer;
-    }
-    .video-modal video {
-      width: 100%;
       border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: none;
+    }
+    .error {
+      background: #ef4444;
+    }
+    .warning {
+      background: #f59e0b;
     }
   </style>
-  <!-- Firebase compat SDKs - Updated to latest version -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-  <!-- Google Translate -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ur,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-    }
-  </script>
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Top Bar -->
     <div class="top-bar">
       <div class="top-buttons">
-        <button class="top-btn" onclick="window.showGallery()"><i class="fas fa-images"></i> Gallery</button>
-        <button class="top-btn" onclick="window.showCart()"><i class="fas fa-shopping-cart"></i> Cart</button>
-        <button class="top-btn" onclick="window.showOrders()"><i class="fas fa-file-invoice"></i> Orders</button>
-        <button class="top-btn" id="adminPanelBtn" style="display:none;" onclick="window.showAdminPanel()"><i class="fas fa-tools"></i> Admin Panel</button>
+        <button class="top-btn" id="signInBtn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+        <button class="top-btn" id="signOutBtn" style="display:none"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        <button class="top-btn"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</button>
       </div>
-      <div style="display:flex;align-items:center;">
-        <div id="userInfo" class="user-info"></div>
-        <button class="top-btn" id="loginBtn" onclick="window.showLoginModal()"><i class="fas fa-sign-in-alt"></i> Login</button>
-        <button class="top-btn" id="logoutBtn" onclick="window.logoutUser()" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        <div class="google-translate"><div id="google_translate_element"></div></div>
+      <div class="user-info" id="userInfo" style="display:none">
+        <span id="userName">User Name</span>
+        <span id="userEmail">user@example.com</span>
       </div>
     </div>
-    
-    <!-- Connection Status -->
-    <div id="connectionStatus" class="offline-message" style="display: none;">
-      <i class="fas fa-wifi"></i> You are currently offline. Some features may not work properly.
-    </div>
-    
-    <!-- Banner -->
-    <div class="banner-section" id="bannerSection">
-      <img id="bannerImg" class="banner-image" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1100&q=80" alt="Apparel Machinery Banner">
+
+    <div class="banner-section">
+      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80" alt="Industrial Equipment Banner" class="banner-image">
       <div class="banner-overlay">
-        <h1>APPAREL MACHINERY</h1>
-        <p>Premium Industrial Sewing & Garment Equipment</p>
+        <h1>Apparel Machinery Experts</h1>
+        <p>Your trusted partner for industrial sewing equipment</p>
       </div>
-      <button id="bannerUploadBtn" class="banner-upload-btn top-btn" style="display:none;" onclick="window.showBannerUploadModal()"><i class="fas fa-upload"></i> Change Banner</button>
+      <button class="top-btn banner-upload-btn" style="display:none"><i class="fas fa-upload"></i> Upload Banner</button>
     </div>
-    <div class="main-content" id="mainContent">
-      <!-- Categories -->
+
+    <div class="main-content">
       <div class="categories-section">
         <h2 class="section-title">Product Categories</h2>
-        <div class="categories-container" id="categoriesContainer"></div>
+        <div class="categories-container">
+          <button class="category-btn active">All Machines</button>
+          <button class="category-btn">Sewing Machines</button>
+          <button class="category-btn">Cutting Machines</button>
+          <button class="category-btn">Pressing Equipment</button>
+          <button class="category-btn">Embroidery Machines</button>
+          <button class="category-btn">Accessories</button>
+        </div>
       </div>
-      <!-- Search -->
+
       <div class="search-section">
         <div class="search-header">
-          <h2 class="section-title">Find Products</h2>
+          <h2 class="section-title">Our Products</h2>
           <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search by product name, code, or manufacturer...">
-            <button class="search-btn" onclick="window.searchProducts()"><i class="fas fa-search"></i> <span>Search</span></button>
+            <input type="text" class="search-input" placeholder="Search products...">
+            <button class="search-btn"><i class="fas fa-search"></i> Search</button>
           </div>
         </div>
       </div>
-      <!-- Products -->
+
       <div class="products-section">
-        <h2 class="section-title">Featured Products</h2>
-        <div id="productsError" class="error-message" style="display: none;"></div>
-        <div class="products-grid" id="productsGrid"></div>
-      </div>
-      <!-- Product Gallery -->
-      <div class="gallery-section" id="gallerySection" style="display:none;">
-        <h2 class="section-title">Product Gallery</h2>
-        <div class="gallery-container" id="galleryContainer"></div>
-        <button class="top-btn" onclick="window.hideGallery()" style="margin: 20px auto; display:block;"><i class="fas fa-times"></i> Close Gallery</button>
-      </div>
-      <!-- Cart -->
-      <div class="cart-section" id="cartSection" style="display:none;">
-        <h2 class="section-title">Your Cart</h2>
-        <div class="cart-list" id="cartList"></div>
-        <div class="cart-actions">
-          <button class="cart-btn" onclick="window.placeOrderModal()">Place Order</button>
-          <button class="whatsapp-btn" onclick="window.orderViaWhatsApp()">Order via WhatsApp</button>
-          <button class="cart-btn" onclick="window.hideCart()">Close</button>
+        <div class="products-grid" id="productsGrid">
+          <!-- Products will be loaded here -->
         </div>
       </div>
-      <!-- Orders -->
-      <div class="orders-section" id="ordersSection" style="display:none;">
-        <h2 class="section-title">Your Orders</h2>
-        <div class="orders-list" id="ordersList"></div>
-        <button class="cart-btn" onclick="window.hideOrders()" style="margin-top:15px;">Close</button>
+
+      <div class="gallery-section">
+        <h2 class="section-title">Equipment Gallery</h2>
+        <div class="gallery-container">
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1589793463357-5fb813435467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Sewing Machine">
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1598706202262-19470e715101?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Textile Machine">
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cutting Machine">
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1573164574233-db3d2693bb6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pressing Equipment">
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1592400374400-57c85b0d2c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Embroidery Machine">
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1579226900371-8c6e0b51ce62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Industrial Equipment">
+          </div>
+        </div>
       </div>
-      <!-- Admin Panel -->
-      <div class="admin-panel-section" id="adminPanelSection" style="display:none;">
-        <h2 class="admin-panel-title">Admin Panel</h2>
-        <button class="top-btn" onclick="window.showAddProductModal()"><i class="fas fa-plus"></i> Add Product</button>
-        <div class="admin-products-list" id="adminProductsList"></div>
-        <h2 class="section-title" style="margin-top:20px;">Orders</h2>
-        <div class="orders-list" id="adminOrdersList"></div>
-        <button class="cart-btn" onclick="window.hideAdminPanel()" style="margin-top:15px;">Close Panel</button>
+
+      <div class="cart-section">
+        <h2 class="section-title">Your Cart</h2>
+        <div class="cart-list" id="cartList">
+          <div class="cart-empty">Your cart is empty</div>
+        </div>
+        <div class="cart-actions">
+          <button class="cart-btn">Clear Cart</button>
+          <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
+        </div>
       </div>
     </div>
-    <footer>
-      <p>© 2025 APPAREL MACHINERY. All rights reserved. | Premium Industrial Garment Equipment</p>
-    </footer>
   </div>
 
-  <!-- Video Modal -->
-  <div class="video-modal" id="videoModal">
-    <div class="video-modal-content">
-      <span class="video-modal-close" onclick="window.closeVideoModal()">&times;</span>
-      <video id="modalVideo" controls></video>
-    </div>
-  </div>
+  <div class="notification" id="notification">Product added to cart!</div>
 
-  <!-- MODALS -->
-  <div id="modalContainer"></div>
-  <!-- SCRIPTS -->
   <script>
-    // Firebase compat SDK
-    const firebaseConfig = {
-      apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
-      authDomain: "apparel-machinery.firebaseapp.com",
-      projectId: "apparel-machinery",
-      storageBucket: "apparel-machinery.firebasestorage.app",
-      messagingSenderId: "165173029685",
-      appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
-      measurementId: "G-XHMZ4BP7CW"
-    };
-    
-    // Initialize Firebase with error handling
-    try {
-      firebase.initializeApp(firebaseConfig);
-      console.log("Firebase initialized successfully");
-    } catch (error) {
-      console.error("Firebase initialization error:", error);
-      document.getElementById('productsError').textContent = "Firebase initialization failed: " + error.message;
-      document.getElementById('productsError').style.display = 'block';
-    }
-    
-    const db = firebase.firestore();
-    const auth = firebase.auth();
-    const storage = firebase.storage();
-    
-    // Enable offline persistence with error handling
-    db.enablePersistence().catch((err) => {
-      if (err.code === 'failed-precondition') {
-        console.warn("Multiple tabs open, persistence can only be enabled in one tab at a time.");
-      } else if (err.code === 'unimplemented') {
-        console.warn("The current browser doesn't support persistence.");
+    // Mock product data
+    const products = [
+      {
+        id: 1,
+        title: "Industrial Sewing Machine JUKI DDL-8700",
+        code: "JUKI-8700",
+        manufacturer: "JUKI",
+        description: "High-speed straight stitch sewing machine for apparel production",
+        condition: "new",
+        image: "https://images.unsplash.com/photo-1589793463357-5fb813435467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 2450
+      },
+      {
+        id: 2,
+        title: "Automatic Fabric Cutting Machine",
+        code: "CUT-450X",
+        manufacturer: "Eastman",
+        description: "Computerized fabric cutting system with precision laser guidance",
+        condition: "used",
+        image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 18750
+      },
+      {
+        id: 3,
+        title: "Professional Steam Pressing Station",
+        code: "PRESS-MAX5",
+        manufacturer: "Veit",
+        description: "Industrial garment steamer and pressing system with vacuum table",
+        condition: "new",
+        image: "https://images.unsplash.com/photo-1573164574233-db3d2693bb6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 8950
+      },
+      {
+        id: 4,
+        title: "Multi-head Embroidery Machine",
+        code: "EMB-12N",
+        manufacturer: "Tajima",
+        description: "12-needle computerized embroidery machine with large hoop area",
+        condition: "used",
+        image: "https://images.unsplash.com/photo-1592400374400-57c85b0d2c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 22500
+      },
+      {
+        id: 5,
+        title: "Overlock Sewing Machine MO-6714D",
+        code: "JUKI-MO6714",
+        manufacturer: "JUKI",
+        description: "4-thread overlock machine with differential feed and rolled hemming",
+        condition: "new",
+        image: "https://images.unsplash.com/photo-1598706202262-19470e715101?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 3200
+      },
+      {
+        id: 6,
+        title: "Buttonholing Machine MB-372",
+        code: "BART-MB372",
+        manufacturer: "Brother",
+        description: "Automatic buttonhole sewing machine with variable sizing",
+        condition: "used",
+        image: "https://images.unsplash.com/photo-1579226900371-8c6e0b51ce62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 1850
       }
-    });
-
-    // Network status monitoring
-    window.addEventListener('online', function() {
-      document.getElementById('connectionStatus').style.display = 'none';
-      console.log("Online - connection restored");
-    });
-
-    window.addEventListener('offline', function() {
-      document.getElementById('connectionStatus').style.display = 'block';
-      console.log("Offline - connection lost");
-    });
-
-    // Check initial connection status
-    if (!navigator.onLine) {
-      document.getElementById('connectionStatus').style.display = 'block';
-    }
-
-    // Categories
-    const allCategories = [
-      { label: "All Products", value: "all" },
-      { label: "Sewing Machines", value: "stitching" },
-      { label: "Cutting Machines", value: "cuttings" },
-      { label: "Pressing Equipment", value: "pressing" },
-      { label: "Embroidery Machines", value: "embroidery" },
-      { label: "Printing Machines", value: "printing" }
     ];
 
-    // States
-    let products = [];
-    let orders = [];
-    let bannerImg = "";
-    let currentCategory = "all";
-    let user = null;
-    let isAdmin = false;
+    // Cart functionality
     let cart = [];
-
-    // Helper: Modal
-    window.showModal = function(html) {
-      document.getElementById('modalContainer').innerHTML = `<div class="modal"><div class="modal-content">${html}</div></div>`;
-    }
-    window.closeModal = function() {
-      document.getElementById('modalContainer').innerHTML = "";
-    }
-
-    // Video Modal
-    window.showVideoModal = function(videoUrl) {
-      const modal = document.getElementById('videoModal');
-      const video = document.getElementById('modalVideo');
-      video.src = videoUrl;
-      modal.style.display = 'flex';
-    }
-    window.closeVideoModal = function() {
-      const modal = document.getElementById('videoModal');
-      const video = document.getElementById('modalVideo');
-      modal.style.display = 'none';
-      video.pause();
-      video.src = '';
-    }
-
-    // Auth
-    function updateUserUI() {
-      const userInfo = document.getElementById("userInfo");
-      const loginBtn = document.getElementById("loginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const adminPanelBtn = document.getElementById("adminPanelBtn");
-      if (user) {
-        userInfo.innerHTML = `<span><b>${user.displayName || user.email}</b></span><span>${user.email}</span>`;
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline-block";
-        if (isAdmin) adminPanelBtn.style.display = "inline-block";
-        else adminPanelBtn.style.display = "none";
-      } else {
-        userInfo.innerHTML = "";
-        loginBtn.style.display = "inline-block";
-        logoutBtn.style.display = "none";
-        adminPanelBtn.style.display = "none";
-      }
-    }
-    window.logoutUser = async function() {
-      try {
-        await auth.signOut();
-        user = null;
-        isAdmin = false;
-        updateUserUI();
-        window.closeModal();
-        window.hideAdminPanel();
-      } catch (error) {
-        console.error("Logout error:", error);
-        alert("Logout failed: " + error.message);
-      }
-    }
-
-    window.showLoginModal = function() {
-      window.showModal(`
-        <button class="close-modal" onclick="window.closeModal()">×</button>
-        <h3 style="text-align:center;">Login / Signup</h3>
-        <label>Email:</label><input type="email" id="loginEmail" required>
-        <label>Password:</label><input type="password" id="loginPass" required>
-        <button class="modal-btn" onclick="window.loginEmail()">Login</button>
-        <button class="modal-btn" onclick="window.signupEmail()">Sign Up</button>
-        <hr>
-        <button class="modal-btn" onclick="window.loginGoogle()"><i class="fab fa-google"></i> Login with Google</button>
-      `);
-    }
-
-    window.loginEmail = async function() {
-      let email = document.getElementById("loginEmail").value.trim();
-      let pass = document.getElementById("loginPass").value;
-      if (!email || !pass) return alert("Email and password required!");
-      try {
-        await auth.signInWithEmailAndPassword(email, pass);
-        window.closeModal();
-      } catch (e) {
-        alert("Login failed: " + e.message);
-      }
-    }
-    window.signupEmail = async function() {
-      let email = document.getElementById("loginEmail").value.trim();
-      let pass = document.getElementById("loginPass").value;
-      if (!email || !pass) return alert("Email and password required!");
-      try {
-        await auth.createUserWithEmailAndPassword(email, pass);
-        window.closeModal();
-      } catch (e) {
-        alert("Signup failed: " + e.message);
-      }
-    }
-    window.loginGoogle = async function() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        await auth.signInWithPopup(provider);
-        window.closeModal();
-      } catch (e) {
-        alert("Google login failed: " + e.message);
-      }
-    }
-
-    // Auth state change
-    auth.onAuthStateChanged(async (u) => {
-      user = u;
-      isAdmin = (user && user.email && user.email.toLowerCase() === "apparel.machinery.pk@gmail.com");
-      updateUserUI();
-      if (isAdmin) document.getElementById("bannerUploadBtn").style.display = "inline-block";
-      else document.getElementById("bannerUploadBtn").style.display = "none";
-      window.renderCategories();
-      window.renderProducts();
-      if (isAdmin) window.fetchOrdersAdmin();
-      else window.fetchOrdersCustomer();
-    });
-
-    // Banner
-    window.fetchBanner = async function() {
-      try {
-        const docRef = db.collection("banner").doc("main");
-        const docSnap = await docRef.get();
-        if (docSnap.exists) {
-          bannerImg = docSnap.data().url;
-          document.getElementById("bannerImg").src = bannerImg;
-        }
-      } catch (error) {
-        console.error("Error fetching banner:", error);
-      }
-    }
-    window.fetchBanner();
-
-    window.showBannerUploadModal = function() {
-      window.showModal(`
-        <button class="close-modal" onclick="window.closeModal()">×</button>
-        <h3>Change Banner Image</h3>
-        <input type="file" id="bannerFile" accept="image/*">
-        <button class="modal-btn" onclick="window.uploadBannerImage()">Upload</button>
-      `);
-    }
-    window.uploadBannerImage = async function() {
-      const fileInput = document.getElementById("bannerFile");
-      if (!fileInput.files[0]) return alert("Select an image!");
-      const file = fileInput.files[0];
-      const refPath = `banner/main_${Date.now()}.${file.name.split('.').pop()}`;
-      try {
-        const storageReference = storage.ref(refPath);
-        await storageReference.put(file);
-        const url = await storageReference.getDownloadURL();
-        await db.collection("banner").doc("main").set({url});
-        bannerImg = url;
-        document.getElementById("bannerImg").src = url;
-        window.closeModal();
-        alert("Banner updated!");
-      } catch (error) {
-        console.error("Error uploading banner:", error);
-        alert("Banner upload failed: " + error.message);
-      }
-    }
-
-    // Categories
-    window.renderCategories = function() {
-      const catContainer = document.getElementById("categoriesContainer");
-      catContainer.innerHTML = allCategories.map(cat =>
-        `<button class="category-btn${cat.value === currentCategory ? " active" : ""}" onclick="window.filterByCategory('${cat.value}')">${cat.label}</button>`
-      ).join('');
-    }
-    window.filterByCategory = function(category) {
-      currentCategory = category;
-      window.renderCategories();
-      window.renderProducts();
-    }
-
-    window.searchProducts = function() {
-      const val = document.getElementById("searchInput").value.trim().toLowerCase();
-      window.renderProducts(val);
-    }
-
-    // Check if URL is a video
-    window.isVideoUrl = function(url) {
-      if (!url) return false;
-      const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.wmv'];
-      return videoExtensions.some(ext => url.toLowerCase().includes(ext));
-    }
-
-    window.renderProductCard = function(product) {
-      const isVideo = window.isVideoUrl(product.image);
-      return `
-        <div class="product-card">
-            <div class="product-image">
-                ${product.image ? 
-                  (isVideo ? 
-                    `<video controls>
-                       <source src="${product.image}" type="video/mp4">
-                       Your browser does not support the video tag.
-                     </video>
-                     <div class="video-indicator">Video</div>` : 
-                    `<img src="${product.image}" alt="${product.name}" loading="lazy">`) : 
-                  `<i class="fas fa-tshirt"></i>`}
+    
+    // DOM elements
+    const productsGrid = document.getElementById('productsGrid');
+    const cartList = document.getElementById('cartList');
+    const cartCount = document.getElementById('cartCount');
+    const notification = document.getElementById('notification');
+    
+    // Display products
+    function displayProducts() {
+      productsGrid.innerHTML = '';
+      
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        
+        productCard.innerHTML = `
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.title}">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">${product.title}</h3>
+            <div class="product-code">Code: ${product.code}</div>
+            <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
+            <div class="product-description">${product.description}</div>
+            <div class="product-condition ${product.condition === 'new' ? 'condition-new' : 'condition-used'}">
+              ${product.condition === 'new' ? 'New' : 'Used'}
             </div>
-            <div class="product-details">
-                <h3 class="product-title">${product.name || ""}</h3>
-                <div class="product-code">Code: ${product.code || ""}</div>
-                <div class="product-manufacturer">Manufacturer: ${product.manufacturer || ""}</div>
-                <p class="product-description">${product.description || ""}</p>
-                <span class="product-condition condition-${product.condition || "new"}">${product.condition || ""}</span>
-                <button class="add-to-cart-btn" onclick="window.addToCart('${product.id}')"><i class="fas fa-cart-plus"></i> Add to Cart</button>
-            </div>
-        </div>
-      `;
-    }
-
-    window.renderProducts = function(searchVal = "") {
-      let filtered = products;
-      if (currentCategory !== "all") {
-        filtered = filtered.filter(p => p.category === currentCategory);
-      }
-      if (searchVal) {
-        filtered = filtered.filter(p =>
-          (p.name && p.name.toLowerCase().includes(searchVal)) ||
-          (p.code && p.code.toLowerCase().includes(searchVal)) ||
-          (p.manufacturer && p.manufacturer.toLowerCase().includes(searchVal))
-        );
-      }
-      document.getElementById("productsGrid").innerHTML = filtered.length
-        ? filtered.map(window.renderProductCard).join('')
-        : "<div class='cart-empty'>No products found.</div>";
-    }
-
-    // Product Gallery
-    window.showGallery = function() {
-      document.getElementById("gallerySection").style.display = "block";
-      window.loadGallery();
-      window.scrollTo({top: 0, behavior: "smooth"});
-    }
-    window.hideGallery = function() {
-      document.getElementById("gallerySection").style.display = "none";
-    }
-    window.loadGallery = function() {
-      const gallery = document.getElementById("galleryContainer");
-      gallery.innerHTML = products.filter(p => p.image).map(p => {
-        const isVideo = window.isVideoUrl(p.image);
-        return `
-          <div class="gallery-item">
-            ${isVideo ? 
-              `<video controls>
-                 <source src="${p.image}" type="video/mp4">
-                 Your browser does not support the video tag.
-               </video>` : 
-              `<img src="${p.image}" alt="${p.name}" loading="lazy"/>`}
+            <div class="product-price">$${product.price.toLocaleString()}</div>
+            <button class="add-to-cart-btn" data-id="${product.id}">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
           </div>
         `;
-      }).join('');
-      if (!gallery.innerHTML) gallery.innerHTML = "<div class='cart-empty'>No images found.</div>";
-    }
-
-    // Cart
-    window.getCart = function() {
-      try {
-        cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      } catch { cart = []; }
-      return cart;
-    }
-    window.saveCart = function() {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-    window.addToCart = function(pid) {
-      if (!user) return alert("Login required!");
-      const p = products.find(x => x.id === pid);
-      if (!p) return alert("Product not found!");
-      let idx = cart.findIndex(x => x.id === pid);
-      if (idx === -1) cart.push({...p, qty:1});
-      else cart[idx].qty += 1;
-      window.saveCart();
-      alert("Added to cart!");
-    }
-
-    window.showCart = function() {
-      window.getCart();
-      document.getElementById("cartSection").style.display = "block";
-      window.renderCart();
-      window.scrollTo({top: 0, behavior: "smooth"});
-    }
-    window.hideCart = function() {
-      document.getElementById("cartSection").style.display = "none";
-    }
-    window.renderCart = function() {
-      const clist = document.getElementById("cartList");
-      if (!cart.length) {
-        clist.innerHTML = "<div class='cart-empty'>Your cart is empty.</div>";
-        return;
-      }
-      clist.innerHTML = cart.map((item, idx) => `
-        <div class="cart-item">
-          <b>${item.name}</b> (${item.code})<br>
-          Qty: <input type="number" min="1" value="${item.qty}" onchange="window.updateCartQty(${idx},this.value)" style="width:50px;">
-          <button class="cart-btn" onclick="window.removeCartItem(${idx})">Remove</button>
-        </div>
-      `).join('');
-    }
-    window.updateCartQty = function(idx, val) {
-      val = parseInt(val);
-      if (isNaN(val) || val < 1) val = 1;
-      cart[idx].qty = val;
-      window.saveCart();
-      window.renderCart();
-    }
-    window.removeCartItem = function(idx) {
-      cart.splice(idx,1);
-      window.saveCart();
-      window.renderCart();
-    }
-
-    // WhatsApp order
-    window.orderViaWhatsApp = function() {
-      if (!user) return alert("Login first!");
-      if (!cart.length) return alert("Cart is empty!");
-      let text = `Order from Apparel Machinery\nCustomer: ${user.displayName||user.email}\nEmail: ${user.email}\n`;
-      cart.forEach(item=>{
-        text += `\nProduct: ${item.name} (${item.code})\nQty: ${item.qty}\n`;
+        
+        productsGrid.appendChild(productCard);
       });
-      text += "\nThank you!";
-      let url = "https://wa.me/923155111330?text=" + encodeURIComponent(text);
-      window.open(url, "_blank");
-    }
-
-    // Place order modal (customer)
-    window.placeOrderModal = function() {
-      if (!user) return alert("Login first!");
-      if (!cart.length) return alert("Cart is empty!");
-      window.showModal(`
-        <button class="close-modal" onclick="window.closeModal()">×</button>
-        <h3>Place Order</h3>
-        <label>Contact Number:</label>
-        <input type="tel" id="orderPhone" required placeholder="03XXXXXXXXX">
-        <label>Order Notes:</label>
-        <textarea id="orderNotes" rows="2" placeholder="Any notes?"></textarea>
-        <button class="modal-btn" onclick="window.placeOrder()">Confirm Order</button>
-      `);
-    }
-    window.placeOrder = async function() {
-      const phone = document.getElementById("orderPhone").value.trim();
-      const notes = document.getElementById("orderNotes").value.trim();
-      if (!phone) return alert("Phone required!");
       
-      try {
-        const order = {
-          userEmail: user.email,
-          userName: user.displayName || user.email,
-          phone,
-          notes,
-          products: cart.map(item=>({id:item.id,name:item.name,code:item.code,qty:item.qty})),
-          status: "pending",
-          createdAt: new Date().toISOString()
-        };
-        await db.collection("orders").add(order);
-        alert("Order placed!");
-        cart = [];
-        window.saveCart();
-        window.closeModal();
-        window.hideCart();
-        window.fetchOrdersCustomer();
-      } catch (error) {
-        console.error("Error placing order:", error);
-        alert("Order placement failed: " + error.message);
-      }
-    }
-
-    // Orders (customer)
-    window.showOrders = function() {
-      document.getElementById("ordersSection").style.display = "block";
-      window.renderOrdersCustomer();
-      window.scrollTo({top: 0, behavior: "smooth"});
-    }
-    window.hideOrders = function() {
-      document.getElementById("ordersSection").style.display = "none";
-    }
-    window.fetchOrdersCustomer = async function() {
-      if (!user) return;
-      try {
-        const snapshot = await db.collection("orders")
-          .where("userEmail", "==", user.email)
-          .orderBy("createdAt", "desc")
-          .get();
-        orders = [];
-        snapshot.forEach(doc=>{
-          let d = doc.data();
-          orders.push({...d,id:doc.id});
+      // Add event listeners to Add to Cart buttons
+      const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const productId = parseInt(e.target.closest('.add-to-cart-btn').dataset.id);
+          addToCart(productId);
         });
-        window.renderOrdersCustomer();
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        document.getElementById('ordersList').innerHTML = `<div class="error-message">Error loading orders: ${error.message}</div>`;
+      });
+    }
+    
+    // Add product to cart
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        cart.push(product);
+        updateCart();
+        showNotification('Product added to cart!');
       }
     }
-    window.renderOrdersCustomer = function() {
-      const el = document.getElementById("ordersList");
-      if (!orders.length) {
-        el.innerHTML = "<div class='orders-empty'>No orders found.</div>";
+    
+    // Update cart display
+    function updateCart() {
+      cartCount.textContent = cart.length;
+      
+      if (cart.length === 0) {
+        cartList.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
         return;
       }
-      el.innerHTML = orders.map(order=>`
-        <div class="order-item">
-          <b>Order #${order.id.slice(-6)}</b> <span class="order-status status-${order.status}">${order.status}</span><br>
-          <b>Products:</b> ${order.products.map(p=>`${p.name} (${p.qty})`).join(", ")}<br>
-          <b>Phone:</b> ${order.phone}<br>
-          <b>Notes:</b> ${order.notes||""}<br>
-          <b>Date:</b> ${new Date(order.createdAt).toLocaleString()}
-        </div>
-      `).join('');
+      
+      cartList.innerHTML = '';
+      cart.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <strong>${item.title}</strong>
+          <div>$${item.price.toLocaleString()}</div>
+        `;
+        cartList.appendChild(cartItem);
+      });
     }
-
-    // Orders (admin)
-    window.fetchOrdersAdmin = async function() {
-      try {
-        const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
-        orders = [];
-        snapshot.forEach(doc=>{
-          let d = doc.data();
-          orders.push({...d,id:doc.id});
+    
+    // Show notification
+    function showNotification(message, isError = false) {
+      notification.textContent = message;
+      notification.className = isError ? 'notification error' : 'notification';
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      displayProducts();
+      updateCart();
+      
+      // Simulate user login (for demo purposes)
+      document.getElementById('signInBtn').addEventListener('click', () => {
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('signInBtn').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
+        document.getElementById('userName').textContent = 'Demo User';
+        document.getElementById('userEmail').textContent = 'user@example.com';
+        showNotification('Successfully signed in!');
+      });
+      
+      document.getElementById('signOutBtn').addEventListener('click', () => {
+        document.getElementById('userInfo').style.display = 'none';
+        document.getElementById('signInBtn').style.display = 'inline-flex';
+        document.getElementById('signOutBtn').style.display = 'none';
+        showNotification('Successfully signed out!');
+      });
+      
+      // Category buttons
+      const categoryButtons = document.querySelectorAll('.category-btn');
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          showNotification(`Showing ${button.textContent}`);
         });
-        window.renderOrdersAdmin();
-      } catch (error) {
-        console.error("Error fetching admin orders:", error);
-        document.getElementById('adminOrdersList').innerHTML = `<div class="error-message">Error loading orders: ${error.message}</div>`;
-      }
-    }
-    window.renderOrdersAdmin = function() {
-      const el = document.getElementById("adminOrdersList");
-      if (!orders.length) {
-        el.innerHTML = "<div class='orders-empty'>No orders yet.</div>";
-        return;
-      }
-      el.innerHTML = orders.map(order=>`
-        <div class="order-item">
-          <b>Order #${order.id.slice(-6)}</b> <span class="order-status status-${order.status}">${order.status}</span><br>
-          <b>Customer:</b> ${order.userName} (${order.userEmail})<br>
-          <b>Products:</b> ${order.products.map(p=>`${p.name} (${p.qty})`).join(", ")}<br>
-          <b>Phone:</b> ${order.phone}<br>
-          <b>Notes:</b> ${order.notes||""}<br>
-          <b>Date:</b> ${new Date(order.createdAt).toLocaleString()}<br>
-          <div class="order-actions">
-            <select onchange="window.updateOrderStatus('${order.id}',this.value)">
-              <option ${order.status==="pending"?"selected":""}>pending</option>
-              <option ${order.status==="confirmed"?"selected":""}>confirmed</option>
-              <option ${order.status==="completed"?"selected":""}>completed</option>
-              <option ${order.status==="cancelled"?"selected":""}>cancelled</option>
-            </select>
-          </div>
-        </div>
-      `).join('');
-    }
-    window.updateOrderStatus = async function(orderId, status) {
-      try {
-        await db.collection("orders").doc(orderId).update({status});
-        window.fetchOrdersAdmin();
-      } catch (error) {
-        console.error("Error updating order status:", error);
-        alert("Failed to update order status: " + error.message);
-      }
-    }
-
-    // Admin panel (products CRUD, drag & drop order)
-    window.showAdminPanel = function() {
-      document.getElementById("adminPanelSection").style.display = "block";
-      window.renderAdminProductsList();
-      window.fetchOrdersAdmin();
-      window.scrollTo({top: 0, behavior: "smooth"});
-    }
-    window.hideAdminPanel = function() {
-      document.getElementById("adminPanelSection").style.display = "none";
-    }
-    window.renderAdminProductsList = function() {
-      const el = document.getElementById("adminProductsList");
-      if (!products.length) {
-        el.innerHTML = "<div class='cart-empty'>No products. Add new!</div>";
-        return;
-      }
-      el.innerHTML = products.sort((a,b)=>a.displayOrder-b.displayOrder).map((product,idx)=>`
-        <div class="admin-product-row" draggable="true" ondragstart="window.dragStart(${idx})" ondragover="window.dragOver(event)" ondrop="window.dropProduct(${idx})">
-          <button class="drag-btn"><i class="fas fa-arrows-alt"></i></button>
-          <span><b>${product.name}</b> (${product.code})</span>
-          <button class="edit-product-btn" onclick="window.showEditProductModal('${product.id}')"><i class="fas fa-edit"></i></button>
-          <button class="delete-product-btn" onclick="window.deleteProduct('${product.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      `).join('');
-    }
-    window.dragIdx = null;
-    window.dragStart = function(idx) { window.dragIdx = idx; }
-    window.dragOver = function(e) { e.preventDefault(); }
-    window.dropProduct = async function(dropIdx) {
-      if (window.dragIdx===null || window.dragIdx===dropIdx) return;
-      let sorted = [...products].sort((a,b)=>a.displayOrder-b.displayOrder);
-      let moved = sorted.splice(window.dragIdx,1)[0];
-      sorted.splice(dropIdx,0,moved);
-      try {
-        for (let i=0;i<sorted.length;i++) {
-          await db.collection("products").doc(sorted[i].id).update({displayOrder:i+1});
-        }
-        await window.fetchProductsFromFirebase();
-        window.renderAdminProductsList();
-      } catch (error) {
-        console.error("Error reordering products:", error);
-        alert("Failed to reorder products: " + error.message);
-      }
-      window.dragIdx = null;
-    }
-
-    window.showAddProductModal = function() {
-      window.showModal(`
-        <button class="close-modal" onclick="window.closeModal()">×</button>
-        <h3>Add Product</h3>
-        <label>Name:</label><input id="prodName">
-        <label>Code:</label><input id="prodCode">
-        <label>Manufacturer:</label><input id="prodMan">
-        <label>Description:</label><textarea id="prodDesc"></textarea>
-        <label>Condition:</label>
-          <select id="prodCond">
-            <option value="new">New</option>
-            <option value="used">Used</option>
-          </select>
-        <label>Category:</label>
-          <select id="prodCat">
-            ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}">${c.label}</option>`).join('')}
-          </select>
-        <label>Image/Video URL:</label>
-        <input type="text" id="prodImg" placeholder="Paste image or video URL">
-        <small>Or upload a file:</small>
-        <input type="file" id="prodFile" accept="image/*,video/*">
-        <button class="modal-btn" onclick="window.addProduct()">Add</button>
-      `);
-    }
-    window.addProduct = async function() {
-      let name = document.getElementById("prodName").value.trim();
-      let code = document.getElementById("prodCode").value.trim();
-      let manufacturer = document.getElementById("prodMan").value.trim();
-      let desc = document.getElementById("prodDesc").value.trim();
-      let cond = document.getElementById("prodCond").value;
-      let cat = document.getElementById("prodCat").value;
-      let imgUrl = document.getElementById("prodImg").value.trim();
-      let fileInput = document.getElementById("prodFile");
+      });
       
-      if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
-      
-      try {
-        // If a file is uploaded, use it instead of URL
-        if (fileInput.files[0]) {
-          const file = fileInput.files[0];
-          const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-          const storageReference = storage.ref(refPath);
-          await storageReference.put(file);
-          imgUrl = await storageReference.getDownloadURL();
-        }
-        
-        let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
-        let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
-        await db.collection("products").add(prod);
-        await window.fetchProductsFromFirebase();
-        window.closeModal();
-        window.renderAdminProductsList();
-      } catch (error) {
-        console.error("Error adding product:", error);
-        alert("Failed to add product: " + error.message);
-      }
-    }
-
-    window.showEditProductModal = function(pid) {
-      let prod = products.find(x=>x.id===pid);
-      if (!prod) return alert("Product not found!");
-      window.showModal(`
-        <button class="close-modal" onclick="window.closeModal()">×</button>
-        <h3>Edit Product</h3>
-        <label>Name:</label><input id="editProdName" value="${prod.name}">
-        <label>Code:</label><input id="editProdCode" value="${prod.code}">
-        <label>Manufacturer:</label><input id="editProdMan" value="${prod.manufacturer}">
-        <label>Description:</label><textarea id="editProdDesc">${prod.description}</textarea>
-        <label>Condition:</label>
-          <select id="editProdCond">
-            <option value="new" ${prod.condition==="new"?"selected":""}>New</option>
-            <option value="used" ${prod.condition==="used"?"selected":""}>Used</option>
-          </select>
-        <label>Category:</label>
-          <select id="editProdCat">
-            ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}" ${prod.category===c.value?"selected":""}>${c.label}</option>`).join('')}
-          </select>
-        <label>Image/Video URL:</label>
-        <input type="text" id="editProdImg" value="${prod.image || ''}" placeholder="Paste image or video URL">
-        <small>Or upload a new file:</small>
-        <input type="file" id="editProdFile" accept="image/*,video/*">
-        <button class="modal-btn" onclick="window.editProduct('${prod.id}')">Save Changes</button>
-      `);
-    }
-
-    window.editProduct = async function(pid) {
-      let prod = products.find(x=>x.id===pid);
-      if (!prod) return alert("Product not found!");
-      let name = document.getElementById("editProdName").value.trim();
-      let code = document.getElementById("editProdCode").value.trim();
-      let manufacturer = document.getElementById("editProdMan").value.trim();
-      let desc = document.getElementById("editProdDesc").value.trim();
-      let cond = document.getElementById("editProdCond").value;
-      let cat = document.getElementById("editProdCat").value;
-      let imgUrl = document.getElementById("editProdImg").value.trim();
-      let fileInput = document.getElementById("editProdFile");
-      
-      if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
-      
-      try {
-        // If a new file is uploaded, use it instead of URL
-        if (fileInput.files[0]) {
-          const file = fileInput.files[0];
-          const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-          const storageReference = storage.ref(refPath);
-          await storageReference.put(file);
-          imgUrl = await storageReference.getDownloadURL();
-        }
-        
-        let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
-        await db.collection("products").doc(pid).update(updateObj);
-        await window.fetchProductsFromFirebase();
-        window.closeModal();
-        window.renderAdminProductsList();
-      } catch (error) {
-        console.error("Error updating product:", error);
-        alert("Failed to update product: " + error.message);
-      }
-    }
-
-    window.deleteProduct = async function(pid) {
-      if (!confirm("Delete this product?")) return;
-      try {
-        await db.collection("products").doc(pid).delete();
-        await window.fetchProductsFromFirebase();
-        window.renderAdminProductsList();
-      } catch (error) {
-        console.error("Error deleting product:", error);
-        alert("Failed to delete product: " + error.message);
-      }
-    }
-
-    // Firebase: Fetch products
-    window.fetchProductsFromFirebase = async function() {
-      try {
-        const snapshot = await db.collection("products").orderBy("displayOrder").get();
-        products = [];
-        snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-        window.renderCategories();
-        window.renderProducts();
-        window.renderAdminProductsList();
-        window.loadGallery();
-        document.getElementById('productsError').style.display = 'none';
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        document.getElementById('productsError').textContent = "Error loading products: " + error.message;
-        document.getElementById('productsError').style.display = 'block';
-        
-        // Load sample data if Firebase fails
-        if (products.length === 0) {
-          products = [
-            {
-              id: "sample1",
-              name: "Industrial Sewing Machine",
-              code: "ISM-2023",
-              manufacturer: "Brother",
-              description: "Heavy duty industrial sewing machine for apparel manufacturing",
-              condition: "new",
-              category: "stitching",
-              displayOrder: 1,
-              image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-              id: "sample2",
-              name: "Fabric Cutting Machine",
-              code: "FCM-2023",
-              manufacturer: "Juki",
-              description: "Automatic fabric cutting machine with precision blades",
-              condition: "used",
-              category: "cuttings",
-              displayOrder: 2,
-              image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=500&q=80"
-            }
-          ];
-          window.renderCategories();
-          window.renderProducts();
-          window.renderAdminProductsList();
-          window.loadGallery();
-        }
-      }
-    }
-
-    // Initial load
-    window.fetchProductsFromFirebase();
-
-    // Modal close on Esc key
-    document.addEventListener("keydown", function(e){
-      if(e.key==="Escape") {
-        window.closeModal();
-        window.closeVideoModal();
-      }
+      // Search functionality
+      const searchBtn = document.querySelector('.search-btn');
+      searchBtn.addEventListener('click', () => {
+        const searchInput = document.querySelector('.search-input');
+        showNotification(`Searching for: ${searchInput.value}`);
+      });
     });
   </script>
 </body>
