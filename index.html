@@ -6,96 +6,518 @@
   <title>Apparel Machinery | Industrial Equipment</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    /* مکمل CSS وہی ہے جو آپ نے دی */
-    body {background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-    .container {max-width: 1100px; margin:0 auto; background:#fff; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); overflow:hidden; border:1px solid #e2e8f0;}
-    .top-bar {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #2563eb; color: #f8fafc;}
-    .top-buttons { display: flex; gap: 10px;}
-    .top-btn { display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s;}
-    .top-btn:hover { background: #1e40af;}
-    .user-info {margin-left:12px; font-size:14px; text-align:right;}
-    .user-info span {display:block;}
-    .google-translate {display: flex; align-items: center; margin-left: 15px;}
-    .banner-section {position: relative; height: 270px; overflow: hidden;}
-    .banner-image {width: 100%; height: 100%; object-fit: cover; border-bottom: 1px solid #e2e8f0;}
-    .banner-overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.45); color: white;}
-    .banner-overlay h1 {font-size: 34px; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);}
-    .banner-overlay p {font-size: 16px; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);}
-    .banner-upload-btn {position: absolute; bottom: 15px; right: 20px;}
-    .main-content {padding: 20px;}
-    .section-title {font-size: 22px; margin-bottom: 20px; color: #2563eb; text-align: center;}
-    .categories-section {margin-bottom: 30px;}
-    .categories-container {display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;}
-    .category-btn {padding: 10px 20px; background: #dbeafe; color: #2563eb; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s;}
-    .category-btn.active, .category-btn:hover {background: #2563eb; color: white;}
-    .search-section {margin-bottom: 30px;}
-    .search-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
-    .search-bar {display: flex; gap: 10px;}
-    .search-input {padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px; min-width: 260px;}
-    .search-btn {padding: 10px 15px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;}
-    .products-section {margin-bottom: 30px;}
-    .products-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px;}
-    .product-card {background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); transition: transform 0.3s;}
-    .product-card:hover {transform: translateY(-5px);}
-    .product-image {height: 180px; display: flex; justify-content: center; align-items: center; background: #f8fafc; overflow: hidden;}
-    .product-image img {width: 100%; height: 100%; object-fit: cover;}
-    .product-image i {font-size: 60px; color: #cbd5e1;}
-    .product-details {padding: 12px;}
-    .product-title {font-size: 17px; margin-bottom: 7px; color: #2563eb;}
-    .product-code, .product-manufacturer {font-size: 13px; color: #64748b; margin-bottom: 2px;}
-    .product-description {font-size: 13px; color: #334155; margin-bottom: 7px;}
-    .product-condition {display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px;}
-    .condition-new {background: #d1fae5; color: #065f46;}
-    .condition-used {background: #fef3c7; color: #92400e;}
-    .add-to-cart-btn {width: 100%; padding: 9px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; transition: background 0.3s;}
-    .add-to-cart-btn:hover {background: #1e40af;}
-    .edit-product-btn, .delete-product-btn, .drag-btn {background: #f59e42; color: #fff; border:none; border-radius:4px; padding:4px 7px; margin:2px; cursor:pointer;}
-    .delete-product-btn {background:#ef4444;}
-    .drag-btn {background:#2563eb;}
-    .gallery-section {margin-bottom: 30px;}
-    .gallery-container {display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 13px;}
-    .gallery-item {height: 160px; overflow: hidden; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);}
-    .gallery-item img {width: 100%; height: 100%; object-fit: cover;}
-    .cart-section, .orders-section {margin-bottom: 30px;}
-    .cart-list, .orders-list {margin:0 auto; max-width:500px;}
-    .cart-item, .order-item {border-bottom:1px solid #e2e8f0; padding:10px 0;}
-    .cart-empty, .orders-empty {text-align: center; color: #000; padding: 20px;}
-    .cart-actions {text-align:right;}
-    .cart-btn, .whatsapp-btn {padding:8px 14px; border:none; border-radius:5px; background: #2563eb; color:#fff; cursor:pointer; margin:3px;}
-    .whatsapp-btn {background:#25d366;}
-    .modal {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:1000;}
-    .modal-content {background:#fff;padding:20px;border-radius:10px;min-width:280px;max-width:420px;position:relative;}
-    .close-modal {position:absolute;top:10px;right:10px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;}
-    .modal input, .modal select, .modal textarea {width:100%;margin-bottom:12px;padding:8px;border-radius:5px;border:1px solid #e2e8f0;}
-    .modal label {font-size:14px;margin-bottom:5px;display:block;}
-    .modal-btn {padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:5px;cursor:pointer;}
-    .modal-btn:disabled {background:#cbd5e1;}
-    .orders-list .order-item {background:#f1f5f9;border-radius:6px;margin-bottom:7px;}
-    .order-status {font-size:13px;padding:3px 8px;border-radius:15px;display:inline-block;}
-    .status-pending {background:#fef3c7;color:#92400e;}
-    .status-confirmed {background:#d1fae5;color:#065f46;}
-    .status-completed {background:#dbeafe;color:#2563eb;}
-    .status-cancelled {background:#fecaca;color:#991b1b;}
-    .order-actions {margin-top:7px;}
-    .admin-panel-section {margin-bottom:30px;}
-    .admin-panel-title {text-align:center;color:#2563eb;font-size:20px;margin-bottom:15px;}
-    .admin-products-list {margin:0 auto;max-width:600px;}
-    .admin-product-row {display:flex;align-items:center;justify-content:space-between;background:#f3f4f6;padding:8px;border-radius:6px;margin-bottom:8px;cursor:grab;}
-    .admin-product-row .drag-btn {margin-right:8px;}
-    .admin-product-row .edit-product-btn, .admin-product-row .delete-product-btn {margin-left:6px;}
-    footer {padding: 20px; text-align: center; background: #2563eb; color: white;}
-    @media (max-width: 768px) {
-      .top-bar {flex-direction: column; gap: 10px;}
-      .products-grid {grid-template-columns: 1fr !important;}
-      .banner-section {height: 150px;}
-      .banner-overlay h1 {font-size: 20px;}
-      .banner-overlay p {font-size: 12px;}
-      .category-btn {padding: 7px 10px; font-size: 13px;}
-      .gallery-container {grid-template-columns: 1fr;}
-      .modal-content {max-width:95vw;}
+    body {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
+      min-height: 100vh; 
+      padding: 0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
     }
-    .error-message {color: #ef4444; text-align: center; padding: 10px; margin: 10px 0; background: #fee2e2; border-radius: 5px;}
-    .offline-message {color: #f59e0b; text-align: center; padding: 10px; margin: 10px 0; background: #fef3c7; border-radius: 5px;}
+    .container {
+      max-width: 1100px; 
+      margin: 0 auto; 
+      background: #fff; 
+      border-radius: 15px; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+      overflow: hidden; 
+      border: 1px solid #e2e8f0;
+    }
+    .top-bar {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 15px 20px; 
+      background: #2563eb; 
+      color: #f8fafc;
+    }
+    .top-buttons { 
+      display: flex; 
+      gap: 10px;
+    }
+    .top-btn { 
+      display: flex; 
+      align-items: center; 
+      gap: 5px; 
+      padding: 8px 15px; 
+      background: #3b82f6; 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      transition: background 0.3s;
+    }
+    .top-btn:hover { 
+      background: #1e40af;
+    }
+    .user-info {
+      margin-left: 12px; 
+      font-size: 14px; 
+      text-align: right;
+    }
+    .user-info span {
+      display: block;
+    }
+    .google-translate {
+      display: flex; 
+      align-items: center; 
+      margin-left: 15px;
+    }
+    .banner-section {
+      position: relative; 
+      height: 270px; 
+      overflow: hidden;
+    }
+    .banner-image {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .banner-overlay {
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      background: rgba(0,0,0,0.45); 
+      color: white;
+    }
+    .banner-overlay h1 {
+      font-size: 34px; 
+      margin-bottom: 10px; 
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+    .banner-overlay p {
+      font-size: 16px; 
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    }
+    .banner-upload-btn {
+      position: absolute; 
+      bottom: 15px; 
+      right: 20px;
+    }
+    .main-content {
+      padding: 20px;
+    }
+    .section-title {
+      font-size: 22px; 
+      margin-bottom: 20px; 
+      color: #2563eb; 
+      text-align: center;
+    }
+    .categories-section {
+      margin-bottom: 30px;
+    }
+    .categories-container {
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 10px; 
+      justify-content: center; 
+      margin-bottom: 20px;
+    }
+    .category-btn {
+      padding: 10px 20px; 
+      background: #dbeafe; 
+      color: #2563eb; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      transition: all 0.3s;
+    }
+    .category-btn.active, .category-btn:hover {
+      background: #2563eb; 
+      color: white;
+    }
+    .search-section {
+      margin-bottom: 30px;
+    }
+    .search-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 20px;
+    }
+    .search-bar {
+      display: flex; 
+      gap: 10px;
+    }
+    .search-input {
+      padding: 10px; 
+      border: 1px solid #e2e8f0; 
+      border-radius: 5px; 
+      min-width: 260px;
+    }
+    .search-btn {
+      padding: 10px 15px; 
+      background: #2563eb; 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      display: flex; 
+      align-items: center; 
+      gap: 5px;
+    }
+    .products-section {
+      margin-bottom: 30px;
+    }
+    .products-grid {
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); 
+      gap: 18px;
+    }
+    .product-card {
+      background: #fff; 
+      border-radius: 10px; 
+      overflow: hidden; 
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .product-image {
+      height: 180px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      background: #f8fafc; 
+      overflow: hidden;
+      position: relative;
+    }
+    .product-image img, .product-image video {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+    }
+    .product-image i {
+      font-size: 60px; 
+      color: #cbd5e1;
+    }
+    .video-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .product-details {
+      padding: 12px;
+    }
+    .product-title {
+      font-size: 17px; 
+      margin-bottom: 7px; 
+      color: #2563eb;
+    }
+    .product-code, .product-manufacturer {
+      font-size: 13px; 
+      color: #64748b; 
+      margin-bottom: 2px;
+    }
+    .product-description {
+      font-size: 13px; 
+      color: #334155; 
+      margin-bottom: 7px;
+    }
+    .product-condition {
+      display: inline-block; 
+      padding: 3px 8px; 
+      border-radius: 20px; 
+      font-size: 12px; 
+      font-weight: bold; 
+      margin-bottom: 10px;
+    }
+    .condition-new {
+      background: #d1fae5; 
+      color: #065f46;
+    }
+    .condition-used {
+      background: #fef3c7; 
+      color: #92400e;
+    }
+    .add-to-cart-btn {
+      width: 100%; 
+      padding: 9px; 
+      background: #2563eb; 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 5px; 
+      transition: background 0.3s;
+    }
+    .add-to-cart-btn:hover {
+      background: #1e40af;
+    }
+    .edit-product-btn, .delete-product-btn, .drag-btn {
+      background: #f59e42; 
+      color: #fff; 
+      border: none; 
+      border-radius: 4px; 
+      padding: 4px 7px; 
+      margin: 2px; 
+      cursor: pointer;
+    }
+    .delete-product-btn {
+      background: #ef4444;
+    }
+    .drag-btn {
+      background: #2563eb;
+    }
+    .gallery-section {
+      margin-bottom: 30px;
+    }
+    .gallery-container {
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+      gap: 13px;
+    }
+    .gallery-item {
+      height: 160px; 
+      overflow: hidden; 
+      border-radius: 10px; 
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .gallery-item img, .gallery-item video {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+    }
+    .cart-section, .orders-section {
+      margin-bottom: 30px;
+    }
+    .cart-list, .orders-list {
+      margin: 0 auto; 
+      max-width: 500px;
+    }
+    .cart-item, .order-item {
+      border-bottom: 1px solid #e2e8f0; 
+      padding: 10px 0;
+    }
+    .cart-empty, .orders-empty {
+      text-align: center; 
+      color: #000; 
+      padding: 20px;
+    }
+    .cart-actions {
+      text-align: right;
+    }
+    .cart-btn, .whatsapp-btn {
+      padding: 8px 14px; 
+      border: none; 
+      border-radius: 5px; 
+      background: #2563eb; 
+      color: #fff; 
+      cursor: pointer; 
+      margin: 3px;
+    }
+    .whatsapp-btn {
+      background: #25d366;
+    }
+    .modal {
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0,0,0,0.4); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 10px; 
+      min-width: 280px; 
+      max-width: 420px; 
+      position: relative;
+    }
+    .close-modal {
+      position: absolute; 
+      top: 10px; 
+      right: 10px; 
+      background: #ef4444; 
+      color: #fff; 
+      border: none; 
+      border-radius: 50%; 
+      width: 30px; 
+      height: 30px; 
+      font-size: 16px; 
+      cursor: pointer;
+    }
+    .modal input, .modal select, .modal textarea {
+      width: 100%; 
+      margin-bottom: 12px; 
+      padding: 8px; 
+      border-radius: 5px; 
+      border: 1px solid #e2e8f0;
+    }
+    .modal label {
+      font-size: 14px; 
+      margin-bottom: 5px; 
+      display: block;
+    }
+    .modal-btn {
+      padding: 8px 16px; 
+      background: #2563eb; 
+      color: #fff; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer;
+    }
+    .modal-btn:disabled {
+      background: #cbd5e1;
+    }
+    .orders-list .order-item {
+      background: #f1f5f9; 
+      border-radius: 6px; 
+      margin-bottom: 7px;
+    }
+    .order-status {
+      font-size: 13px; 
+      padding: 3px 8px; 
+      border-radius: 15px; 
+      display: inline-block;
+    }
+    .status-pending {
+      background: #fef3c7; 
+      color: #92400e;
+    }
+    .status-confirmed {
+      background: #d1fae5; 
+      color: #065f46;
+    }
+    .status-completed {
+      background: #dbeafe; 
+      color: #2563eb;
+    }
+    .status-cancelled {
+      background: #fecaca; 
+      color: #991b1b;
+    }
+    .order-actions {
+      margin-top: 7px;
+    }
+    .admin-panel-section {
+      margin-bottom: 30px;
+    }
+    .admin-panel-title {
+      text-align: center; 
+      color: #2563eb; 
+      font-size: 20px; 
+      margin-bottom: 15px;
+    }
+    .admin-products-list {
+      margin: 0 auto; 
+      max-width: 600px;
+    }
+    .admin-product-row {
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      background: #f3f4f6; 
+      padding: 8px; 
+      border-radius: 6px; 
+      margin-bottom: 8px; 
+      cursor: grab;
+    }
+    .admin-product-row .drag-btn {
+      margin-right: 8px;
+    }
+    .admin-product-row .edit-product-btn, .admin-product-row .delete-product-btn {
+      margin-left: 6px;
+    }
+    footer {
+      padding: 20px; 
+      text-align: center; 
+      background: #2563eb; 
+      color: white;
+    }
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column; 
+        gap: 10px;
+      }
+      .products-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .banner-section {
+        height: 150px;
+      }
+      .banner-overlay h1 {
+        font-size: 20px;
+      }
+      .banner-overlay p {
+        font-size: 12px;
+      }
+      .category-btn {
+        padding: 7px 10px; 
+        font-size: 13px;
+      }
+      .gallery-container {
+        grid-template-columns: 1fr;
+      }
+      .modal-content {
+        max-width: 95vw;
+      }
+    }
+    .error-message {
+      color: #ef4444; 
+      text-align: center; 
+      padding: 10px; 
+      margin: 10px 0; 
+      background: #fee2e2; 
+      border-radius: 5px;
+    }
+    .offline-message {
+      color: #f59e0b; 
+      text-align: center; 
+      padding: 10px; 
+      margin: 10px 0; 
+      background: #fef3c7; 
+      border-radius: 5px;
+    }
+    .video-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+    }
+    .video-modal-content {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .video-modal video {
+      width: 100%;
+      border-radius: 8px;
+    }
   </style>
   <!-- Firebase compat SDKs - Updated to latest version -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -200,6 +622,15 @@
       <p>© 2025 APPAREL MACHINERY. All rights reserved. | Premium Industrial Garment Equipment</p>
     </footer>
   </div>
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-content">
+      <span class="video-modal-close" onclick="window.closeVideoModal()">&times;</span>
+      <video id="modalVideo" controls></video>
+    </div>
+  </div>
+
   <!-- MODALS -->
   <div id="modalContainer"></div>
   <!-- SCRIPTS -->
@@ -278,6 +709,21 @@
     }
     window.closeModal = function() {
       document.getElementById('modalContainer').innerHTML = "";
+    }
+
+    // Video Modal
+    window.showVideoModal = function(videoUrl) {
+      const modal = document.getElementById('videoModal');
+      const video = document.getElementById('modalVideo');
+      video.src = videoUrl;
+      modal.style.display = 'flex';
+    }
+    window.closeVideoModal = function() {
+      const modal = document.getElementById('videoModal');
+      const video = document.getElementById('modalVideo');
+      modal.style.display = 'none';
+      video.pause();
+      video.src = '';
     }
 
     // Auth
@@ -432,11 +878,27 @@
       window.renderProducts(val);
     }
 
+    // Check if URL is a video
+    window.isVideoUrl = function(url) {
+      if (!url) return false;
+      const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.wmv'];
+      return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+    }
+
     window.renderProductCard = function(product) {
+      const isVideo = window.isVideoUrl(product.image);
       return `
         <div class="product-card">
             <div class="product-image">
-                ${product.image ? `<img src="${product.image}" alt="${product.name}" loading="lazy">` : `<i class="fas fa-tshirt"></i>`}
+                ${product.image ? 
+                  (isVideo ? 
+                    `<video controls>
+                       <source src="${product.image}" type="video/mp4">
+                       Your browser does not support the video tag.
+                     </video>
+                     <div class="video-indicator">Video</div>` : 
+                    `<img src="${product.image}" alt="${product.name}" loading="lazy">`) : 
+                  `<i class="fas fa-tshirt"></i>`}
             </div>
             <div class="product-details">
                 <h3 class="product-title">${product.name || ""}</h3>
@@ -478,9 +940,19 @@
     }
     window.loadGallery = function() {
       const gallery = document.getElementById("galleryContainer");
-      gallery.innerHTML = products.filter(p => p.image).map(p =>
-        `<div class="gallery-item"><img src="${p.image}" alt="${p.name}" loading="lazy"/></div>`
-      ).join('');
+      gallery.innerHTML = products.filter(p => p.image).map(p => {
+        const isVideo = window.isVideoUrl(p.image);
+        return `
+          <div class="gallery-item">
+            ${isVideo ? 
+              `<video controls>
+                 <source src="${p.image}" type="video/mp4">
+                 Your browser does not support the video tag.
+               </video>` : 
+              `<img src="${p.image}" alt="${p.name}" loading="lazy"/>`}
+          </div>
+        `;
+      }).join('');
       if (!gallery.innerHTML) gallery.innerHTML = "<div class='cart-empty'>No images found.</div>";
     }
 
@@ -753,8 +1225,10 @@
           <select id="prodCat">
             ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}">${c.label}</option>`).join('')}
           </select>
-        <label>Image:</label>
-        <input type="file" id="prodImg" accept="image/*">
+        <label>Image/Video URL:</label>
+        <input type="text" id="prodImg" placeholder="Paste image or video URL">
+        <small>Or upload a file:</small>
+        <input type="file" id="prodFile" accept="image/*,video/*">
         <button class="modal-btn" onclick="window.addProduct()">Add</button>
       `);
     }
@@ -765,18 +1239,21 @@
       let desc = document.getElementById("prodDesc").value.trim();
       let cond = document.getElementById("prodCond").value;
       let cat = document.getElementById("prodCat").value;
-      let imgInput = document.getElementById("prodImg");
-      let imgUrl = "";
+      let imgUrl = document.getElementById("prodImg").value.trim();
+      let fileInput = document.getElementById("prodFile");
+      
       if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
       
       try {
-        if (imgInput.files[0]) {
-          const file = imgInput.files[0];
+        // If a file is uploaded, use it instead of URL
+        if (fileInput.files[0]) {
+          const file = fileInput.files[0];
           const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
           const storageReference = storage.ref(refPath);
           await storageReference.put(file);
           imgUrl = await storageReference.getDownloadURL();
         }
+        
         let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
         let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
         await db.collection("products").add(prod);
@@ -808,8 +1285,10 @@
           <select id="editProdCat">
             ${allCategories.filter(c=>c.value!=="all").map(c=>`<option value="${c.value}" ${prod.category===c.value?"selected":""}>${c.label}</option>`).join('')}
           </select>
-        <label>Image:</label>
-        <input type="file" id="editProdImg" accept="image/*">
+        <label>Image/Video URL:</label>
+        <input type="text" id="editProdImg" value="${prod.image || ''}" placeholder="Paste image or video URL">
+        <small>Or upload a new file:</small>
+        <input type="file" id="editProdFile" accept="image/*,video/*">
         <button class="modal-btn" onclick="window.editProduct('${prod.id}')">Save Changes</button>
       `);
     }
@@ -823,18 +1302,21 @@
       let desc = document.getElementById("editProdDesc").value.trim();
       let cond = document.getElementById("editProdCond").value;
       let cat = document.getElementById("editProdCat").value;
-      let imgInput = document.getElementById("editProdImg");
-      let imgUrl = prod.image;
+      let imgUrl = document.getElementById("editProdImg").value.trim();
+      let fileInput = document.getElementById("editProdFile");
+      
       if (!name || !code || !manufacturer || !desc) return alert("All fields required!");
       
       try {
-        if (imgInput.files[0]) {
-          const file = imgInput.files[0];
+        // If a new file is uploaded, use it instead of URL
+        if (fileInput.files[0]) {
+          const file = fileInput.files[0];
           const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
           const storageReference = storage.ref(refPath);
           await storageReference.put(file);
           imgUrl = await storageReference.getDownloadURL();
         }
+        
         let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
         await db.collection("products").doc(pid).update(updateObj);
         await window.fetchProductsFromFirebase();
@@ -885,7 +1367,8 @@
               description: "Heavy duty industrial sewing machine for apparel manufacturing",
               condition: "new",
               category: "stitching",
-              displayOrder: 1
+              displayOrder: 1,
+              image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=500&q=80"
             },
             {
               id: "sample2",
@@ -895,7 +1378,8 @@
               description: "Automatic fabric cutting machine with precision blades",
               condition: "used",
               category: "cuttings",
-              displayOrder: 2
+              displayOrder: 2,
+              image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=500&q=80"
             }
           ];
           window.renderCategories();
@@ -911,7 +1395,10 @@
 
     // Modal close on Esc key
     document.addEventListener("keydown", function(e){
-      if(e.key==="Escape") window.closeModal();
+      if(e.key==="Escape") {
+        window.closeModal();
+        window.closeVideoModal();
+      }
     });
   </script>
 </body>
