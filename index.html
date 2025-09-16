@@ -6,8 +6,7 @@
   <title>Apparel Machinery | Industrial Equipment</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    /* ... آپ کی مکمل CSS وہی رہے گی ... */
-    /* میں نے آپ کی مکمل CSS بغیر تبدیلی کے رکھی ہے */
+    /* مکمل CSS وہی ہے جو آپ نے دی */
     body {background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
     .container {max-width: 1100px; margin:0 auto; background:#fff; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); overflow:hidden; border:1px solid #e2e8f0;}
     .top-bar {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #2563eb; color: #f8fafc;}
@@ -114,15 +113,15 @@
     <!-- Top Bar -->
     <div class="top-bar">
       <div class="top-buttons">
-        <button class="top-btn" onclick="showGallery()"><i class="fas fa-images"></i> Gallery</button>
-        <button class="top-btn" onclick="showCart()"><i class="fas fa-shopping-cart"></i> Cart</button>
-        <button class="top-btn" onclick="showOrders()"><i class="fas fa-file-invoice"></i> Orders</button>
-        <button class="top-btn" id="adminPanelBtn" style="display:none;" onclick="showAdminPanel()"><i class="fas fa-tools"></i> Admin Panel</button>
+        <button class="top-btn" onclick="window.showGallery()"><i class="fas fa-images"></i> Gallery</button>
+        <button class="top-btn" onclick="window.showCart()"><i class="fas fa-shopping-cart"></i> Cart</button>
+        <button class="top-btn" onclick="window.showOrders()"><i class="fas fa-file-invoice"></i> Orders</button>
+        <button class="top-btn" id="adminPanelBtn" style="display:none;" onclick="window.showAdminPanel()"><i class="fas fa-tools"></i> Admin Panel</button>
       </div>
       <div style="display:flex;align-items:center;">
         <div id="userInfo" class="user-info"></div>
-        <button class="top-btn" id="loginBtn" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i> Login</button>
-        <button class="top-btn" id="logoutBtn" onclick="logoutUser()" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button class="top-btn" id="loginBtn" onclick="window.showLoginModal()"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button class="top-btn" id="logoutBtn" onclick="window.logoutUser()" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
         <div class="google-translate"><div id="google_translate_element"></div></div>
       </div>
     </div>
@@ -133,7 +132,7 @@
         <h1>APPAREL MACHINERY</h1>
         <p>Premium Industrial Sewing & Garment Equipment</p>
       </div>
-      <button id="bannerUploadBtn" class="banner-upload-btn top-btn" style="display:none;" onclick="showBannerUploadModal()"><i class="fas fa-upload"></i> Change Banner</button>
+      <button id="bannerUploadBtn" class="banner-upload-btn top-btn" style="display:none;" onclick="window.showBannerUploadModal()"><i class="fas fa-upload"></i> Change Banner</button>
     </div>
     <div class="main-content" id="mainContent">
       <!-- Categories -->
@@ -147,7 +146,7 @@
           <h2 class="section-title">Find Products</h2>
           <div class="search-bar">
             <input type="text" class="search-input" id="searchInput" placeholder="Search by product name, code, or manufacturer...">
-            <button class="search-btn" onclick="searchProducts()"><i class="fas fa-search"></i> <span>Search</span></button>
+            <button class="search-btn" onclick="window.searchProducts()"><i class="fas fa-search"></i> <span>Search</span></button>
           </div>
         </div>
       </div>
@@ -160,32 +159,32 @@
       <div class="gallery-section" id="gallerySection" style="display:none;">
         <h2 class="section-title">Product Gallery</h2>
         <div class="gallery-container" id="galleryContainer"></div>
-        <button class="top-btn" onclick="hideGallery()" style="margin: 20px auto; display:block;"><i class="fas fa-times"></i> Close Gallery</button>
+        <button class="top-btn" onclick="window.hideGallery()" style="margin: 20px auto; display:block;"><i class="fas fa-times"></i> Close Gallery</button>
       </div>
       <!-- Cart -->
       <div class="cart-section" id="cartSection" style="display:none;">
         <h2 class="section-title">Your Cart</h2>
         <div class="cart-list" id="cartList"></div>
         <div class="cart-actions">
-          <button class="cart-btn" onclick="placeOrderModal()">Place Order</button>
-          <button class="whatsapp-btn" onclick="orderViaWhatsApp()">Order via WhatsApp</button>
-          <button class="cart-btn" onclick="hideCart()">Close</button>
+          <button class="cart-btn" onclick="window.placeOrderModal()">Place Order</button>
+          <button class="whatsapp-btn" onclick="window.orderViaWhatsApp()">Order via WhatsApp</button>
+          <button class="cart-btn" onclick="window.hideCart()">Close</button>
         </div>
       </div>
       <!-- Orders -->
       <div class="orders-section" id="ordersSection" style="display:none;">
         <h2 class="section-title">Your Orders</h2>
         <div class="orders-list" id="ordersList"></div>
-        <button class="cart-btn" onclick="hideOrders()" style="margin-top:15px;">Close</button>
+        <button class="cart-btn" onclick="window.hideOrders()" style="margin-top:15px;">Close</button>
       </div>
       <!-- Admin Panel -->
       <div class="admin-panel-section" id="adminPanelSection" style="display:none;">
         <h2 class="admin-panel-title">Admin Panel</h2>
-        <button class="top-btn" onclick="showAddProductModal()"><i class="fas fa-plus"></i> Add Product</button>
+        <button class="top-btn" onclick="window.showAddProductModal()"><i class="fas fa-plus"></i> Add Product</button>
         <div class="admin-products-list" id="adminProductsList"></div>
         <h2 class="section-title" style="margin-top:20px;">Orders</h2>
         <div class="orders-list" id="adminOrdersList"></div>
-        <button class="cart-btn" onclick="hideAdminPanel()" style="margin-top:15px;">Close Panel</button>
+        <button class="cart-btn" onclick="window.hideAdminPanel()" style="margin-top:15px;">Close Panel</button>
       </div>
     </div>
     <footer>
@@ -196,7 +195,7 @@
   <div id="modalContainer"></div>
   <!-- SCRIPTS -->
   <script>
-    // Firebase compat SDK (no imports)
+    // Firebase compat SDK
     const firebaseConfig = {
       apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
       authDomain: "apparel-machinery.firebaseapp.com",
@@ -231,10 +230,10 @@
     let cart = [];
 
     // Helper: Modal
-    function showModal(html) {
+    window.showModal = function(html) {
       document.getElementById('modalContainer').innerHTML = `<div class="modal"><div class="modal-content">${html}</div></div>`;
     }
-    function closeModal() {
+    window.closeModal = function() {
       document.getElementById('modalContainer').innerHTML = "";
     }
 
@@ -262,23 +261,22 @@
       user = null;
       isAdmin = false;
       updateUserUI();
-      closeModal();
-      hideAdminPanel();
+      window.closeModal();
+      window.hideAdminPanel();
     }
 
-    function showLoginModal() {
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
+    window.showLoginModal = function() {
+      window.showModal(`
+        <button class="close-modal" onclick="window.closeModal()">×</button>
         <h3 style="text-align:center;">Login / Signup</h3>
         <label>Email:</label><input type="email" id="loginEmail" required>
         <label>Password:</label><input type="password" id="loginPass" required>
-        <button class="modal-btn" onclick="loginEmail()">Login</button>
-        <button class="modal-btn" onclick="signupEmail()">Sign Up</button>
+        <button class="modal-btn" onclick="window.loginEmail()">Login</button>
+        <button class="modal-btn" onclick="window.signupEmail()">Sign Up</button>
         <hr>
-        <button class="modal-btn" onclick="loginGoogle()"><i class="fab fa-google"></i> Login with Google</button>
+        <button class="modal-btn" onclick="window.loginGoogle()"><i class="fab fa-google"></i> Login with Google</button>
       `);
     }
-    window.closeModal = closeModal;
 
     window.loginEmail = async function() {
       let email = document.getElementById("loginEmail").value.trim();
@@ -286,7 +284,7 @@
       if (!email || !pass) return alert("Email and password required!");
       try {
         await auth.signInWithEmailAndPassword(email, pass);
-        closeModal();
+        window.closeModal();
       } catch (e) {
         alert(e.message);
       }
@@ -297,7 +295,7 @@
       if (!email || !pass) return alert("Email and password required!");
       try {
         await auth.createUserWithEmailAndPassword(email, pass);
-        closeModal();
+        window.closeModal();
       } catch (e) {
         alert(e.message);
       }
@@ -306,7 +304,7 @@
       const provider = new firebase.auth.GoogleAuthProvider();
       try {
         await auth.signInWithPopup(provider);
-        closeModal();
+        window.closeModal();
       } catch (e) {
         alert(e.message);
       }
@@ -319,14 +317,14 @@
       updateUserUI();
       if (isAdmin) document.getElementById("bannerUploadBtn").style.display = "inline-block";
       else document.getElementById("bannerUploadBtn").style.display = "none";
-      renderCategories();
-      renderProducts();
-      if (isAdmin) fetchOrdersAdmin();
-      else fetchOrdersCustomer();
+      window.renderCategories();
+      window.renderProducts();
+      if (isAdmin) window.fetchOrdersAdmin();
+      else window.fetchOrdersCustomer();
     });
 
     // Banner
-    async function fetchBanner() {
+    window.fetchBanner = async function() {
       const docRef = db.collection("banner").doc("main");
       const docSnap = await docRef.get();
       if (docSnap.exists) {
@@ -334,17 +332,16 @@
         document.getElementById("bannerImg").src = bannerImg;
       }
     }
-    fetchBanner();
+    window.fetchBanner();
 
-    function showBannerUploadModal() {
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
+    window.showBannerUploadModal = function() {
+      window.showModal(`
+        <button class="close-modal" onclick="window.closeModal()">×</button>
         <h3>Change Banner Image</h3>
         <input type="file" id="bannerFile" accept="image/*">
-        <button class="modal-btn" onclick="uploadBannerImage()">Upload</button>
+        <button class="modal-btn" onclick="window.uploadBannerImage()">Upload</button>
       `);
     }
-    window.showBannerUploadModal = showBannerUploadModal;
     window.uploadBannerImage = async function() {
       const fileInput = document.getElementById("bannerFile");
       if (!fileInput.files[0]) return alert("Select an image!");
@@ -356,30 +353,29 @@
       await db.collection("banner").doc("main").set({url});
       bannerImg = url;
       document.getElementById("bannerImg").src = url;
-      closeModal();
+      window.closeModal();
       alert("Banner updated!");
     }
 
     // Categories
-    function renderCategories() {
+    window.renderCategories = function() {
       const catContainer = document.getElementById("categoriesContainer");
       catContainer.innerHTML = allCategories.map(cat =>
-        `<button class="category-btn${cat.value === currentCategory ? " active" : ""}" onclick="filterByCategory('${cat.value}')">${cat.label}</button>`
+        `<button class="category-btn${cat.value === currentCategory ? " active" : ""}" onclick="window.filterByCategory('${cat.value}')">${cat.label}</button>`
       ).join('');
     }
     window.filterByCategory = function(category) {
       currentCategory = category;
-      renderCategories();
-      renderProducts();
+      window.renderCategories();
+      window.renderProducts();
     }
 
     window.searchProducts = function() {
       const val = document.getElementById("searchInput").value.trim().toLowerCase();
-      renderProducts(val);
+      window.renderProducts(val);
     }
 
-    // Product card
-    function renderProductCard(product) {
+    window.renderProductCard = function(product) {
       return `
         <div class="product-card">
             <div class="product-image">
@@ -391,13 +387,13 @@
                 <div class="product-manufacturer">Manufacturer: ${product.manufacturer || ""}</div>
                 <p class="product-description">${product.description || ""}</p>
                 <span class="product-condition condition-${product.condition || "new"}">${product.condition || ""}</span>
-                <button class="add-to-cart-btn" onclick="addToCart('${product.id}')"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                <button class="add-to-cart-btn" onclick="window.addToCart('${product.id}')"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
         </div>
       `;
     }
 
-    function renderProducts(searchVal = "") {
+    window.renderProducts = function(searchVal = "") {
       let filtered = products;
       if (currentCategory !== "all") {
         filtered = filtered.filter(p => p.category === currentCategory);
@@ -410,20 +406,20 @@
         );
       }
       document.getElementById("productsGrid").innerHTML = filtered.length
-        ? filtered.map(renderProductCard).join('')
+        ? filtered.map(window.renderProductCard).join('')
         : "<div class='cart-empty'>No products found.</div>";
     }
 
     // Product Gallery
     window.showGallery = function() {
       document.getElementById("gallerySection").style.display = "block";
-      loadGallery();
+      window.loadGallery();
       window.scrollTo({top: 0, behavior: "smooth"});
     }
     window.hideGallery = function() {
       document.getElementById("gallerySection").style.display = "none";
     }
-    function loadGallery() {
+    window.loadGallery = function() {
       const gallery = document.getElementById("galleryContainer");
       gallery.innerHTML = products.filter(p => p.image).map(p =>
         `<div class="gallery-item"><img src="${p.image}" alt="${p.name}"/></div>`
@@ -432,13 +428,13 @@
     }
 
     // Cart
-    function getCart() {
+    window.getCart = function() {
       try {
         cart = JSON.parse(localStorage.getItem("cart") || "[]");
       } catch { cart = []; }
       return cart;
     }
-    function saveCart() {
+    window.saveCart = function() {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
     window.addToCart = function(pid) {
@@ -448,20 +444,20 @@
       let idx = cart.findIndex(x => x.id === pid);
       if (idx === -1) cart.push({...p, qty:1});
       else cart[idx].qty += 1;
-      saveCart();
+      window.saveCart();
       alert("Added to cart!");
     }
 
     window.showCart = function() {
-      getCart();
+      window.getCart();
       document.getElementById("cartSection").style.display = "block";
-      renderCart();
+      window.renderCart();
       window.scrollTo({top: 0, behavior: "smooth"});
     }
     window.hideCart = function() {
       document.getElementById("cartSection").style.display = "none";
     }
-    function renderCart() {
+    window.renderCart = function() {
       const clist = document.getElementById("cartList");
       if (!cart.length) {
         clist.innerHTML = "<div class='cart-empty'>Your cart is empty.</div>";
@@ -470,8 +466,8 @@
       clist.innerHTML = cart.map((item, idx) => `
         <div class="cart-item">
           <b>${item.name}</b> (${item.code})<br>
-          Qty: <input type="number" min="1" value="${item.qty}" onchange="updateCartQty(${idx},this.value)" style="width:50px;">
-          <button class="cart-btn" onclick="removeCartItem(${idx})">Remove</button>
+          Qty: <input type="number" min="1" value="${item.qty}" onchange="window.updateCartQty(${idx},this.value)" style="width:50px;">
+          <button class="cart-btn" onclick="window.removeCartItem(${idx})">Remove</button>
         </div>
       `).join('');
     }
@@ -479,13 +475,13 @@
       val = parseInt(val);
       if (isNaN(val) || val < 1) val = 1;
       cart[idx].qty = val;
-      saveCart();
-      renderCart();
+      window.saveCart();
+      window.renderCart();
     }
     window.removeCartItem = function(idx) {
       cart.splice(idx,1);
-      saveCart();
-      renderCart();
+      window.saveCart();
+      window.renderCart();
     }
 
     // WhatsApp order
@@ -505,14 +501,14 @@
     window.placeOrderModal = function() {
       if (!user) return alert("Login first!");
       if (!cart.length) return alert("Cart is empty!");
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
+      window.showModal(`
+        <button class="close-modal" onclick="window.closeModal()">×</button>
         <h3>Place Order</h3>
         <label>Contact Number:</label>
         <input type="tel" id="orderPhone" required placeholder="03XXXXXXXXX">
         <label>Order Notes:</label>
         <textarea id="orderNotes" rows="2" placeholder="Any notes?"></textarea>
-        <button class="modal-btn" onclick="placeOrder()">Confirm Order</button>
+        <button class="modal-btn" onclick="window.placeOrder()">Confirm Order</button>
       `);
     }
     window.placeOrder = async function() {
@@ -531,22 +527,22 @@
       await db.collection("orders").add(order);
       alert("Order placed!");
       cart = [];
-      saveCart();
-      closeModal();
-      hideCart();
-      fetchOrdersCustomer();
+      window.saveCart();
+      window.closeModal();
+      window.hideCart();
+      window.fetchOrdersCustomer();
     }
 
     // Orders (customer)
     window.showOrders = function() {
       document.getElementById("ordersSection").style.display = "block";
-      renderOrdersCustomer();
+      window.renderOrdersCustomer();
       window.scrollTo({top: 0, behavior: "smooth"});
     }
     window.hideOrders = function() {
       document.getElementById("ordersSection").style.display = "none";
     }
-    async function fetchOrdersCustomer() {
+    window.fetchOrdersCustomer = async function() {
       if (!user) return;
       const snapshot = await db.collection("orders").get();
       orders = [];
@@ -554,9 +550,9 @@
         let d = doc.data();
         if (d.userEmail===user.email) orders.push({...d,id:doc.id});
       });
-      renderOrdersCustomer();
+      window.renderOrdersCustomer();
     }
-    function renderOrdersCustomer() {
+    window.renderOrdersCustomer = function() {
       const el = document.getElementById("ordersList");
       if (!orders.length) {
         el.innerHTML = "<div class='orders-empty'>No orders found.</div>";
@@ -574,16 +570,16 @@
     }
 
     // Orders (admin)
-    async function fetchOrdersAdmin() {
+    window.fetchOrdersAdmin = async function() {
       const snapshot = await db.collection("orders").get();
       orders = [];
       snapshot.forEach(doc=>{
         let d = doc.data();
         orders.push({...d,id:doc.id});
       });
-      renderOrdersAdmin();
+      window.renderOrdersAdmin();
     }
-    function renderOrdersAdmin() {
+    window.renderOrdersAdmin = function() {
       const el = document.getElementById("adminOrdersList");
       if (!orders.length) {
         el.innerHTML = "<div class='orders-empty'>No orders yet.</div>";
@@ -598,7 +594,7 @@
           <b>Notes:</b> ${order.notes||""}<br>
           <b>Date:</b> ${new Date(order.createdAt).toLocaleString()}<br>
           <div class="order-actions">
-            <select onchange="updateOrderStatus('${order.id}',this.value)">
+            <select onchange="window.updateOrderStatus('${order.id}',this.value)">
               <option ${order.status==="pending"?"selected":""}>pending</option>
               <option ${order.status==="confirmed"?"selected":""}>confirmed</option>
               <option ${order.status==="completed"?"selected":""}>completed</option>
@@ -610,53 +606,53 @@
     }
     window.updateOrderStatus = async function(orderId, status) {
       await db.collection("orders").doc(orderId).update({status});
-      fetchOrdersAdmin();
+      window.fetchOrdersAdmin();
     }
 
     // Admin panel (products CRUD, drag & drop order)
     window.showAdminPanel = function() {
       document.getElementById("adminPanelSection").style.display = "block";
-      renderAdminProductsList();
-      fetchOrdersAdmin();
+      window.renderAdminProductsList();
+      window.fetchOrdersAdmin();
       window.scrollTo({top: 0, behavior: "smooth"});
     }
     window.hideAdminPanel = function() {
       document.getElementById("adminPanelSection").style.display = "none";
     }
-    function renderAdminProductsList() {
+    window.renderAdminProductsList = function() {
       const el = document.getElementById("adminProductsList");
       if (!products.length) {
         el.innerHTML = "<div class='cart-empty'>No products. Add new!</div>";
         return;
       }
       el.innerHTML = products.sort((a,b)=>a.displayOrder-b.displayOrder).map((product,idx)=>`
-        <div class="admin-product-row" draggable="true" ondragstart="dragStart(${idx})" ondragover="dragOver(event)" ondrop="dropProduct(${idx})">
+        <div class="admin-product-row" draggable="true" ondragstart="window.dragStart(${idx})" ondragover="window.dragOver(event)" ondrop="window.dropProduct(${idx})">
           <button class="drag-btn"><i class="fas fa-arrows-alt"></i></button>
           <span><b>${product.name}</b> (${product.code})</span>
-          <button class="edit-product-btn" onclick="showEditProductModal('${product.id}')"><i class="fas fa-edit"></i></button>
-          <button class="delete-product-btn" onclick="deleteProduct('${product.id}')"><i class="fas fa-trash"></i></button>
+          <button class="edit-product-btn" onclick="window.showEditProductModal('${product.id}')"><i class="fas fa-edit"></i></button>
+          <button class="delete-product-btn" onclick="window.deleteProduct('${product.id}')"><i class="fas fa-trash"></i></button>
         </div>
       `).join('');
     }
-    let dragIdx = null;
-    window.dragStart = function(idx) { dragIdx = idx; }
+    window.dragIdx = null;
+    window.dragStart = function(idx) { window.dragIdx = idx; }
     window.dragOver = function(e) { e.preventDefault(); }
     window.dropProduct = async function(dropIdx) {
-      if (dragIdx===null || dragIdx===dropIdx) return;
+      if (window.dragIdx===null || window.dragIdx===dropIdx) return;
       let sorted = [...products].sort((a,b)=>a.displayOrder-b.displayOrder);
-      let moved = sorted.splice(dragIdx,1)[0];
+      let moved = sorted.splice(window.dragIdx,1)[0];
       sorted.splice(dropIdx,0,moved);
       for (let i=0;i<sorted.length;i++) {
         await db.collection("products").doc(sorted[i].id).update({displayOrder:i+1});
       }
-      await fetchProductsFromFirebase();
-      renderAdminProductsList();
-      dragIdx = null;
+      await window.fetchProductsFromFirebase();
+      window.renderAdminProductsList();
+      window.dragIdx = null;
     }
 
     window.showAddProductModal = function() {
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
+      window.showModal(`
+        <button class="close-modal" onclick="window.closeModal()">×</button>
         <h3>Add Product</h3>
         <label>Name:</label><input id="prodName">
         <label>Code:</label><input id="prodCode">
@@ -673,7 +669,7 @@
           </select>
         <label>Image:</label>
         <input type="file" id="prodImg" accept="image/*">
-        <button class="modal-btn" onclick="addProduct()">Add</button>
+        <button class="modal-btn" onclick="window.addProduct()">Add</button>
       `);
     }
     window.addProduct = async function() {
@@ -696,16 +692,16 @@
       let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
       let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
       await db.collection("products").add(prod);
-      await fetchProductsFromFirebase();
-      closeModal();
-      renderAdminProductsList();
+      await window.fetchProductsFromFirebase();
+      window.closeModal();
+      window.renderAdminProductsList();
     }
 
     window.showEditProductModal = function(pid) {
       let prod = products.find(x=>x.id===pid);
       if (!prod) return alert("Product not found!");
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
+      window.showModal(`
+        <button class="close-modal" onclick="window.closeModal()">×</button>
         <h3>Edit Product</h3>
         <label>Name:</label><input id="editProdName" value="${prod.name}">
         <label>Code:</label><input id="editProdCode" value="${prod.code}">
@@ -722,7 +718,7 @@
           </select>
         <label>Image:</label>
         <input type="file" id="editProdImg" accept="image/*">
-        <button class="modal-btn" onclick="editProduct('${prod.id}')">Save Changes</button>
+        <button class="modal-btn" onclick="window.editProduct('${prod.id}')">Save Changes</button>
       `);
     }
 
@@ -747,39 +743,35 @@
       }
       let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
       await db.collection("products").doc(pid).update(updateObj);
-      await fetchProductsFromFirebase();
-      closeModal();
-      renderAdminProductsList();
+      await window.fetchProductsFromFirebase();
+      window.closeModal();
+      window.renderAdminProductsList();
     }
 
     window.deleteProduct = async function(pid) {
       if (!confirm("Delete this product?")) return;
       await db.collection("products").doc(pid).delete();
-      await fetchProductsFromFirebase();
-      renderAdminProductsList();
+      await window.fetchProductsFromFirebase();
+      window.renderAdminProductsList();
     }
 
     // Firebase: Fetch products
-    async function fetchProductsFromFirebase() {
+    window.fetchProductsFromFirebase = async function() {
       const snapshot = await db.collection("products").orderBy("displayOrder").get();
       products = [];
       snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-      renderCategories();
-      renderProducts();
-      renderAdminProductsList();
-      loadGallery();
+      window.renderCategories();
+      window.renderProducts();
+      window.renderAdminProductsList();
+      window.loadGallery();
     }
 
     // Initial load
-    fetchProductsFromFirebase();
+    window.fetchProductsFromFirebase();
 
-    // Make available for debugging
-    window.products = products;
-    window.renderProducts = renderProducts;
-
-    // Utility: For modal close on Esc key
+    // Modal close on Esc key
     document.addEventListener("keydown", function(e){
-      if(e.key==="Escape") closeModal();
+      if(e.key==="Escape") window.closeModal();
     });
   </script>
 </body>
