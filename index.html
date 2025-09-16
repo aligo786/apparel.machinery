@@ -533,6 +533,7 @@
         
         .info-item {
             margin-bottom: 12px;
+            color: #000000;
         }
         
         .info-item label {
@@ -730,6 +731,7 @@
         
         .admin-section {
             margin-bottom: 30px;
+            color: #000000;
         }
         
         .admin-section h3 {
@@ -751,6 +753,7 @@
             border-radius: 10px;
             padding: 15px;
             border: 1px solid var(--accent-blue);
+            color: #000000;
         }
         
         .admin-product-actions {
@@ -951,7 +954,7 @@
         
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-full, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
@@ -990,6 +993,7 @@
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+            color: #000000;
         }
         
         .orders-table th {
@@ -1071,6 +1075,7 @@
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+            color: #000000;
         }
         
         .order-items-table th {
@@ -1078,7 +1083,13 @@
             font-weight: 600;
         }
         
-        /* Responsive styles */
+        /* Responsive styles - UPDATED FOR MOBILE FIXES */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             .customer-info {
                 grid-template-columns: 1fr;
@@ -1086,6 +1097,7 @@
             
             .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
             }
             
             .banner-section {
@@ -1109,11 +1121,17 @@
             .top-buttons {
                 width: 100%;
                 justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .top-btn {
+                margin-bottom: 5px;
             }
             
             .google-translate {
                 margin-top: 10px;
                 justify-content: center;
+                width: 100%;
             }
             
             .search-header {
@@ -1135,9 +1153,31 @@
                 display: block;
                 overflow-x: auto;
             }
+            
+            /* Ensure admin product list is responsive */
+            .admin-product-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            /* Fix for product cards on mobile */
+            .product-card {
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            
+            .product-image {
+                height: 180px;
+            }
+            
+            /* Cart responsive fixes */
+            .cart-container {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+            }
         }
-        
-        @media (max-width: 480px) {
+
+        @media (max-width: 600px) {
             .products-grid {
                 grid-template-columns: 1fr;
             }
@@ -1151,13 +1191,81 @@
             }
             
             .top-btn {
-                padding: 6px 10px;
-                font-size: 12px;
+                padding: 8px 12px;
+                font-size: 13px;
             }
             
             .gallery-container {
                 grid-template-columns: 1fr;
             }
+        }
+
+        @media (max-width: 480px) {
+            .banner-overlay h1 {
+                font-size: 1.5rem;
+            }
+            
+            .banner-overlay p {
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .product-title {
+                font-size: 16px;
+            }
+            
+            .product-code, .product-manufacturer, .product-description {
+                font-size: 13px;
+            }
+            
+            .add-to-cart-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            /* Fix for admin panel on very small screens */
+            .admin-product-actions {
+                flex-direction: column;
+            }
+            
+            .admin-product-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* Additional mobile fixes */
+            .container {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 10px;
+            }
+            
+            .categories-section, .search-section, .products-section {
+                padding: 15px;
+            }
+        }
+
+        /* Additional fix for product display on mobile */
+        @media (max-width: 400px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card {
+                width: 100%;
+                margin: 0 0 15px 0;
+            }
+        }
+
+        /* Ensure images are responsive */
+        .product-image img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -1768,11 +1876,13 @@
             
             // Initialize Google Translate
             window.googleTranslateElementInit = function() {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,ur,ar',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-                }, 'google_translate_element');
+                if (typeof google !== 'undefined' && google.translate) {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en',
+                        includedLanguages: 'en,ur,ar',
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                    }, 'google_translate_element');
+                }
             };
         }
 
@@ -1962,11 +2072,45 @@
             });
         }
 
-        // Load products
+        // Load products - UPDATED FOR MOBILE FIXES
         function loadProducts() {
             filterProductsByCategory();
             loadAdminProducts();
+            
+            // Additional check for mobile devices
+            if (isMobileDevice()) {
+                adjustForMobile();
+            }
         }
+
+        // Check if device is mobile
+        function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        }
+
+        // Adjust layout for mobile devices
+        function adjustForMobile() {
+            // Ensure all product cards have proper width
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                card.style.minWidth = '0';
+                card.style.width = '100%';
+            });
+            
+            // Adjust product grid if needed
+            const productsGrid = document.getElementById('productsGrid');
+            if (productsGrid) {
+                productsGrid.style.gridTemplateColumns = '1fr';
+                productsGrid.style.gap = '15px';
+            }
+        }
+
+        // Call adjustForMobile on window resize
+        window.addEventListener('resize', function() {
+            if (isMobileDevice()) {
+                adjustForMobile();
+            }
+        });
 
         // Add to cart
         function addToCart(productId) {
@@ -2143,8 +2287,9 @@
             localStorage.setItem('apparel_cart', JSON.stringify(cart));
             updateCartCount();
             
-            // Create WhatsApp link with the specific number
-            const whatsappUrl = `https://wa.me/${adminCredentials.mobile}?text=${message}`;
+            // Create WhatsApp link with the specific number (remove any non-digit characters)
+            const whatsappNumber = adminCredentials.mobile.replace(/\D/g, '');
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
             
             // Open in new window
             window.open(whatsappUrl, '_blank');
