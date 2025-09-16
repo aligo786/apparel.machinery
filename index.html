@@ -6,6 +6,8 @@
   <title>Apparel Machinery | Industrial Equipment</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    /* ... آپ کی مکمل CSS وہی رہے گی ... */
+    /* میں نے آپ کی مکمل CSS بغیر تبدیلی کے رکھی ہے */
     body {background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
     .container {max-width: 1100px; margin:0 auto; background:#fff; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); overflow:hidden; border:1px solid #e2e8f0;}
     .top-bar {display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #2563eb; color: #f8fafc;}
@@ -94,7 +96,7 @@
       .modal-content {max-width:95vw;}
     }
   </style>
-  <!-- Firebase Modular SDK -->
+  <!-- Firebase compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -193,13 +195,8 @@
   <!-- MODALS -->
   <div id="modalContainer"></div>
   <!-- SCRIPTS -->
-  <script type="module">
-    // Firebase Modular SDK
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, addDoc, doc, updateDoc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
-    // Firebase Config
+  <script>
+    // Firebase compat SDK (no imports)
     const firebaseConfig = {
       apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
       authDomain: "apparel-machinery.firebaseapp.com",
@@ -209,10 +206,10 @@
       appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
       measurementId: "G-XHMZ4BP7CW"
     };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
 
     // Categories
     const allCategories = [
@@ -261,7 +258,7 @@
       }
     }
     window.logoutUser = async function() {
-      await signOut(auth);
+      await auth.signOut();
       user = null;
       isAdmin = false;
       updateUserUI();
@@ -288,7 +285,7 @@
       let pass = document.getElementById("loginPass").value;
       if (!email || !pass) return alert("Email and password required!");
       try {
-        await signInWithEmailAndPassword(auth, email, pass);
+        await auth.signInWithEmailAndPassword(email, pass);
         closeModal();
       } catch (e) {
         alert(e.message);
@@ -299,16 +296,16 @@
       let pass = document.getElementById("loginPass").value;
       if (!email || !pass) return alert("Email and password required!");
       try {
-        await createUserWithEmailAndPassword(auth, email, pass);
+        await auth.createUserWithEmailAndPassword(email, pass);
         closeModal();
       } catch (e) {
         alert(e.message);
       }
     }
     window.loginGoogle = async function() {
-      const provider = new GoogleAuthProvider();
+      const provider = new firebase.auth.GoogleAuthProvider();
       try {
-        await signInWithPopup(auth, provider);
+        await auth.signInWithPopup(provider);
         closeModal();
       } catch (e) {
         alert(e.message);
@@ -316,7 +313,7 @@
     }
 
     // Auth state change
-    onAuthStateChanged(auth, async (u) => {
+    auth.onAuthStateChanged(async (u) => {
       user = u;
       isAdmin = (user && user.email && user.email.toLowerCase() === "apparel.machinery.pk@gmail.com");
       updateUserUI();
@@ -330,9 +327,9 @@
 
     // Banner
     async function fetchBanner() {
-      const docRef = doc(db, "banner", "main");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      const docRef = db.collection("banner").doc("main");
+      const docSnap = await docRef.get();
+      if (docSnap.exists) {
         bannerImg = docSnap.data().url;
         document.getElementById("bannerImg").src = bannerImg;
       }
@@ -353,10 +350,10 @@
       if (!fileInput.files[0]) return alert("Select an image!");
       const file = fileInput.files[0];
       const refPath = `banner/main_${Date.now()}.${file.name.split('.').pop()}`;
-      const storageReference = storageRef(storage, refPath);
-      await uploadBytes(storageReference, file);
-      const url = await getDownloadURL(storageReference);
-      await setDoc(doc(db, "banner", "main"), {url});
+      const storageReference = storage.ref(refPath);
+      await storageReference.put(file);
+      const url = await storageReference.getDownloadURL();
+      await db.collection("banner").doc("main").set({url});
       bannerImg = url;
       document.getElementById("bannerImg").src = url;
       closeModal();
@@ -531,7 +528,7 @@
         status: "pending",
         createdAt: new Date().toISOString()
       };
-      await addDoc(collection(db,"orders"), order);
+      await db.collection("orders").add(order);
       alert("Order placed!");
       cart = [];
       saveCart();
@@ -551,8 +548,7 @@
     }
     async function fetchOrdersCustomer() {
       if (!user) return;
-      const q = query(collection(db,"orders"));
-      const snapshot = await getDocs(q);
+      const snapshot = await db.collection("orders").get();
       orders = [];
       snapshot.forEach(doc=>{
         let d = doc.data();
@@ -579,8 +575,7 @@
 
     // Orders (admin)
     async function fetchOrdersAdmin() {
-      const q = query(collection(db,"orders"));
-      const snapshot = await getDocs(q);
+      const snapshot = await db.collection("orders").get();
       orders = [];
       snapshot.forEach(doc=>{
         let d = doc.data();
@@ -614,7 +609,7 @@
       `).join('');
     }
     window.updateOrderStatus = async function(orderId, status) {
-      await updateDoc(doc(db,"orders",orderId),{status});
+      await db.collection("orders").doc(orderId).update({status});
       fetchOrdersAdmin();
     }
 
@@ -652,7 +647,7 @@
       let moved = sorted.splice(dragIdx,1)[0];
       sorted.splice(dropIdx,0,moved);
       for (let i=0;i<sorted.length;i++) {
-        await updateDoc(doc(db,"products",sorted[i].id), {displayOrder:i+1});
+        await db.collection("products").doc(sorted[i].id).update({displayOrder:i+1});
       }
       await fetchProductsFromFirebase();
       renderAdminProductsList();
@@ -694,59 +689,17 @@
       if (imgInput.files[0]) {
         const file = imgInput.files[0];
         const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-        const storageReference = storageRef(storage, refPath);
-        await uploadBytes(storageReference, file);
-        imgUrl = await getDownloadURL(storageReference);
+        const storageReference = storage.ref(refPath);
+        await storageReference.put(file);
+        imgUrl = await storageReference.getDownloadURL();
       }
       let maxOrder = products.length ? Math.max(...products.map(p=>p.displayOrder)) : 0;
       let prod = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl,displayOrder:maxOrder+1};
-      await addDoc(collection(db,"products"), prod);
+      await db.collection("products").add(prod);
       await fetchProductsFromFirebase();
       closeModal();
       renderAdminProductsList();
     }
-
-    window.showEditProductModal = function(pid) {
-      let prod = products.find(x=>x.id===pid);
-      if (!prod) return alert("Product not found!");
-      showModal(`
-        <button class="close-modal" onclick="closeModal()">×</button>
-        <h3>Edit Product</h3>
-        <label>Name:</label><input id="prodName" value="${prod.name}">
-        <label>Code:</label><input id="prodCode" value="${prod.code}">
-        <label>Manufacturer:</label
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Apparel Machinery | Industrial Equipment</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <!-- ...your styles... -->
-  <!-- (آپ کے CSS اور head والے سب کچھ وہی رہیں گے جو snippet میں ہے) -->
-  <!-- Firebase Modular SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <!-- Google Translate -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ur,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-    }
-  </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</head>
-<body>
-  <!-- ... آپ کی markup ... (Top bar, Banner, Categories, Search, Products, Gallery, Cart, Orders, Admin Panel, Footer, Modals) ... -->
-  <!-- MODALS -->
-  <div id="modalContainer"></div>
-  <!-- SCRIPTS -->
-  <script type="module">
-    // ... آپ کا JavaScript code ... (Firebase imports, states, helpers, auth, banner, categories, products, cart, orders, admin CRUD, drag & drop, modals, etc.) ...
-
-    // (آپ کا code snippet یہاں paste کریں)
-    // اگر code کٹ جائے تو یہیں سے continue کریں:
 
     window.showEditProductModal = function(pid) {
       let prod = products.find(x=>x.id===pid);
@@ -788,12 +741,12 @@
       if (imgInput.files[0]) {
         const file = imgInput.files[0];
         const refPath = `products/${name}_${Date.now()}.${file.name.split('.').pop()}`;
-        const storageReference = storageRef(storage, refPath);
-        await uploadBytes(storageReference, file);
-        imgUrl = await getDownloadURL(storageReference);
+        const storageReference = storage.ref(refPath);
+        await storageReference.put(file);
+        imgUrl = await storageReference.getDownloadURL();
       }
       let updateObj = {name,code,manufacturer,description:desc,condition:cond,category:cat,image:imgUrl};
-      await updateDoc(doc(db,"products",pid), updateObj);
+      await db.collection("products").doc(pid).update(updateObj);
       await fetchProductsFromFirebase();
       closeModal();
       renderAdminProductsList();
@@ -801,15 +754,14 @@
 
     window.deleteProduct = async function(pid) {
       if (!confirm("Delete this product?")) return;
-      await deleteDoc(doc(db,"products",pid));
+      await db.collection("products").doc(pid).delete();
       await fetchProductsFromFirebase();
       renderAdminProductsList();
     }
 
     // Firebase: Fetch products
     async function fetchProductsFromFirebase() {
-      const q = query(collection(db, "products"), orderBy("displayOrder"));
-      const snapshot = await getDocs(q);
+      const snapshot = await db.collection("products").orderBy("displayOrder").get();
       products = [];
       snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
       renderCategories();
