@@ -49,6 +49,9 @@
     .top-btn:hover { 
       background: #1e40af;
     }
+    .admin-btn {
+      background: #f59e0b;
+    }
     .user-info {
       margin-left: 12px; 
       font-size: 14px; 
@@ -56,11 +59,6 @@
     }
     .user-info span {
       display: block;
-    }
-    .google-translate {
-      display: flex; 
-      align-items: center; 
-      margin-left: 15px;
     }
     .banner-section {
       position: relative; 
@@ -94,11 +92,6 @@
     .banner-overlay p {
       font-size: 16px; 
       text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-    }
-    .banner-upload-btn {
-      position: absolute; 
-      bottom: 15px; 
-      right: 20px;
     }
     .main-content {
       padding: 20px;
@@ -189,7 +182,7 @@
       overflow: hidden;
       position: relative;
     }
-    .product-image img, .product-image video {
+    .product-image img {
       width: 100%; 
       height: 100%; 
       object-fit: cover;
@@ -197,16 +190,6 @@
     .product-image i {
       font-size: 60px; 
       color: #cbd5e1;
-    }
-    .video-indicator {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 12px;
     }
     .product-details {
       padding: 12px;
@@ -259,52 +242,18 @@
     .add-to-cart-btn:hover {
       background: #1e40af;
     }
-    .edit-product-btn, .delete-product-btn, .drag-btn {
-      background: #f59e42; 
-      color: #fff; 
-      border: none; 
-      border-radius: 4px; 
-      padding: 4px 7px; 
-      margin: 2px; 
-      cursor: pointer;
-    }
-    .delete-product-btn {
-      background: #ef4444;
-    }
-    .drag-btn {
-      background: #2563eb;
-    }
-    .gallery-section {
+    .cart-section {
       margin-bottom: 30px;
     }
-    .gallery-container {
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-      gap: 13px;
-    }
-    .gallery-item {
-      height: 160px; 
-      overflow: hidden; 
-      border-radius: 10px; 
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    .gallery-item img, .gallery-item video {
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover;
-    }
-    .cart-section, .orders-section {
-      margin-bottom: 30px;
-    }
-    .cart-list, .orders-list {
+    .cart-list {
       margin: 0 auto; 
       max-width: 500px;
     }
-    .cart-item, .order-item {
+    .cart-item {
       border-bottom: 1px solid #e2e8f0; 
       padding: 10px 0;
     }
-    .cart-empty, .orders-empty {
+    .cart-empty {
       text-align: center; 
       color: #64748b; 
       padding: 20px;
@@ -325,25 +274,6 @@
     .whatsapp-btn {
       background: #25d366;
     }
-    .modal {
-      position: fixed; 
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-    }
     .notification {
       position: fixed;
       bottom: 20px;
@@ -354,12 +284,255 @@
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       display: none;
+      z-index: 1000;
     }
     .error {
       background: #ef4444;
     }
     .warning {
       background: #f59e0b;
+    }
+    .firebase-status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    .status-online {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .status-offline {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status-error {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    /* Auth Modal Styles */
+    .auth-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .auth-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      background: #f8fafc;
+      transition: all 0.3s;
+    }
+    .auth-tab.active {
+      background: #2563eb;
+      color: white;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .auth-form input {
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .auth-form button {
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .auth-form button:hover {
+      background: #1e40af;
+    }
+    .auth-error {
+      color: #ef4444;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .close-auth {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #64748b;
+    }
+    /* Admin Panel Styles */
+    .admin-panel {
+      display: none;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .admin-action-btn {
+      padding: 10px 15px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .admin-action-btn.delete {
+      background: #ef4444;
+    }
+    .admin-form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #374151;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .manage-products {
+      margin-top: 20px;
+    }
+    .product-list {
+      display: grid;
+      gap: 15px;
+    }
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product-info {
+      flex: 1;
+    }
+    .product-actions {
+      display: flex;
+      gap: 10px;
+    }
+    /* Dashboard Styles */
+    .dashboard {
+      display: none;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: #64748b;
+    }
+    .dashboard-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    /* Close button styles */
+    .close-btn {
+      padding: 8px 15px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    /* Logout button styles */
+    .logout-btn {
+      padding: 8px 15px;
+      background: #64748b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
   </style>
 </head>
@@ -368,12 +541,129 @@
     <div class="top-bar">
       <div class="top-buttons">
         <button class="top-btn" id="signInBtn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+        <button class="top-btn admin-btn" id="adminLoginBtn"><i class="fas fa-lock"></i> Admin Login</button>
         <button class="top-btn" id="signOutBtn" style="display:none"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        <button class="top-btn" id="dashboardBtn" style="display:none"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
         <button class="top-btn"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</button>
       </div>
       <div class="user-info" id="userInfo" style="display:none">
         <span id="userName">User Name</span>
         <span id="userEmail">user@example.com</span>
+      </div>
+    </div>
+
+    <div class="firebase-status status-offline" id="firebaseStatus">
+      <i class="fas fa-wifi"></i> Working in offline mode. Some features may be limited.
+    </div>
+
+    <!-- Admin Panel (initially hidden) -->
+    <div class="admin-panel" id="adminPanel">
+      <div class="dashboard-header">
+        <h2 class="section-title">Admin Dashboard</h2>
+        <button class="close-btn" id="closeAdminPanel"><i class="fas fa-times"></i> Close</button>
+      </div>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="totalProducts">0</div>
+          <div class="stat-label">Total Products</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalOrders">0</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalUsers">0</div>
+          <div class="stat-label">Registered Users</div>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button class="admin-action-btn" id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+        <button class="admin-action-btn" id="manageProductsBtn"><i class="fas fa-edit"></i> Manage Products</button>
+        <button class="admin-action-btn delete" id="clearDataBtn"><i class="fas fa-trash"></i> Clear All Data</button>
+      </div>
+      
+      <div class="admin-form" id="productForm" style="display: none;">
+        <h3>Add New Product</h3>
+        <div class="form-group">
+          <label for="productTitle">Product Title</label>
+          <input type="text" id="productTitle" placeholder="Enter product title">
+        </div>
+        <div class="form-group">
+          <label for="productCode">Product Code</label>
+          <input type="text" id="productCode" placeholder="Enter product code">
+        </div>
+        <div class="form-group">
+          <label for="productManufacturer">Manufacturer</label>
+          <input type="text" id="productManufacturer" placeholder="Enter manufacturer">
+        </div>
+        <div class="form-group">
+          <label for="productDescription">Description</label>
+          <textarea id="productDescription" placeholder="Enter product description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="productCondition">Condition</label>
+          <select id="productCondition">
+            <option value="new">New</option>
+            <option value="used">Used</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productCategory">Category</label>
+          <select id="productCategory">
+            <option value="Sewing Machines">Sewing Machines</option>
+            <option value="Cutting Machines">Cutting Machines</option>
+            <option value="Pressing Equipment">Pressing Equipment</option>
+            <option value="Embroidery Machines">Embroidery Machines</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Management">Management</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productImage">Image URL</label>
+          <input type="text" id="productImage" placeholder="Enter image URL">
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Price (PKR)</label>
+          <input type="number" id="productPrice" placeholder="Enter price in PKR">
+        </div>
+        <button class="admin-action-btn" id="saveProductBtn"><i class="fas fa-save"></i> Save Product</button>
+      </div>
+
+      <div class="manage-products" id="manageProductsSection" style="display: none;">
+        <h3>Manage Products</h3>
+        <div class="product-list" id="productList">
+          <!-- Product list will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Dashboard (initially hidden) -->
+    <div class="dashboard" id="customerDashboard">
+      <div class="dashboard-header">
+        <h2 class="section-title">Customer Dashboard</h2>
+        <button class="close-btn" id="closeCustomerDashboard"><i class="fas fa-times"></i> Close</button>
+      </div>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="cartItems">0</div>
+          <div class="stat-label">Items in Cart</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="ordersCount">0</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="wishlistCount">0</div>
+          <div class="stat-label">Wishlist Items</div>
+        </div>
+      </div>
+      <div class="dashboard-actions">
+        <button class="admin-action-btn" id="viewOrdersBtn"><i class="fas fa-list"></i> View Orders</button>
+        <button class="admin-action-btn" id="viewProfileBtn"><i class="fas fa-user"></i> View Profile</button>
+        <button class="admin-action-btn" id="viewWishlistBtn"><i class="fas fa-heart"></i> View Wishlist</button>
+      </div>
+      <div id="dashboardContent">
+        <p>Welcome to your dashboard! Here you can manage your orders, profile, and wishlist.</p>
       </div>
     </div>
 
@@ -383,19 +673,19 @@
         <h1>Apparel Machinery Experts</h1>
         <p>Your trusted partner for industrial sewing equipment</p>
       </div>
-      <button class="top-btn banner-upload-btn" style="display:none"><i class="fas fa-upload"></i> Upload Banner</button>
     </div>
 
     <div class="main-content">
       <div class="categories-section">
         <h2 class="section-title">Product Categories</h2>
         <div class="categories-container">
-          <button class="category-btn active">All Machines</button>
-          <button class="category-btn">Sewing Machines</button>
-          <button class="category-btn">Cutting Machines</button>
-          <button class="category-btn">Pressing Equipment</button>
-          <button class="category-btn">Embroidery Machines</button>
-          <button class="category-btn">Accessories</button>
+          <button class="category-btn active" data-category="all">All Machines</button>
+          <button class="category-btn" data-category="Sewing Machines">Sewing Machines</button>
+          <button class="category-btn" data-category="Cutting Machines">Cutting Machines</button>
+          <button class="category-btn" data-category="Pressing Equipment">Pressing Equipment</button>
+          <button class="category-btn" data-category="Embroidery Machines">Embroidery Machines</button>
+          <button class="category-btn" data-category="Accessories">Accessories</button>
+          <button class="category-btn" data-category="Management">Management</button>
         </div>
       </div>
 
@@ -415,48 +705,110 @@
         </div>
       </div>
 
-      <div class="gallery-section">
-        <h2 class="section-title">Equipment Gallery</h2>
-        <div class="gallery-container">
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1589793463357-5fb813435467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Sewing Machine">
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1598706202262-19470e715101?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Textile Machine">
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cutting Machine">
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1573164574233-db3d2693bb6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Pressing Equipment">
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1592400374400-57c85b0d2c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Embroidery Machine">
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.unsplash.com/photo-1579226900371-8c6e0b51ce62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Industrial Equipment">
-          </div>
-        </div>
-      </div>
-
       <div class="cart-section">
         <h2 class="section-title">Your Cart</h2>
         <div class="cart-list" id="cartList">
           <div class="cart-empty">Your cart is empty</div>
         </div>
         <div class="cart-actions">
-          <button class="cart-btn">Clear Cart</button>
+          <button class="cart-btn" id="clearCartBtn">Clear Cart</button>
           <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Auth Modal -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-container">
+      <button class="close-auth" id="closeAuth">&times;</button>
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="loginTab">Login</div>
+        <div class="auth-tab" id="registerTab">Register</div>
+      </div>
+      
+      <form class="auth-form" id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <div class="auth-error" id="loginError"></div>
+      </form>
+      
+      <form class="auth-form" id="registerForm" style="display: none;">
+        <input type="text" id="registerName" placeholder="Full Name" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password (min. 6 characters)" required>
+        <button type="submit">Create Account</button>
+        <div class="auth-error" id="registerError"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div class="auth-modal" id="adminAuthModal">
+    <div class="auth-container">
+      <button class="close-auth" id="closeAdminAuth">&times;</button>
+      <h2 style="text-align: center; margin-bottom: 20px;">Admin Login</h2>
+      
+      <form class="auth-form" id="adminLoginForm">
+        <input type="email" id="adminEmail" placeholder="Admin Email" value="apparel.machinery.pk@gmail.com" required>
+        <input type="password" id="adminPassword" placeholder="Admin Password" required>
+        <button type="submit">Login as Admin</button>
+        <div class="auth-error" id="adminLoginError"></div>
+      </form>
+    </div>
+  </div>
+
   <div class="notification" id="notification">Product added to cart!</div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
   <script>
-    // Mock product data
-    const products = [
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
+      authDomain: "apparel-machinery.firebaseapp.com",
+      projectId: "apparel-machinery",
+      storageBucket: "apparel-machinery.firebasestorage.app",
+      messagingSenderId: "165173029685",
+      appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
+      measurementId: "G-XHMZ4BP7CW"
+    };
+
+    // Initialize Firebase with error handling
+    let firebaseApp;
+    let db;
+    let auth;
+    
+    try {
+      firebaseApp = firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      auth = firebase.auth();
+      
+      // Enable offline persistence with error handling
+      db.enablePersistence().catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn("Multiple tabs open, persistence can only be enabled in one tab at a time.");
+        } else if (err.code === 'unimplemented') {
+          console.warn("The current browser doesn't support persistence.");
+        }
+      });
+      
+      // Update UI to show online status
+      document.getElementById('firebaseStatus').className = 'firebase-status status-online';
+      document.getElementById('firebaseStatus').innerHTML = '<i class="fas fa-wifi"></i> Connected to Firebase';
+      
+    } catch (error) {
+      console.error("Firebase initialization error:", error);
+      document.getElementById('firebaseStatus').className = 'firebase-status status-error';
+      document.getElementById('firebaseStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Firebase configuration error';
+    }
+
+    // Mock product data for offline use (prices in PKR)
+    let mockProducts = [
       {
         id: 1,
         title: "Industrial Sewing Machine JUKI DDL-8700",
@@ -464,8 +816,9 @@
         manufacturer: "JUKI",
         description: "High-speed straight stitch sewing machine for apparel production",
         condition: "new",
+        category: "Sewing Machines",
         image: "https://images.unsplash.com/photo-1589793463357-5fb813435467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 2450
+        price: 686000 // Approximately $2450 converted to PKR
       },
       {
         id: 2,
@@ -474,8 +827,9 @@
         manufacturer: "Eastman",
         description: "Computerized fabric cutting system with precision laser guidance",
         condition: "used",
+        category: "Cutting Machines",
         image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 18750
+        price: 5250000 // Approximately $18750 converted to PKR
       },
       {
         id: 3,
@@ -484,8 +838,9 @@
         manufacturer: "Veit",
         description: "Industrial garment steamer and pressing system with vacuum table",
         condition: "new",
+        category: "Pressing Equipment",
         image: "https://images.unsplash.com/photo-1573164574233-db3d2693bb6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 8950
+        price: 2506000 // Approximately $8950 converted to PKR
       },
       {
         id: 4,
@@ -494,88 +849,174 @@
         manufacturer: "Tajima",
         description: "12-needle computerized embroidery machine with large hoop area",
         condition: "used",
+        category: "Embroidery Machines",
         image: "https://images.unsplash.com/photo-1592400374400-57c85b0d2c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 22500
+        price: 6300000 // Approximately $22500 converted to PKR
       },
       {
         id: 5,
-        title: "Overlock Sewing Machine MO-6714D",
-        code: "JUKI-MO6714",
-        manufacturer: "JUKI",
-        description: "4-thread overlock machine with differential feed and rolled hemming",
+        title: "Production Management Software",
+        code: "MGMT-SOFT",
+        manufacturer: "ApparelPro",
+        description: "Complete production management solution for apparel industry",
         condition: "new",
-        image: "https://images.unsplash.com/photo-1598706202262-19470e715101?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 3200
-      },
-      {
-        id: 6,
-        title: "Buttonholing Machine MB-372",
-        code: "BART-MB372",
-        manufacturer: "Brother",
-        description: "Automatic buttonhole sewing machine with variable sizing",
-        condition: "used",
-        image: "https://images.unsplash.com/photo-1579226900371-8c6e0b51ce62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        price: 1850
+        category: "Management",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+        price: 350000 // Management software price in PKR
       }
     ];
 
+    // Admin credentials
+    const adminCredentials = {
+      email: "apparel.machinery.pk@gmail.com",
+      password: "admin123"
+    };
+
     // Cart functionality
     let cart = [];
+    let isAdmin = false;
+    let currentCategory = "all";
     
     // DOM elements
     const productsGrid = document.getElementById('productsGrid');
     const cartList = document.getElementById('cartList');
     const cartCount = document.getElementById('cartCount');
     const notification = document.getElementById('notification');
+    const firebaseStatus = document.getElementById('firebaseStatus');
+    const signInBtn = document.getElementById('signInBtn');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const signOutBtn = document.getElementById('signOutBtn');
+    const dashboardBtn = document.getElementById('dashboardBtn');
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    const authModal = document.getElementById('authModal');
+    const adminAuthModal = document.getElementById('adminAuthModal');
+    const closeAuth = document.getElementById('closeAuth');
+    const closeAdminAuth = document.getElementById('closeAdminAuth');
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginError = document.getElementById('adminLoginError');
+    const adminPanel = document.getElementById('adminPanel');
+    const closeAdminPanel = document.getElementById('closeAdminPanel');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const manageProductsBtn = document.getElementById('manageProductsBtn');
+    const productForm = document.getElementById('productForm');
+    const manageProductsSection = document.getElementById('manageProductsSection');
+    const saveProductBtn = document.getElementById('saveProductBtn');
+    const productList = document.getElementById('productList');
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    const customerDashboard = document.getElementById('customerDashboard');
+    const closeCustomerDashboard = document.getElementById('closeCustomerDashboard');
+
+    // Display products from Firestore or mock data
+    function displayProducts(category = "all") {
+      // Show loading state
+      productsGrid.innerHTML = '<div class="cart-empty">Loading products...</div>';
+      
+      // Try to get products from Firestore first
+      if (db) {
+        db.collection("products").get().then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            // If no products in Firestore, use mock data
+            displayMockProducts(category);
+            return;
+          }
+          
+          // Display products from Firestore
+          productsGrid.innerHTML = '';
+          let products = [];
+          querySnapshot.forEach((doc) => {
+            const product = doc.data();
+            product.id = doc.id;
+            products.push(product);
+          });
+          
+          // Filter by category if needed
+          if (category !== "all") {
+            products = products.filter(product => product.category === category);
+          }
+          
+          // Render products
+          products.forEach(product => {
+            renderProductCard(product);
+          });
+        }).catch((error) => {
+          console.error("Error getting products from Firestore:", error);
+          // Fall back to mock data
+          displayMockProducts(category);
+          firebaseStatus.className = 'firebase-status status-offline';
+          firebaseStatus.innerHTML = '<i class="fas fa-wifi"></i> Using offline data due to connection issues';
+        });
+      } else {
+        // If Firebase not available, use mock data
+        displayMockProducts(category);
+      }
+    }
     
-    // Display products
-    function displayProducts() {
+    // Display mock products with category filter
+    function displayMockProducts(category = "all") {
       productsGrid.innerHTML = '';
       
-      products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        
-        productCard.innerHTML = `
-          <div class="product-image">
-            <img src="${product.image}" alt="${product.title}">
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">${product.title}</h3>
-            <div class="product-code">Code: ${product.code}</div>
-            <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
-            <div class="product-description">${product.description}</div>
-            <div class="product-condition ${product.condition === 'new' ? 'condition-new' : 'condition-used'}">
-              ${product.condition === 'new' ? 'New' : 'Used'}
-            </div>
-            <div class="product-price">$${product.price.toLocaleString()}</div>
-            <button class="add-to-cart-btn" data-id="${product.id}">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        `;
-        
-        productsGrid.appendChild(productCard);
-      });
+      let filteredProducts = mockProducts;
+      if (category !== "all") {
+        filteredProducts = mockProducts.filter(product => product.category === category);
+      }
       
-      // Add event listeners to Add to Cart buttons
-      const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-      addToCartButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-          const productId = parseInt(e.target.closest('.add-to-cart-btn').dataset.id);
-          addToCart(productId);
-        });
+      if (filteredProducts.length === 0) {
+        productsGrid.innerHTML = '<div class="cart-empty">No products found in this category</div>';
+        return;
+      }
+      
+      filteredProducts.forEach(product => {
+        renderProductCard(product);
+      });
+    }
+    
+    // Render a product card
+    function renderProductCard(product) {
+      const productCard = document.createElement('div');
+      productCard.className = 'product-card';
+      productCard.dataset.category = product.category;
+      
+      productCard.innerHTML = `
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.title}" onerror="this.src='https://images.unsplash.com/photo-1589793463357-5fb813435467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'">
+        </div>
+        <div class="product-details">
+          <h3 class="product-title">${product.title}</h3>
+          <div class="product-code">Code: ${product.code}</div>
+          <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
+          <div class="product-description">${product.description}</div>
+          <div class="product-condition ${product.condition === 'new' ? 'condition-new' : 'condition-used'}">
+            ${product.condition === 'new' ? 'New' : 'Used'}
+          </div>
+          <div class="product-price">PKR ${product.price.toLocaleString()}</div>
+          <button class="add-to-cart-btn" data-id="${product.id}">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+      `;
+      
+      productsGrid.appendChild(productCard);
+      
+      // Add event listener to the Add to Cart button
+      const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+      addToCartBtn.addEventListener('click', () => {
+        addToCart(product);
       });
     }
     
     // Add product to cart
-    function addToCart(productId) {
-      const product = products.find(p => p.id === productId);
-      if (product) {
-        cart.push(product);
-        updateCart();
-        showNotification('Product added to cart!');
-      }
+    function addToCart(product) {
+      cart.push(product);
+      updateCart();
+      showNotification('Product added to cart!');
     }
     
     // Update cart display
@@ -593,7 +1034,7 @@
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
           <strong>${item.title}</strong>
-          <div>$${item.price.toLocaleString()}</div>
+          <div>PKR ${item.price.toLocaleString()}</div>
         `;
         cartList.appendChild(cartItem);
       });
@@ -610,37 +1051,333 @@
       }, 3000);
     }
     
+    // Auth modal tabs
+    loginTab.addEventListener('click', () => {
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+      loginForm.style.display = 'flex';
+      registerForm.style.display = 'none';
+      loginError.textContent = '';
+      registerError.textContent = '';
+    });
+    
+    registerTab.addEventListener('click', () => {
+      registerTab.classList.add('active');
+      loginTab.classList.remove('active');
+      registerForm.style.display = 'flex';
+      loginForm.style.display = 'none';
+      loginError.textContent = '';
+      registerError.textContent = '';
+    });
+    
+    // Close auth modals
+    closeAuth.addEventListener('click', () => {
+      authModal.style.display = 'none';
+    });
+    
+    closeAdminAuth.addEventListener('click', () => {
+      adminAuthModal.style.display = 'none';
+    });
+    
+    // Close admin panel
+    closeAdminPanel.addEventListener('click', () => {
+      adminPanel.style.display = 'none';
+    });
+    
+    // Close customer dashboard
+    closeCustomerDashboard.addEventListener('click', () => {
+      customerDashboard.style.display = 'none';
+    });
+    
+    // Login form submission
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (auth) {
+        auth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
+            authModal.style.display = 'none';
+            showNotification('Successfully signed in!');
+            dashboardBtn.style.display = 'inline-flex';
+          })
+          .catch((error) => {
+            loginError.textContent = error.message;
+          });
+      } else {
+        // Fallback if Firebase auth not available
+        authModal.style.display = 'none';
+        userInfo.style.display = 'block';
+        signInBtn.style.display = 'none';
+        signOutBtn.style.display = 'inline-flex';
+        dashboardBtn.style.display = 'inline-flex';
+        userName.textContent = email;
+        userEmail.textContent = email;
+        showNotification('Signed in (offline mode)');
+      }
+    });
+    
+    // Register form submission
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      
+      if (password.length < 6) {
+        registerError.textContent = 'Password should be at least 6 characters';
+        return;
+      }
+      
+      if (auth) {
+        auth.createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            // Update profile with name
+            return user.updateProfile({
+              displayName: name
+            });
+          })
+          .then(() => {
+            authModal.style.display = 'none';
+            dashboardBtn.style.display = 'inline-flex';
+            showNotification('Account created successfully!');
+          })
+          .catch((error) => {
+            registerError.textContent = error.message;
+          });
+      } else {
+        // Fallback if Firebase auth not available
+        authModal.style.display = 'none';
+        userInfo.style.display = 'block';
+        signInBtn.style.display = 'none';
+        signOutBtn.style.display = 'inline-flex';
+        dashboardBtn.style.display = 'inline-flex';
+        userName.textContent = name;
+        userEmail.textContent = email;
+        showNotification('Account created (offline mode)');
+      }
+    });
+    
+    // Admin login form submission
+    adminLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value;
+      const password = document.getElementById('adminPassword').value;
+      
+      if (email === adminCredentials.email && password === adminCredentials.password) {
+        // Successful admin login
+        adminAuthModal.style.display = 'none';
+        isAdmin = true;
+        adminPanel.style.display = 'block';
+        showNotification('Admin login successful!');
+        
+        // Update admin stats
+        document.getElementById('totalProducts').textContent = mockProducts.length;
+        document.getElementById('totalOrders').textContent = '15';
+        document.getElementById('totalUsers').textContent = '42';
+      } else {
+        adminLoginError.textContent = 'Invalid admin credentials';
+      }
+    });
+    
+    // Auth state observer
+    if (auth) {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in
+          signInBtn.style.display = 'none';
+          signOutBtn.style.display = 'inline-flex';
+          dashboardBtn.style.display = 'inline-flex';
+          userInfo.style.display = 'block';
+          userName.textContent = user.displayName || 'User';
+          userEmail.textContent = user.email;
+        } else {
+          // User is signed out
+          signInBtn.style.display = 'inline-flex';
+          signOutBtn.style.display = 'none';
+          dashboardBtn.style.display = 'none';
+          userInfo.style.display = 'none';
+        }
+      });
+    }
+    
+    // Sign out
+    signOutBtn.addEventListener('click', () => {
+      if (auth) {
+        auth.signOut().then(() => {
+          showNotification('Successfully signed out!');
+        }).catch((error) => {
+          showNotification('Error signing out: ' + error.message, true);
+        });
+      } else {
+        // Fallback if Firebase auth not available
+        signInBtn.style.display = 'inline-flex';
+        signOutBtn.style.display = 'none';
+        dashboardBtn.style.display = 'none';
+        userInfo.style.display = 'none';
+        showNotification('Signed out (offline mode)');
+      }
+      
+      // Also logout admin if logged in
+      if (isAdmin) {
+        isAdmin = false;
+        adminPanel.style.display = 'none';
+      }
+      
+      // Hide customer dashboard
+      customerDashboard.style.display = 'none';
+    });
+    
+    // Open auth modal
+    signInBtn.addEventListener('click', () => {
+      authModal.style.display = 'flex';
+    });
+    
+    // Open admin auth modal
+    adminLoginBtn.addEventListener('click', () => {
+      adminAuthModal.style.display = 'flex';
+    });
+    
+    // Open customer dashboard
+    dashboardBtn.addEventListener('click', () => {
+      customerDashboard.style.display = 'block';
+      
+      // Update dashboard stats
+      document.getElementById('cartItems').textContent = cart.length;
+      document.getElementById('ordersCount').textContent = '3';
+      document.getElementById('wishlistCount').textContent = '5';
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === authModal) {
+        authModal.style.display = 'none';
+      }
+      if (e.target === adminAuthModal) {
+        adminAuthModal.style.display = 'none';
+      }
+    });
+    
+    // Admin functionality
+    addProductBtn.addEventListener('click', () => {
+      productForm.style.display = productForm.style.display === 'none' ? 'block' : 'none';
+      manageProductsSection.style.display = 'none';
+    });
+    
+    manageProductsBtn.addEventListener('click', () => {
+      manageProductsSection.style.display = manageProductsSection.style.display === 'none' ? 'block' : 'none';
+      productForm.style.display = 'none';
+      renderProductManagementList();
+    });
+    
+    function renderProductManagementList() {
+      productList.innerHTML = '';
+      
+      const productsToShow = mockProducts;
+      
+      if (productsToShow.length === 0) {
+        productList.innerHTML = '<div class="cart-empty">No products found</div>';
+        return;
+      }
+      
+      productsToShow.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.className = 'product-item';
+        productItem.innerHTML = `
+          <div class="product-info">
+            <h4>${product.title}</h4>
+            <div>Category: ${product.category} | Price: PKR ${product.price.toLocaleString()}</div>
+          </div>
+          <div class="product-actions">
+            <button class="admin-action-btn" data-id="${product.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="admin-action-btn delete" data-id="${product.id}"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        `;
+        
+        productList.appendChild(productItem);
+      });
+    }
+    
+    saveProductBtn.addEventListener('click', () => {
+      const newProduct = {
+        id: mockProducts.length > 0 ? Math.max(...mockProducts.map(p => p.id)) + 1 : 1,
+        title: document.getElementById('productTitle').value,
+        code: document.getElementById('productCode').value,
+        manufacturer: document.getElementById('productManufacturer').value,
+        description: document.getElementById('productDescription').value,
+        condition: document.getElementById('productCondition').value,
+        category: document.getElementById('productCategory').value,
+        image: document.getElementById('productImage').value,
+        price: parseInt(document.getElementById('productPrice').value)
+      };
+      
+      // Add to mock products
+      mockProducts.push(newProduct);
+      
+      // Try to save to Firestore if available
+      if (db) {
+        db.collection("products").add(newProduct)
+          .then(() => {
+            showNotification('Product saved to database!');
+          })
+          .catch((error) => {
+            showNotification('Product saved locally (offline mode)');
+          });
+      } else {
+        showNotification('Product saved locally (offline mode)');
+      }
+      
+      // Update the display
+      displayProducts(currentCategory);
+      
+      // Update admin stats
+      document.getElementById('totalProducts').textContent = mockProducts.length;
+      
+      // Reset form
+      document.getElementById('productTitle').value = '';
+      document.getElementById('productCode').value = '';
+      document.getElementById('productManufacturer').value = '';
+      document.getElementById('productDescription').value = '';
+      document.getElementById('productCondition').value = 'new';
+      document.getElementById('productCategory').value = 'Sewing Machines';
+      document.getElementById('productImage').value = '';
+      document.getElementById('productPrice').value = '';
+      
+      productForm.style.display = 'none';
+    });
+    
+    // Clear cart functionality
+    clearCartBtn.addEventListener('click', () => {
+      cart = [];
+      updateCart();
+      showNotification('Cart cleared!');
+    });
+    
+    // Category filtering
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active state
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Get category from data attribute
+        const category = button.getAttribute('data-category');
+        currentCategory = category;
+        
+        // Filter products
+        displayProducts(category);
+      });
+    });
+    
     // Initialize the page
     document.addEventListener('DOMContentLoaded', () => {
       displayProducts();
       updateCart();
-      
-      // Simulate user login (for demo purposes)
-      document.getElementById('signInBtn').addEventListener('click', () => {
-        document.getElementById('userInfo').style.display = 'block';
-        document.getElementById('signInBtn').style.display = 'none';
-        document.getElementById('signOutBtn').style.display = 'inline-flex';
-        document.getElementById('userName').textContent = 'Demo User';
-        document.getElementById('userEmail').textContent = 'user@example.com';
-        showNotification('Successfully signed in!');
-      });
-      
-      document.getElementById('signOutBtn').addEventListener('click', () => {
-        document.getElementById('userInfo').style.display = 'none';
-        document.getElementById('signInBtn').style.display = 'inline-flex';
-        document.getElementById('signOutBtn').style.display = 'none';
-        showNotification('Successfully signed out!');
-      });
-      
-      // Category buttons
-      const categoryButtons = document.querySelectorAll('.category-btn');
-      categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          categoryButtons.forEach(btn => btn.classList.remove('active'));
-          button.classList.add('active');
-          showNotification(`Showing ${button.textContent}`);
-        });
-      });
       
       // Search functionality
       const searchBtn = document.querySelector('.search-btn');
