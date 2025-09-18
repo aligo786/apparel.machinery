@@ -154,6 +154,7 @@
       overflow: hidden;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
       transition: transform 0.3s;
+      position: relative;
     }
     
     .product-card:hover {
@@ -512,6 +513,43 @@
       display: none;
     }
     
+    /* Position controls */
+    .position-controls {
+      display: flex;
+      gap: 5px;
+      margin-left: 10px;
+    }
+    
+    .position-up-btn, .position-down-btn {
+      background: #95a5a6;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .position-up-btn:hover, .position-down-btn:hover {
+      background: #7f8c8d;
+    }
+    
+    /* Default product indicator */
+    .default-product-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #f39c12;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    
     /* Responsive styles */
     @media (max-width: 768px) {
       .header-content {
@@ -531,6 +569,17 @@
       .admin-controls {
         flex-direction: column;
         align-items: center;
+      }
+      
+      .admin-product-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .admin-product-actions {
+        width: 100%;
+        justify-content: space-between;
       }
     }
   </style>
@@ -800,6 +849,10 @@
             <div class="image-preview-text">Image preview will appear here</div>
           </div>
         </div>
+        <div class="form-group">
+          <label for="editProductPosition">Display Position *</label>
+          <input type="number" id="editProductPosition" class="form-control" min="1" required>
+        </div>
         <div id="editProductError" style="color: red; margin-bottom: 1rem;"></div>
         <button type="submit" class="submit-btn">Save Changes</button>
       </form>
@@ -1011,7 +1064,9 @@
             price: 85000,
             category: 'sewing',
             condition: 'New',
-            image: 'https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+            image: 'https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            isDefault: true,
+            position: 1
           },
           {
             id: 2,
@@ -1022,7 +1077,9 @@
             price: 120000,
             category: 'cutting',
             condition: 'Refurbished',
-            image: 'https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+            image: 'https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            isDefault: true,
+            position: 2
           },
           {
             id: 3,
@@ -1033,7 +1090,9 @@
             price: 45000,
             category: 'management',
             condition: 'New',
-            image: 'https://images.unsplash.com/photo-1611019130372-e64d1cdc241e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+            image: 'https://images.unsplash.com/photo-1611019130372-e64d1cdc241e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            isDefault: true,
+            position: 3
           }
         ];
         localStorage.setItem('products', JSON.stringify(products));
@@ -1253,6 +1312,7 @@
         document.getElementById('editProductCategory').value = product.category;
         document.getElementById('editProductCondition').value = product.condition;
         document.getElementById('editProductImageUrl').value = product.image || '';
+        document.getElementById('editProductPosition').value = product.position || 0;
         
         // Update word count
         updateWordCount(document.getElementById('editProductDescription'), 'editDescriptionWordCount');
@@ -1440,9 +1500,14 @@
         return;
       }
       
+      // Calculate position for new product (add to end)
+      const maxPosition = Math.max(...products.map(p => p.position || 0), 0);
+      const position = maxPosition + 1;
+      
       // Read image as base64 if file is selected
       if (imageFile) {
         const reader = new FileReader();
+        
         reader.addEventListener('load', function() {
           // Create new product
           const newProduct = {
@@ -1454,7 +1519,9 @@
             price,
             category,
             condition,
-            image: reader.result
+            image: reader.result,
+            isDefault: false,
+            position: position
           };
           
           // Add to products array
@@ -1484,7 +1551,9 @@
           price,
           category,
           condition,
-          image: imageUrl
+          image: imageUrl,
+          isDefault: false,
+          position: position
         };
         
         // Add to products array
@@ -1516,6 +1585,7 @@
       const condition = document.getElementById('editProductCondition').value;
       const imageUrl = document.getElementById('editProductImageUrl').value;
       const imageFile = document.getElementById('editProductImage').files[0];
+      const position = parseInt(document.getElementById('editProductPosition').value);
       
       // Word count validation
       const words = description.trim() === '' ? 0 : description.trim().split(/\s+/).length;
@@ -1540,6 +1610,7 @@
       products[productIndex].price = price;
       products[productIndex].category = category;
       products[productIndex].condition = condition;
+      products[productIndex].position = position;
       
       // Update image if new one is selected or URL is provided
       if (imageFile) {
@@ -1600,6 +1671,35 @@
       // Update products grid and admin list
       renderProducts();
       renderAdminProductsList();
+    }
+
+    function moveProductPosition(productId, direction) {
+      const productIndex = products.findIndex(p => p.id === productId);
+      if (productIndex === -1) return;
+      
+      const newIndex = productIndex + direction;
+      
+      // Check if new index is valid
+      if (newIndex < 0 || newIndex >= products.length) return;
+      
+      // Swap positions
+      const tempPosition = products[productIndex].position;
+      products[productIndex].position = products[newIndex].position;
+      products[newIndex].position = tempPosition;
+      
+      // Swap products in array
+      [products[productIndex], products[newIndex]] = [products[newIndex], products[productIndex]];
+      
+      // Save to localStorage
+      localStorage.setItem('products', JSON.stringify(products));
+      
+      // Update admin list
+      renderAdminProductsList();
+      
+      // Update products grid
+      renderProducts();
+      
+      showNotification('Product position updated!');
     }
 
     function handleEditBanner(e) {
@@ -1702,7 +1802,16 @@
       const productsGrid = document.getElementById('productsGrid');
       productsGrid.innerHTML = '';
       
-      const productsList = productsToRender || products;
+      let productsList = productsToRender || products;
+      
+      // Sort products by position
+      productsList.sort((a, b) => (a.position || 0) - (b.position || 0));
+      
+      // Check if we should hide default products (if any custom products exist)
+      const hasCustomProducts = products.some(p => !p.isDefault);
+      if (hasCustomProducts) {
+        productsList = productsList.filter(product => !product.isDefault);
+      }
       
       // Filter by category if needed
       const filteredProducts = category === 'all' 
@@ -1726,6 +1835,7 @@
         const categoryName = categoryObj ? categoryObj.name : product.category;
         
         productCard.innerHTML = `
+          ${product.isDefault ? '<div class="default-product-badge">Default</div>' : ''}
           <div class="product-image">
             <img src="${product.image}" alt="${product.title}">
           </div>
@@ -1737,6 +1847,7 @@
             <p class="product-description">${product.description}</p>
             <span class="product-condition condition-${product.condition.toLowerCase()}">${product.condition}</span>
             <div class="product-category">Category: ${categoryName}</div>
+            <div class="admin-only">Position: ${product.position || 'Not set'}</div>
             <button class="add-to-cart-btn">
               <i class="fas fa-cart-plus"></i> Add to Cart
             </button>
@@ -1761,12 +1872,15 @@
       const adminProductsList = document.getElementById('adminProductsList');
       adminProductsList.innerHTML = '';
       
-      if (products.length === 0) {
+      // Sort products by position for admin view
+      const sortedProducts = [...products].sort((a, b) => (a.position || 0) - (b.position || 0));
+      
+      if (sortedProducts.length === 0) {
         adminProductsList.innerHTML = '<p style="text-align: center;">No products available</p>';
         return;
       }
       
-      products.forEach(product => {
+      sortedProducts.forEach((product, index) => {
         const productItem = document.createElement('div');
         productItem.className = 'admin-product-item';
         
@@ -1779,10 +1893,15 @@
             <strong>${product.title}</strong> (${product.code})
             <div>Price: PKR ${product.price.toLocaleString()}</div>
             <div>Category: ${categoryName}</div>
+            <div>Position: ${product.position || 'Not set'} ${product.isDefault ? '<span style="color: #f39c12;">(Default Product)</span>' : ''}</div>
           </div>
           <div class="admin-product-actions">
+            <div class="position-controls">
+              <button class="position-up-btn" data-id="${product.id}" ${index === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
+              <button class="position-down-btn" data-id="${product.id}" ${index === sortedProducts.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
+            </div>
             <button class="edit-btn" data-id="${product.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="delete-btn" data-id="${product.id}"><i class="fas fa-trash"></i> Delete</button>
+            <button class="delete-btn" data-id="${product.id}" ${product.isDefault ? 'disabled' : ''}><i class="fas fa-trash"></i> Delete</button>
           </div>
         `;
         
@@ -1793,8 +1912,24 @@
         });
         
         productItem.querySelector('.delete-btn').addEventListener('click', function() {
-          const productId = parseInt(this.dataset.id);
-          deleteProduct(productId);
+          if (!this.disabled) {
+            const productId = parseInt(this.dataset.id);
+            deleteProduct(productId);
+          }
+        });
+        
+        productItem.querySelector('.position-up-btn').addEventListener('click', function() {
+          if (!this.disabled) {
+            const productId = parseInt(this.dataset.id);
+            moveProductPosition(productId, -1);
+          }
+        });
+        
+        productItem.querySelector('.position-down-btn').addEventListener('click', function() {
+          if (!this.disabled) {
+            const productId = parseInt(this.dataset.id);
+            moveProductPosition(productId, 1);
+          }
         });
         
         adminProductsList.appendChild(productItem);
