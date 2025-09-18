@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apparel Machinery | Admin Panel & Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body { background: #f5f7fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0;}
+    .container { max-width: 1100px; margin: 20px auto; background: #fff; border-radius: 15px; box-shadow: 0 5px 15px #0002; overflow: hidden; border: 1px solid #e2e8f0;}
+    .top-bar { background:#2563eb; color:#fff; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; border-radius:15px 15px 0 0;}
+    .top-buttons { display:flex; gap:10px;}
+    .top-btn { background:#3b82f6; color:#fff; border:none; border-radius:5px; padding:8px 16px; font-size:15px; cursor:pointer;}
+    .top-btn:hover { background:#1e40af;}
+    .user-info { font-size:14px;}
+    .admin-badge { background:#22c55e; color:#fff; border-radius:10px; font-size:12px; padding:2px 8px; margin-left:8px;}
+    .main-content {padding:22px;}
+    .section-title { font-size:22px; color:#2563eb; margin-bottom:16px; text-align:center;}
+    .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(265px,1fr)); gap:18px;}
+    .product-card { border-radius:10px; box-shadow:0 2px 12px #0001; background:#f8fafc; padding:12px; margin-bottom:12px; position:relative;}
+    .product-title { font-weight:bold; color:#2563eb; margin-bottom:5px;}
+    .product-image { width:100%; height:180px; background:#e0e8f0; border-radius:7px; object-fit:cover; margin-bottom:7px;}
+    .product-form { background:#f3f4f6; border-radius:9px; padding:18px; margin-bottom:24px; max-width:650px; margin-left:auto; margin-right:auto;}
+    .product-form input, .product-form textarea { width:96%; margin-bottom:8px; padding:8px; border:1px solid #d1d5db; border-radius:5px;}
+    .product-form label { font-size:15px; color:#2563eb;}
+    .edit-btn, .delete-btn { font-size:13px; background:#22c55e; color:#fff; padding:4px 9px; border:none; border-radius:4px; margin-right:5px; cursor:pointer;}
+    .delete-btn { background:#ef4444;}
+    .add-to-cart-btn, .order-btn { width:100%; padding:8px; background:#2563eb; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:7px;}
+    .add-to-cart-btn:hover, .order-btn:hover { background:#1e40af;}
+    /* Cart/Order */
+    .cart-list, .orders-list { max-width:500px; margin:0 auto;}
+    .cart-item, .order-item { border-bottom:1px solid #e2e8f0; padding:10px 0;}
+    .cart-empty, .orders-empty { text-align:center; color:#000; padding:20px;}
+    .cart-actions, .order-actions { text-align:right;}
+    .cart-btn, .order-btn, .pw-btn { padding:8px 14px; border:none; border-radius:5px; background:#2563eb; color:#fff; cursor:pointer; margin:3px;}
+    .order-btn.done { background:#22c55e;}
+    .order-btn.delete { background:#ef4444;}
+    .pw-btn { background:#f59e42;}
+    /* Admin */
+    .admin-panel { background:#f3f4f6; border-radius:9px; padding:18px; margin-bottom:24px; max-width:650px; margin-left:auto; margin-right:auto;}
+    /* Form */
+    .order-form input, .order-form textarea { width:95%; margin-bottom:9px; padding:8px; border:1px solid #d1d5db; border-radius:5px;}
+    .order-form label {font-size:15px; color:#2563eb;}
+    .order-form button {width:100%;}
+    /* Responsive */
+    @media (max-width:700px){ .container{border-radius:0; box-shadow:none; max-width:100vw; margin:0;} .main-content,.top-bar{padding:10px 5px;} .products-grid{grid-template-columns:1fr;} .product-image{height:110px;} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <div class="top-buttons">
+        <button class="top-btn" id="shopBtn"><i class="fa fa-store"></i> Shop</button>
+        <button class="top-btn" id="cartBtn"><i class="fa fa-shopping-cart"></i> Cart</button>
+        <button class="top-btn" id="ordersBtn"><i class="fa fa-file-alt"></i> Orders</button>
+        <button class="top-btn" id="adminBtn" style="display:none;"><i class="fa fa-cog"></i> Admin Panel</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="user-info" id="userInfo"></span>
+        <button class="top-btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i> <span id="loginText">Sign In</span></button>
+      </div>
+    </div>
+    <div class="main-content">
+      <!-- Admin Product Form -->
+      <div class="product-form" id="productFormWrap" style="display:none;">
+        <h3 id="formTitle">Add Product</h3>
+        <form onsubmit="submitProductForm(event)">
+          <input type="hidden" id="productId"/>
+          <label>Title</label>
+          <input required id="title" placeholder="Product Title"/><br/>
+          <label>Category</label>
+          <input required id="category" placeholder="Category"/><br/>
+          <label>Price (Rs.)</label>
+          <input required id="price" type="number" min="1" placeholder="Price"/><br/>
+          <label>Image URL</label>
+          <input required id="image" placeholder="Image URL"/><br/>
+          <label>Description</label>
+          <textarea id="description" placeholder="Description"></textarea>
+          <label>Code</label>
+          <input id="code" placeholder="Product Code"/><br/>
+          <button class="top-btn" type="submit">Save</button>
+          <button class="top-btn" type="button" onclick="resetForm()" style="background:#64748b;">Cancel</button>
+        </form>
+      </div>
+      <!-- Products Grid -->
+      <div class="products-section" id="productsSection">
+        <div class="section-title">Products</div>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+      <!-- Cart -->
+      <div class="cart-section" id="cartSection" style="display:none;">
+        <div class="section-title">Cart</div>
+        <div class="cart-list" id="cartList"></div>
+        <div class="cart-actions">
+          <button class="cart-btn" id="clearCartBtn">Clear Cart</button>
+        </div>
+        <!-- Order Form -->
+        <form class="order-form" id="orderForm" style="margin-top:18px;">
+          <label>نام</label><br/>
+          <input required id="customerName" placeholder="Full Name"/><br/>
+          <label>موبائل نمبر</label><br/>
+          <input required id="customerMobile" placeholder="03xxxxxxxxx"/><br/>
+          <label>ای میل</label><br/>
+          <input type="email" required id="customerEmail" placeholder="email@example.com"/><br/>
+          <label>ایڈریس</label><br/>
+          <textarea required id="customerAddress" placeholder="Address"></textarea>
+          <button class="order-btn" type="submit">آرڈر کریں</button>
+        </form>
+      </div>
+      <!-- Orders (Admin Only) -->
+      <div class="orders-section" id="ordersSection" style="display:none;">
+        <div class="section-title">Orders</div>
+        <div class="orders-list" id="ordersList"></div>
+      </div>
+      <!-- Admin Panel -->
+      <div class="admin-panel" id="adminPanel" style="display:none;">
+        <div class="section-title" style="margin-bottom:7px;">Admin Panel</div>
+        <button class="pw-btn" id="pwChangeBtn">Change Password</button>
+        <div id="pwStatus" style="font-size:14px;color:#22c55e;margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Notification -->
+  <div class="notification" id="notification" style="display:none;"></div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    // --- Firebase Config (Correct Bucket) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
+      authDomain: "apparel-machinery.firebaseapp.com",
+      projectId: "apparel-machinery",
+      storageBucket: "apparel-machinery.appspot.com",
+      messagingSenderId: "165173029685",
+      appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
+      measurementId: "G-XHMZ4BP7CW"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // --- State ---
+    let cart = [];
+    let products = [];
+    let orders = [];
+    let isAdmin = false;
+    let adminEmail = "apparel.machinery.pk@gmail.com";
+    let currentUser = null;
+    let editId = null;
+
+    // --- Sections ---
+    const productsSection = document.getElementById('productsSection');
+    const cartSection = document.getElementById('cartSection');
+    const ordersSection = document.getElementById('ordersSection');
+    const adminPanel = document.getElementById('adminPanel');
+    const productFormWrap = document.getElementById('productFormWrap');
+    document.getElementById('shopBtn').onclick = ()=>showSection('shop');
+    document.getElementById('cartBtn').onclick = ()=>showSection('cart');
+    document.getElementById('ordersBtn').onclick = ()=>showSection('orders');
+    document.getElementById('adminBtn').onclick = ()=>showSection('admin');
+
+    function showSection(sec) {
+      productsSection.style.display = (sec === 'shop') ? '' : 'none';
+      cartSection.style.display = (sec === 'cart') ? '' : 'none';
+      ordersSection.style.display = (sec === 'orders') ? '' : 'none';
+      adminPanel.style.display = (sec === 'admin') ? '' : 'none';
+      productFormWrap.style.display = (isAdmin && (sec === 'admin')) ? '' : 'none';
+      if(sec==='orders') loadOrders();
+    }
+
+    // --- Products ---
+    function loadProducts() {
+      db.collection("products").orderBy("title").onSnapshot(snapshot => {
+        products = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+        renderProducts(products);
+      });
+    }
+    function renderProducts(list) {
+      let html = list.map(prod=>`
+        <div class="product-card">
+          <img class="product-image" src="${prod.image||''}" alt="${prod.title||''}"/>
+          <div class="product-title">${prod.title||''}</div>
+          <div style="font-size:13px;color:#64748b;">${prod.category||''}</div>
+          <div style="font-size:13px;">${prod.description||''}</div>
+          <div style="margin:7px 0; color:#111;"><b>Code:</b> ${prod.code||''}</div>
+          <div style="color:#22c55e; font-size:16px; font-weight:bold; margin-bottom:6px;">Rs. ${(prod.price||0).toLocaleString()}</div>
+          <button class="add-to-cart-btn" onclick="addToCart('${prod.id}')"><i class="fa fa-cart-plus"></i> کارٹ میں ڈالیں</button>
+          ${isAdmin ? `
+            <div style="margin-top:7px;">
+              <button class="edit-btn" onclick="editProduct('${prod.id}')">Edit</button>
+              <button class="delete-btn" onclick="deleteProduct('${prod.id}')">Delete</button>
+            </div>
+          `: ''}
+        </div>
+      `).join('');
+      document.getElementById('productsGrid').innerHTML = html;
+    }
+    window.addToCart = function(id) {
+      let prod = products.find(p=>p.id===id);
+      if(!prod) return;
+      let cidx = cart.findIndex(c=>c.id===id);
+      if(cidx>=0) cart[cidx].qty++;
+      else cart.push({id: id, title: prod.title, price: prod.price, qty: 1});
+      updateCart();
+      showNotification('Cart میں ڈال دیا گیا!');
+    };
+
+    // --- Product Add/Edit/Delete (Admin) ---
+    function resetForm(){
+      document.getElementById('formTitle').innerText = "Add Product";
+      document.getElementById('productId').value = "";
+      document.getElementById('title').value = "";
+      document.getElementById('category').value = "";
+      document.getElementById('price').value = "";
+      document.getElementById('image').value = "";
+      document.getElementById('description').value = "";
+      document.getElementById('code').value = "";
+      editId = null;
+    }
+    window.editProduct = function(id){
+      let d = products.find(x=>x.id===id);
+      if(!d) return;
+      document.getElementById('formTitle').innerText = "Edit Product";
+      document.getElementById('productId').value = id;
+      document.getElementById('title').value = d.title||"";
+      document.getElementById('category').value = d.category||"";
+      document.getElementById('price').value = d.price||"";
+      document.getElementById('image').value = d.image||"";
+      document.getElementById('description').value = d.description||"";
+      document.getElementById('code').value = d.code||"";
+      editId = id;
+    };
+    async function submitProductForm(e){
+      e.preventDefault();
+      let title = document.getElementById('title').value.trim();
+      let category = document.getElementById('category').value.trim();
+      let price = Number(document.getElementById('price').value);
+      let image = document.getElementById('image').value.trim();
+      let description = document.getElementById('description').value.trim();
+      let code = document.getElementById('code').value.trim();
+      let data = {title, category, price, image, description, code};
+      let id = document.getElementById('productId').value;
+      if(id){ await db.collection("products").doc(id).update(data);}
+      else { await db.collection("products").add(data);}
+      resetForm();
+    }
+    window.deleteProduct = function(id){
+      if(confirm('Delete this product?')) db.collection("products").doc(id).delete();
+    };
+
+    // --- Cart ---
+    function updateCart() {
+      let html = cart.length ? cart.map((item,i)=>`
+        <div class="cart-item">
+          <b>${item.title}</b> - Qty: ${item.qty} - <span style="color:#22c55e;">Rs. ${(item.price||0).toLocaleString()}</span>
+          <button class="cart-btn" onclick="removeFromCart(${i})"><i class="fa fa-trash"></i></button>
+        </div>
+      `).join('') : '<div class="cart-empty">Cart خالی ہے</div>';
+      document.getElementById('cartList').innerHTML = html;
+    }
+    window.removeFromCart = function(idx) {
+      cart.splice(idx, 1);
+      updateCart();
+    };
+    document.getElementById('clearCartBtn').onclick = ()=>{ cart=[]; updateCart(); showNotification("Cart صاف ہوگیا"); };
+
+    // --- Order Form ---
+    document.getElementById('orderForm').onsubmit = async function(e) {
+      e.preventDefault();
+      if(cart.length===0) return showNotification("Cart خالی ہے!",true);
+      let name = document.getElementById('customerName').value.trim();
+      let mobile = document.getElementById('customerMobile').value.trim();
+      let email = document.getElementById('customerEmail').value.trim();
+      let address = document.getElementById('customerAddress').value.trim();
+      if(!name||!mobile||!email||!address) return showNotification("تمام فیلڈ لازمی ہیں!",true);
+      let order = {
+        customer: {name, mobile, email, address},
+        items: cart.map(item=>({...item})),
+        status: 'pending',
+        createdAt: new Date()
+      };
+      await db.collection("orders").add(order);
+      cart = [];
+      updateCart();
+      showNotification("آرڈر کامیابی سے پلیس ہوگیا!");
+      document.getElementById('orderForm').reset();
+    };
+
+    // --- Orders (Admin Only) ---
+    function loadOrders() {
+      db.collection("orders").orderBy("createdAt","desc").onSnapshot(snapshot=>{
+        orders = snapshot.docs.map(doc=>({...doc.data(), id:doc.id}));
+        renderOrders();
+      });
+    }
+    function renderOrders() {
+      let html = orders.length ? orders.map(order=>`
+        <div class="order-item">
+          <b>Order #${order.id}</b> - Status: <b>${order.status}</b><br>
+          <div style="font-size:13px; color:#111;">
+            <b>کسٹمر:</b> ${order.customer.name} | <b>موبائل:</b> ${order.customer.mobile} <br/>
+            <b>Email:</b> ${order.customer.email} <br/>
+            <b>ایڈریس:</b> ${order.customer.address}
+          </div>
+          <div style="font-size:13px; color:#2563eb;">Items: ${order.items.map(i=>`${i.title} x${i.qty}`).join(', ')}</div>
+          <div class="order-actions">
+            ${order.status!=='completed'?`<button class="order-btn done" onclick="markOrderCompleted('${order.id}')">Mark Completed</button>`:""}
+            <button class="order-btn delete" onclick="deleteOrder('${order.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('') : '<div class="orders-empty">کوئی آرڈر نہیں ہے</div>';
+      document.getElementById('ordersList').innerHTML = html;
+    }
+    window.markOrderCompleted = function(id) {
+      db.collection("orders").doc(id).update({status:"completed"});
+    };
+    window.deleteOrder = function(id) {
+      if(confirm('آرڈر ڈیلیٹ کریں؟')) db.collection("orders").doc(id).delete();
+    };
+
+    // --- Auth (Google Sign-In Only, Admin Restriction) ---
+    function updateUserUI(user) {
+      currentUser = user;
+      let html = user ? `<span>${user.displayName||user.email}${user.email===adminEmail?'<span class="admin-badge">Admin</span>':''}</span>` : '';
+      document.getElementById('userInfo').innerHTML = html;
+      document.getElementById('loginText').innerText = user ? "Sign Out" : "Sign In";
+      document.getElementById('loginBtn').onclick = user ? logout : loginGoogle;
+      document.getElementById('adminBtn').style.display = (user && user.email===adminEmail) ? '' : 'none';
+      isAdmin = user && user.email === adminEmail;
+      // Only show product form in admin section
+      productFormWrap.style.display = (isAdmin && adminPanel.style.display!=='none');
+    }
+    function loginGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider);
+    }
+    function logout() {
+      auth.signOut();
+    }
+    auth.onAuthStateChanged(updateUserUI);
+
+    // --- Admin Password Change ---
+    document.getElementById('pwChangeBtn').onclick = function() {
+      if(!currentUser) return showNotification("پہلے سائن ان کریں", true);
+      let email = prompt("ای میل لکھیں:", currentUser.email);
+      if(!email) return;
+      auth.sendPasswordResetEmail(email)
+        .then(()=>{ document.getElementById('pwStatus').innerText="پاسورڈ ریسٹ لنک ای میل پر بھیج دیا گیا!"; })
+        .catch(()=>{ document.getElementById('pwStatus').innerText="ای میل درست نہیں!"; });
+    };
+
+    // --- Notification ---
+    function showNotification(msg, isError) {
+      const noti = document.getElementById('notification');
+      noti.innerText = msg;
+      noti.style.background = isError ? "#ef4444" : "#4ade80";
+      noti.style.display = 'block';
+      setTimeout(()=>{noti.style.display='none';}, 2500);
+    }
+
+    // --- Initial ---
+    loadProducts();
+    updateCart();
+    showSection('shop');
+    // Product Add/Edit form submit
+    window.submitProductForm = submitProductForm;
+    window.resetForm = resetForm;
+  </script>
+</body>
+</html>
