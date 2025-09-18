@@ -203,6 +203,7 @@
       font-weight: bold;
       color: #065f46;
       margin-bottom: 7px;
+      display: none; /* Hidden by default, only shown for admin */
     }
     
     .product-condition {
@@ -582,6 +583,46 @@
       border: 2px dashed #2563eb;
     }
     
+    .admin-dashboard {
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .admin-dashboard h2 {
+      color: #2563eb;
+      margin-bottom: 15px;
+    }
+    
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .stat-card h3 {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 5px;
+    }
+    
+    .stat-card .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    
     @media (max-width: 768px) {
       .search-header {
         flex-direction: column;
@@ -619,6 +660,10 @@
         flex-direction: column;
         align-items: center;
       }
+      
+      .dashboard-stats {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -651,6 +696,29 @@
     </div>
 
     <div class="main-content">
+      <!-- Admin Dashboard (visible only to admins) -->
+      <div class="admin-dashboard" id="adminDashboard">
+        <h2>Admin Dashboard</h2>
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <h3>Total Products</h3>
+            <div class="value" id="totalProducts">12</div>
+          </div>
+          <div class="stat-card">
+            <h3>Total Orders</h3>
+            <div class="value" id="totalOrders">8</div>
+          </div>
+          <div class="stat-card">
+            <h3>Registered Users</h3>
+            <div class="value" id="totalUsers">24</div>
+          </div>
+          <div class="stat-card">
+            <h3>Revenue</h3>
+            <div class="value" id="totalRevenue">PKR 1,240,500</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Admin Controls (visible only to admins) -->
       <div class="admin-controls" id="adminControls" style="display: none;">
         <button class="admin-control-btn" id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
@@ -957,7 +1025,7 @@
       document.getElementById('signInBtn').addEventListener('click', openAuthModal);
       document.getElementById('adminLoginBtn').addEventListener('click', openAdminAuthModal);
       document.getElementById('signOutBtn').addEventListener('click', signOut);
-      document.getElementById('dashboardBtn').addEventListener('click', openDashboard);
+      document.getElementById('dashboardBtn').addEventListener('click', toggleDashboard);
       
       // Auth modal
       document.getElementById('closeAuth').addEventListener('click', closeAuthModal);
@@ -1084,6 +1152,10 @@
           `;
         }
         
+        // Check if user is admin to show price
+        const isAdmin = localStorage.getItem('adminLoggedIn');
+        const priceHtml = isAdmin ? `<div class="product-price">PKR ${Number(product.price).toLocaleString()}</div>` : '';
+        
         productCard.innerHTML = `
           ${mediaHtml}
           <div class="product-details">
@@ -1091,12 +1163,12 @@
             <div class="product-code">Code: ${product.code}</div>
             <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
             <p class="product-description">${product.description}</p>
-            <div class="product-price">PKR ${Number(product.price).toLocaleString()}</div>
+            ${priceHtml}
             <span class="product-condition condition-${product.condition.toLowerCase()}">${product.condition}</span>
             <button class="add-to-cart-btn">
               <i class="fas fa-cart-plus"></i> Add to Cart
             </button>
-            <div class="product-actions" style="display: none;">
+            <div class="product-actions" style="display: ${isAdmin ? 'flex' : 'none'};">
               <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
               <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
             </div>
@@ -1205,14 +1277,36 @@
 
     function handleLogin(e) {
       e.preventDefault();
-      showNotification('Login functionality will be implemented here');
-      closeAuthModal();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      // Simple authentication (in a real app, this would use Firebase Auth)
+      if (email && password) {
+        showNotification('Login successful!');
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('userName').textContent = email.split('@')[0];
+        document.getElementById('userEmail').textContent = email;
+        document.getElementById('signInBtn').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
+        closeAuthModal();
+      } else {
+        document.getElementById('loginError').textContent = 'Please enter valid credentials';
+      }
     }
 
     function handleRegister(e) {
       e.preventDefault();
-      showNotification('Registration functionality will be implemented here');
-      closeAuthModal();
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      
+      if (name && email && password.length >= 6) {
+        showNotification('Registration successful! Please login.');
+        switchAuthTab('login');
+        document.getElementById('loginEmail').value = email;
+      } else {
+        document.getElementById('registerError').textContent = 'Please fill all fields with valid data';
+      }
     }
 
     function handleAdminLogin(e) {
@@ -1220,19 +1314,28 @@
       const email = document.getElementById('adminEmail').value;
       const password = document.getElementById('adminPassword').value;
       
-      // Simple admin authentication (in a real app, this would use Firebase Auth)
+      // Simple admin authentication
       if (email === 'apparel.machinery.pk@gmail.com' && password === 'admin123') {
         showNotification('Admin login successful!');
         document.getElementById('adminControls').style.display = 'flex';
         document.getElementById('adminLoginBtn').style.display = 'none';
         document.getElementById('dashboardBtn').style.display = 'inline-flex';
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('userName').textContent = 'Admin User';
+        document.getElementById('userEmail').textContent = email;
+        document.getElementById('signInBtn').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
         
-        // Show edit/delete buttons on products
+        // Show edit/delete buttons on products and prices
         document.querySelectorAll('.product-actions').forEach(action => {
           action.style.display = 'flex';
         });
+        document.querySelectorAll('.product-price').forEach(price => {
+          price.style.display = 'block';
+        });
         
         localStorage.setItem('adminLoggedIn', 'true');
+        localStorage.setItem('userEmail', email);
         closeAdminAuthModal();
       } else {
         document.getElementById('adminLoginError').textContent = 'Invalid admin credentials';
@@ -1313,11 +1416,19 @@
       document.getElementById('adminControls').style.display = 'none';
       document.getElementById('adminLoginBtn').style.display = 'inline-flex';
       document.getElementById('dashboardBtn').style.display = 'none';
+      document.getElementById('dashboardBtn').classList.remove('active');
+      document.getElementById('adminDashboard').style.display = 'none';
       document.getElementById('togglePositionBtn').classList.remove('active');
+      document.getElementById('signInBtn').style.display = 'inline-flex';
+      document.getElementById('signOutBtn').style.display = 'none';
+      document.getElementById('userInfo').style.display = 'none';
       
-      // Hide edit/delete buttons on products
+      // Hide edit/delete buttons on products and prices
       document.querySelectorAll('.product-actions').forEach(action => {
         action.style.display = 'none';
+      });
+      document.querySelectorAll('.product-price').forEach(price => {
+        price.style.display = 'none';
       });
       
       // Hide position handles
@@ -1326,24 +1437,53 @@
       });
       
       localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('userEmail');
     }
 
-    function openDashboard() {
-      showNotification('Admin dashboard will be shown here');
+    function toggleDashboard() {
+      const dashboard = document.getElementById('adminDashboard');
+      if (dashboard.style.display === 'block') {
+        dashboard.style.display = 'none';
+        document.getElementById('dashboardBtn').classList.remove('active');
+      } else {
+        dashboard.style.display = 'block';
+        document.getElementById('dashboardBtn').classList.add('active');
+        
+        // Update dashboard stats (in a real app, this would fetch from server)
+        const products = JSON.parse(localStorage.getItem('products') || '[]');
+        document.getElementById('totalProducts').textContent = products.length;
+      }
     }
 
     function checkAuthState() {
       // Check if admin is already logged in
       const isAdmin = localStorage.getItem('adminLoggedIn');
-      if (isAdmin) {
+      const userEmail = localStorage.getItem('userEmail');
+      
+      if (isAdmin && userEmail === 'apparel.machinery.pk@gmail.com') {
         document.getElementById('adminControls').style.display = 'flex';
         document.getElementById('adminLoginBtn').style.display = 'none';
         document.getElementById('dashboardBtn').style.display = 'inline-flex';
+        document.getElementById('signInBtn').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('userName').textContent = 'Admin User';
+        document.getElementById('userEmail').textContent = userEmail;
         
-        // Show edit/delete buttons on products
+        // Show edit/delete buttons on products and prices
         document.querySelectorAll('.product-actions').forEach(action => {
           action.style.display = 'flex';
         });
+        document.querySelectorAll('.product-price').forEach(price => {
+          price.style.display = 'block';
+        });
+      } else if (userEmail) {
+        // Regular user logged in
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('userName').textContent = userEmail.split('@')[0];
+        document.getElementById('userEmail').textContent = userEmail;
+        document.getElementById('signInBtn').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
       }
       
       // Check if banner data exists in localStorage
