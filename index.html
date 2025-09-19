@@ -2,1985 +2,545 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Apparel Machinery | Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apparel Machinery | Industrial Equipment</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background-color: #f5f5f5;
-      color: #333;
-      line-height: 1.6;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    
-    /* Header styles */
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 1rem 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-    
-    .logo span {
-      color: #3498db;
-    }
-    
-    nav ul {
-      display: flex;
-      list-style: none;
-    }
-    
-    nav ul li {
-      margin-right: 1.5rem;
-    }
-    
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    
-    nav ul li a:hover {
-      color: #3498db;
-    }
-    
-    /* Banner styles */
-    .banner {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
-      color: white;
-      padding: 4rem 0;
-      text-align: center;
-    }
-    
-    .banner h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    
-    .banner p {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    /* Products section */
-    .products-section {
-      padding: 3rem 0;
-    }
-    
-    .section-title {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2rem;
-      color: #2c3e50;
-    }
-    
-    .filters {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    
-    .filter-btn {
-      background: #ecf0f1;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .filter-btn.active, .filter-btn:hover {
-      background: #3498db;
-      color: white;
-    }
-    
-    .search-box {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-    
-    .search-input {
-      padding: 10px 15px;
-      width: 300px;
-      border: 1px solid #ddd;
-      border-radius: 4px 0 0 4px;
-    }
-    
-    .search-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 0 15px;
-      border-radius: 0 4px 4px 0;
-      cursor: pointer;
-    }
-    
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-    
-    .product-card {
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-      position: relative;
-    }
-    
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .product-image {
-      height: 200px;
-      overflow: hidden;
-    }
-    
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s;
-    }
-    
-    .product-card:hover .product-image img {
-      transform: scale(1.05);
-    }
-    
-    .product-details {
-      padding: 1.5rem;
-    }
-    
-    .product-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #2c3e50;
-    }
-    
-    .product-price {
-      font-weight: bold;
-      color: #e74c3c;
-      margin-bottom: 0.5rem;
-    }
-    
-    .product-description {
-      color: #7f8c8d;
-      margin-bottom: 1rem;
-      max-height: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .add-to-cart-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 4px;
-      width: 100%;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    
-    .add-to-cart-btn:hover {
-      background: #2980b9;
-    }
-    
-    /* Footer */
-    footer {
-      background: #2c3e50;
-      color: white;
-      padding: 2rem 0;
-      text-align: center;
-    }
-    
-    .footer-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .social-icons {
-      margin: 1rem 0;
-    }
-    
-    .social-icons a {
-      color: white;
-      margin: 0 10px;
-      font-size: 1.5rem;
-    }
-    
-    /* Notifications */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      border-radius: 4px;
-      color: white;
-      z-index: 1000;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity 0.3s, transform 0.3s;
-    }
-    
-    .notification.success {
-      background: #2ecc71;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .notification.error {
-      background: #e74c3c;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Admin Controls */
-    .admin-controls {
-      display: none;
-      justify-content: center;
-      margin: 2rem 0;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    
-    .admin-btn {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    
-    textarea.form-control {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
-    .submit-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 4px;
-      width: 100%;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    
-    /* Cart styles */
-    .cart-icon {
-      position: relative;
-    }
-    
-    .cart-count {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      background: #e74c3c;
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.8rem;
-    }
-    
-    /* Order form styles */
-    .order-form-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      margin: 2rem auto;
-      max-width: 600px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    
-    .order-form-title {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #2c3e50;
-    }
-    
-    /* Product condition styles */
-    .product-condition {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      margin-bottom: 1rem;
-    }
-    
-    .condition-new {
-      background: #2ecc71;
-      color: white;
-    }
-    
-    .condition-used {
-      background: #f39c12;
-      color: white;
-    }
-    
-    .condition-refurbished {
-      background: #3498db;
-      color: white;
-    }
-    
-    /* Admin product list styles */
-    .admin-product-list {
-      background: white;
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    
-    .admin-product-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .admin-product-item:last-child {
-      border-bottom: none;
-    }
-    
-    .admin-product-actions {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .edit-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    .delete-btn {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    /* Place Order Button */
-    .place-order-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #2ecc71;
-      color: white;
-      border: none;
-      padding: 15px 25px;
-      border-radius: 50px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      display: none;
-      z-index: 999;
-    }
-    
-    /* Image upload preview */
-    .image-preview {
-      width: 100%;
-      height: 200px;
-      border: 1px dashed #ddd;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    
-    .image-preview img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-    
-    .image-preview-text {
-      color: #7f8c8d;
-    }
-    
-    /* Word count indicator */
-    .word-count {
-      text-align: right;
-      font-size: 0.8rem;
-      color: #7f8c8d;
-      margin-top: 0.25rem;
-    }
-    
-    /* Admin only elements */
-    .admin-only {
-      display: none;
-    }
-    
-    /* Position controls */
-    .position-controls {
-      display: flex;
-      gap: 5px;
-      margin-left: 10px;
-    }
-    
-    .position-up-btn, .position-down-btn {
-      background: #95a5a6;
-      color: white;
-      border: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .position-up-btn:hover, .position-down-btn:hover {
-      background: #7f8c8d;
-    }
-    
-    /* Default product indicator */
-    .default-product-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #f39c12;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: bold;
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      nav ul {
-        margin-top: 1rem;
-        justify-content: center;
-      }
-      
-      .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      }
-      
-      .admin-controls {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .admin-product-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-      
-      .admin-product-actions {
-        width: 100%;
-        justify-content: space-between;
-      }
+    body { font-family:sans-serif; background:#f5f5f5; }
+    .container { max-width:1100px; margin:30px auto; background:#fff; border-radius:8px; box-shadow:0 3px 16px #0002;}
+    .header-content { background:#223449; color:#fff; padding:18px 30px; border-radius:8px 8px 0 0; display:flex; align-items:center; }
+    .logo { font-size:2rem; font-weight:bold; margin-right:40px;}
+    .logo span { color:#62a6e7;}
+    nav { flex:1;}
+    nav ul { list-style:none; display:flex; gap:30px; margin:0; padding:0;}
+    nav ul li a { color:#fff; text-decoration:none; font-size:1.1rem;}
+    nav ul li a:hover { color:#62a6e7;}
+    .cart-icon { position:relative;}
+    .cart-badge { position:absolute; top:-9px; right:-7px; background:#e74c3c; color:#fff; font-size:0.8rem; border-radius:50%; padding:4px 7px; font-weight:bold;}
+    .admin-label {margin-left:10px;}
+    .admin-btn { background:#e74c3c; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:1rem; font-weight:500; cursor:pointer; transition:background 0.2s;}
+    .admin-btn:hover { background:#c0392b;}
+    .banner-section { position:relative; width:100%; min-height:270px; background:#223449;}
+    .banner-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.60; border-radius:0;}
+    .banner-content { position:relative; z-index:3; text-align:center; padding:70px 20px 55px 20px;}
+    .banner-content h1 { color:#fff; font-size:2.7rem; font-weight:700; margin-bottom:16px;}
+    .banner-content p { color:#fafafa; font-size:1.14rem; max-width:700px; margin:0 auto;}
+    .admin-action-bar { display:flex; gap:16px; justify-content:center; margin:32px 0 0 0;}
+    .admin-action-btn { background:#e74c3c; color:#fff; border:none; padding:13px 24px; font-size:1.1rem; border-radius:6px; font-weight:500; cursor:pointer; transition:background 0.2s;}
+    .admin-action-btn i { margin-right:8px;}
+    .admin-action-btn:hover { background:#c0392b;}
+    .section {padding:36px 24px 10px 24px;}
+    .section-title {text-align:center; font-size:2.2rem; font-weight:700; color:#223449; margin-bottom:28px;}
+    .category-pills { display: flex; flex-wrap: wrap; gap: 14px; justify-content:center; margin-bottom:22px;}
+    .cat-pill { background: #f1f5f9; border-radius: 22px; padding: 11px 26px; font-size: 1.09rem; color: #222; font-weight: 500; cursor: pointer; border: none; outline: none; transition: background 0.18s, color 0.18s; box-shadow:0 2px 9px #0001;}
+    .cat-pill.active, .cat-pill:hover { background: #62a6e7; color: #fff;}
+    .products-grid { display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin-top:24px;}
+    .product-card { background:#fff; border-radius:10px; box-shadow:0 2px 12px #0001; padding:18px 19px 13px 19px; width:260px; position:relative; display:flex; flex-direction:column; align-items:center;}
+    .product-card img { width:100%; height:140px; object-fit:cover; border-radius:8px; background:#f4f4f4;}
+    .product-title { font-size:1.11rem; font-weight:700; margin-top:11px; color:#223449;}
+    .product-category { color:#62a6e7; font-size:0.94rem; margin:5px 0 2px 0;}
+    .product-price { font-size:1.09rem; color:#e74c3c; font-weight:600;}
+    .product-actions {display:flex; gap:7px; margin-top:6px;}
+    .action-btn { border: none; padding: 6px 13px; border-radius: 6px; font-size: 0.98rem; font-weight:500; cursor:pointer; }
+    .action-btn.edit { background:#62a6e7; color:#fff;}
+    .action-btn.delete { background:#e74c3c; color:#fff;}
+    .action-btn.edit:hover { background:#223449;}
+    .action-btn.delete:hover { background:#c0392b;}
+    .footer { background:#223449; color:#fff; padding:36px 0 18px 0; text-align:center; margin-top:40px;}
+    .footer-title { font-size:1.3rem; font-weight:700;}
+    .footer-tagline { font-size:1.08rem; margin-bottom:18px;}
+    .footer-social { display:flex; justify-content:center; gap:18px; margin-bottom:16px;}
+    .footer-social a { color:#fff; font-size:1.3rem;}
+    .footer-contact { font-size:1rem; margin-bottom:7px;}
+    .footer-contact a { color:#62a6e7;}
+    .footer-author { font-size:1rem; opacity:0.8;}
+    .manage-modal { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(30,40,60,0.80); justify-content:center; align-items:center; z-index:9999;}
+    .manage-modal.show { display:flex; }
+    #productModal .modal-content, #bannerModal .modal-content, #catModal .modal-content {
+      background:#fff;color:#223449;
+      width:99vw;
+      max-width:650px;
+      min-height:400px;
+      padding:32px 30px 24px 30px;
+      border-radius:12px;
+      box-shadow:0 4px 32px #0003;
+      overflow-y:auto;
+      max-height:90vh;
+      position:relative;
+    }
+    #productModal .modal-content::-webkit-scrollbar,
+    #bannerModal .modal-content::-webkit-scrollbar,
+    #catModal .modal-content::-webkit-scrollbar {
+      width: 9px;
+      background: #e0e5f5;
+      border-radius: 16px;
+    }
+    #productModal .modal-content::-webkit-scrollbar-thumb,
+    #bannerModal .modal-content::-webkit-scrollbar-thumb,
+    #catModal .modal-content::-webkit-scrollbar-thumb {
+      background: #62a6e7;
+      border-radius: 16px;
+    }
+    #productModal .modal-header, #bannerModal .modal-header, #catModal .modal-header { margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;}
+    #productModal label, #bannerModal label, #catModal label { font-weight:500; margin-bottom:5px; display:block; color:#222; }
+    #productModal input, #productModal textarea, #productModal select,
+    #bannerModal input, #bannerModal textarea,
+    #catModal input { margin-bottom:18px; width:100%; border-radius:6px; border:1px solid #ccc; padding:10px; font-size:1rem; background:#f9f9f9; box-sizing:border-box; resize:none; }
+    #productModal textarea { min-height:100px; max-height:220px; font-size:1rem; }
+    #productModal .form-group, #bannerModal .form-group, #catModal .form-group { margin-bottom:10px;}
+    #productModal .img-preview, #bannerModal .img-preview {
+      width:100%; height:140px; border:1.5px dashed #ddd; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#888; background:#fafbfc; margin-bottom:16px; overflow:hidden;
+    }
+    #productModal .img-preview img, #bannerModal .img-preview img { max-width:100%; max-height:100%; border-radius:6px; display:block;}
+    #productModal .modal-footer, #bannerModal .modal-footer, #catModal .modal-footer { margin-top:22px; display:flex; justify-content:flex-end;}
+    #productModal .admin-btn, #bannerModal .admin-btn, #catModal .admin-btn {
+      background:#62a6e7; color:white; border:none; padding:12px 0; border-radius:6px; width:100%; font-size:1.07rem; font-weight:500; margin-top:8px;
+    }
+    #productModal .close-modal, #bannerModal .close-modal, #catModal .close-modal { font-size:2rem; margin-left:10px; cursor:pointer;border:none;background:none;}
+    #loginModal .modal-content {
+      background:#223449; color:#fff; border-radius:14px; min-width:320px; max-width:350px; margin-top:50px; box-shadow:0 6px 38px #0005; padding:38px 30px 24px 30px; position:relative;
+    }
+    #loginModal label {font-weight:500; margin-bottom:7px; display:block; color:#eee;}
+    #loginModal input[type="email"],#loginModal input[type="password"] { width:100%; border-radius:7px; border:1.5px solid #62a6e7; background:#fff; color:#223449; font-size:1.07rem; padding:11px 14px; margin-bottom:17px;}
+    #loginModal .admin-btn { background:#62a6e7; color:#fff; border:none; border-radius:7px; font-size:1.07rem; padding:12px 0; margin-top:4px;}
+    #loginModal .admin-btn:hover {background:#3568a6;}
+    #loginModal .close-modal {font-size:2rem; position:absolute; right:22px; top:22px; color:#fff;}
+    #loginError {color:#ffd8d8;}
+    #loginModal p {margin-top:10px;}
+    .hidden { display:none !important; }
+    #noProductsMsg{margin-bottom:40px;}
+    @media(max-width:900px){.container{max-width:99vw;}}
+    @media(max-width:700px){
+      #productModal .modal-content, #bannerModal .modal-content, #catModal .modal-content, #loginModal .modal-content {max-width:99vw;padding:18px;}
+      .container {padding:8px;}
+      .modal-content{padding:14px;}
+      .header-content {padding:10px;}
+      .category-pills {gap:7px;}
+      .cat-pill {padding:8px 13px;}
+      .products-grid{gap:16px;}
+      .admin-action-btn{padding:10px 9px;}
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">Apparel <span>Machinery</span></div>
-        <nav>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li>
-              <a href="#" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
-              </a>
-            </li>
-            <li id="userInfo" style="display: none;">
-              <span id="userName"></span>
-            </li>
-            <li>
-              <button id="signInBtn" class="admin-btn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
-              <button id="signOutBtn" class="admin-btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- Banner -->
-  <section class="banner" id="home">
-    <div class="container">
-      <h1 id="bannerTitle">Premium Industrial Machinery</h1>
-      <p id="bannerDescription">Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
-    </div>
-  </section>
-
-  <!-- Admin Controls -->
   <div class="container">
-    <div id="adminControls" class="admin-controls">
-      <button id="addProductBtn" class="admin-btn"><i class="fas fa-plus"></i> Add New Product</button>
-      <button id="editBannerBtn" class="admin-btn"><i class="fas fa-edit"></i> Edit Banner</button>
-      <button id="viewProductsBtn" class="admin-btn"><i class="fas fa-list"></i> View Products</button>
-      <button id="manageCategoriesBtn" class="admin-btn"><i class="fas fa-tags"></i> Manage Categories</button>
+    <!-- Header -->
+    <div class="header-content">
+      <div class="logo">Apparel <span>Machinery</span></div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Products</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      <span class="cart-icon" style="margin-right:18px;">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge">0</span>
+      </span>
+      <span class="admin-label" id="adminLabel" style="margin-right:10px;">Admin</span>
+      <button id="loginBtn" class="admin-btn">Admin Login</button>
+      <button id="logoutBtn" class="admin-btn hidden">Sign Out</button>
+    </div>
+    <!-- Banner -->
+    <div class="banner-section">
+      <img class="banner-bg" id="bannerImgPreview"
+        src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80"
+        alt="Banner" />
+      <div class="banner-content">
+        <h1 id="bannerTitleText">Premium Industrial Machinery</h1>
+        <p id="bannerDescText">Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
+      </div>
+    </div>
+    <div class="admin-action-bar hidden" id="adminBar">
+      <button class="admin-action-btn" onclick="openProductModal()"><i class="fas fa-plus"></i> Add New Product</button>
+      <button class="admin-action-btn" onclick="openBannerModal()"><i class="fas fa-edit"></i> Edit Banner</button>
+      <button class="admin-action-btn" onclick="viewAllProducts()"><i class="fas fa-list"></i> View Products</button>
+      <button class="admin-action-btn" onclick="openCatModal()"><i class="fas fa-tags"></i> Manage Categories</button>
+    </div>
+    <div class="section">
+      <div class="section-title">Our Products</div>
+      <div class="category-pills" id="categoriesPills"></div>
+      <div id="productsGrid" class="products-grid"></div>
+      <div id="noProductsMsg" style="text-align:center; color:#888; font-size:1.07rem; margin-top:36px; display:none;">No products found</div>
+    </div>
+    <div class="footer">
+      <div class="footer-title">Apparel Machinery</div>
+      <div class="footer-tagline">Your Trusted Partner for Industrial Equipment</div>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      <div class="footer-contact">
+        Contact: <a href="mailto:apparel.machinery.pk@gmail.com">apparel.machinery.pk@gmail.com</a> | Phone: +923315111330
+      </div>
+      <div class="footer-author">Muhammad Yameen Ansari</div>
     </div>
   </div>
-
-  <!-- Products Section -->
-  <section class="products-section" id="products">
-    <div class="container">
-      <h2 class="section-title">Our Products</h2>
-      
-      <div class="filters">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="sewing">Sewing Machines</button>
-        <button class="filter-btn" data-category="cutting">Cutting Machines</button>
-        <button class="filter-btn" data-category="pressing">Pressing Equipment</button>
-        <button class="filter-btn" data-category="embroidery">Embroidery Machines</button>
-        <button class="filter-btn" data-category="washing">Washing Machines</button>
-        <button class="filter-btn" data-category="boiler">Boiler Machines</button>
-        <button class="filter-btn" data-category="generator">Generators</button>
-        <button class="filter-btn" data-category="compressor">Compressors</button>
-        <button class="filter-btn" data-category="accessories">Accessories</button>
-        <button class="filter-btn" data-category="management">Management Equipment</button>
-      </div>
-      
-      <div class="search-box">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
-        <button id="searchBtn" class="search-btn"><i class="fas fa-search"></i></button>
-      </div>
-      
-      <div id="productsGrid" class="products-grid">
-        <!-- Products will be loaded here dynamically -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Order Form Section -->
-  <section class="order-section" id="orderSection" style="display: none;">
-    <div class="container">
-      <div class="order-form-container">
-        <h2 class="order-form-title">Place Your Order</h2>
-        <form id="orderForm">
-          <div class="form-group">
-            <label for="customerName">Your Name</label>
-            <input type="text" id="customerName" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="customerEmail">Email</label>
-            <input type="email" id="customerEmail" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="customerPhone">Phone Number</label>
-            <input type="tel" id="customerPhone" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="productInterest">Product of Interest</label>
-            <select id="productInterest" class="form-control" required>
-              <option value="">Select a product</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="orderMessage">Additional Message</label>
-            <textarea id="orderMessage" class="form-control" rows="4"></textarea>
-          </div>
-          <button type="submit" class="submit-btn">Send Order via WhatsApp</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer id="contact">
-    <div class="container">
-      <div class="footer-content">
-        <h3>Apparel Machinery</h3>
-        <p>Your Trusted Partner for Industrial Equipment</p>
-        <div class="social-icons">
-          <a href="https://web.facebook.com/Aligo786/" target="_blank"><i class="fab fa-facebook"></i></a>
-          <a href="https://x.com/m_yameen_ansai1?s=21" target="_blank"><i class="fab fa-twitter"></i></a>
-          <a href="https://www.instagram.com/m.yameenansari?igsh=eDRsdjFhMHJwYjd3&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://bit.ly/m/myameenansari" target="_blank"><i class="fab fa-linkedin"></i></a>
-          <a href="https://wa.me/923155111330" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <p>Contact: <a href="mailto:apparel.machinery.pk@gmail.com" style="color: white;">apparel.machinery.pk@gmail.com</a> | Phone: <a href="https://wa.me/923155111330" style="color: white;">+92 315 5111330</a></p>
-        <p>Muhammad Yameen Ansari</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Add Product Modal -->
-  <div id="addProductModal" class="modal">
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="manage-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Add New Product</h3>
-        <button class="close-modal">&times;</button>
+        <h3 id="productModalTitle">Add New Product</h3>
+        <button class="close-modal" onclick="closeProductModal()">&times;</button>
       </div>
-      <form id="addProductForm">
-        <div class="form-group">
-          <label for="productTitle">Product Name *</label>
-          <input type="text" id="productTitle" class="form-control" required>
+      <form id="productForm">
+        <input type="hidden" id="productId" />
+        <div class="form-group"><label>Product Name *</label><input type="text" id="prodTitle" required placeholder="Name..." /></div>
+        <div class="form-group"><label>Product Code *</label><input type="text" id="prodCode" required placeholder="Code..." /></div>
+        <div class="form-group"><label>Manufacturer *</label><input type="text" id="prodManufacturer" required placeholder="Brand..." /></div>
+        <div class="form-group"><label>Category *</label>
+          <select id="prodCategory" required></select>
         </div>
-        <div class="form-group">
-          <label for="productCode">Product Code *</label>
-          <input type="text" id="productCode" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="productManufacturer">Manufacturer *</label>
-          <input type="text" id="productManufacturer" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="productCategory">Category *</label>
-          <select id="productCategory" class="form-control" required>
-            <option value="sewing">Sewing Machines</option>
-            <option value="cutting">Cutting Machines</option>
-            <option value="pressing">Pressing Equipment</option>
-            <option value="embroidery">Embroidery Machines</option>
-            <option value="washing">Washing Machines</option>
-            <option value="boiler">Boiler Machines</option>
-            <option value="generator">Generators</option>
-            <option value="compressor">Compressors</option>
-            <option value="accessories">Accessories</option>
-            <option value="management">Management Equipment</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="productCondition">Condition *</label>
-          <select id="productCondition" class="form-control" required>
+        <div class="form-group"><label>Condition *</label>
+          <select id="prodCondition" required>
             <option value="New">New</option>
             <option value="Used">Used</option>
             <option value="Refurbished">Refurbished</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="productDescription">Description (up to 500 words) *</label>
-          <textarea id="productDescription" class="form-control" rows="5" required maxlength="2500"></textarea>
-          <div class="word-count" id="descriptionWordCount">0/500 words</div>
-        </div>
-        <div class="form-group">
-          <label for="productPrice">Price (PKR) *</label>
-          <input type="number" id="productPrice" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="productImageUrl">Image URL</label>
-          <input type="text" id="productImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="form-group">
-          <label for="productImage">Or Upload Image *</label>
-          <input type="file" id="productImage" class="form-control" accept="image/*">
-          <div class="image-preview" id="imagePreview">
-            <div class="image-preview-text">Image preview will appear here</div>
+        <div class="form-group"><label>Description (up to 500 words) *</label>
+          <textarea id="prodDesc" maxlength="500" required placeholder="Description..."></textarea>
+          <div style="text-align:right;font-size:0.9em;color:#888;">
+            <span id="descWordsCount">0</span>/500 words
           </div>
         </div>
-        <div id="addProductError" style="color: red; margin-bottom: 1rem;"></div>
-        <button type="submit" class="submit-btn">Add Product</button>
+        <div class="form-group"><label>Price (PKR) *</label><input type="number" id="prodPrice" required placeholder="PKR..." min="0" /></div>
+        <div class="form-group"><label>Image URL</label><input type="text" id="prodImage" placeholder="https://example.com/image.jpg" /></div>
+        <div class="form-group"><label>Or Upload Image *</label><input type="file" id="prodImgFile" accept="image/*" /></div>
+        <div class="img-preview" id="productImgPreview">Image preview will appear here</div>
+        <div class="modal-footer"><button type="submit" class="admin-btn">Save Product</button></div>
       </form>
     </div>
   </div>
-
-  <!-- Edit Product Modal -->
-  <div id="editProductModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Edit Product</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <form id="editProductForm">
-        <input type="hidden" id="editProductId">
-        <div class="form-group">
-          <label for="editProductTitle">Product Name *</label>
-          <input type="text" id="editProductTitle" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="editProductCode">Product Code *</label>
-          <input type="text" id="editProductCode" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="editProductManufacturer">Manufacturer *</label>
-          <input type="text" id="editProductManufacturer" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="editProductCategory">Category *</label>
-          <select id="editProductCategory" class="form-control" required>
-            <option value="sewing">Sewing Machines</option>
-            <option value="cutting">Cutting Machines</option>
-            <option value="pressing">Pressing Equipment</option>
-            <option value="embroidery">Embroidery Machines</option>
-            <option value="washing">Washing Machines</option>
-            <option value="boiler">Boiler Machines</option>
-            <option value="generator">Generators</option>
-            <option value="compressor">Compressors</option>
-            <option value="accessories">Accessories</option>
-            <option value="management">Management Equipment</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="editProductCondition">Condition *</label>
-          <select id="editProductCondition" class="form-control" required>
-            <option value="New">New</option>
-            <option value="Used">Used</option>
-            <option value="Refurbished">Refurbished</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="editProductDescription">Description (up to 500 words) *</label>
-          <textarea id="editProductDescription" class="form-control" rows="5" required maxlength="2500"></textarea>
-          <div class="word-count" id="editDescriptionWordCount">0/500 words</div>
-        </div>
-        <div class="form-group">
-          <label for="editProductPrice">Price (PKR) *</label>
-          <input type="number" id="editProductPrice" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="editProductImageUrl">Image URL</label>
-          <input type="text" id="editProductImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="form-group">
-          <label for="editProductImage">Or Upload Image</label>
-          <input type="file" id="editProductImage" class="form-control" accept="image/*">
-          <div class="image-preview" id="editImagePreview">
-            <div class="image-preview-text">Image preview will appear here</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="editProductPosition">Display Position *</label>
-          <input type="number" id="editProductPosition" class="form-control" min="1" required>
-        </div>
-        <div id="editProductError" style="color: red; margin-bottom: 1rem;"></div>
-        <button type="submit" class="submit-btn">Save Changes</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Edit Banner Modal -->
-  <div id="editBannerModal" class="modal">
+  <!-- Banner Modal -->
+  <div id="bannerModal" class="manage-modal">
     <div class="modal-content">
       <div class="modal-header">
         <h3>Edit Banner</h3>
-        <button class="close-modal">&times;</button>
+        <button class="close-modal" onclick="closeBannerModal()">&times;</button>
       </div>
-      <form id="editBannerForm">
-        <div class="form-group">
-          <label for="bannerTitleInput">Banner Title</label>
-          <input type="text" id="bannerTitleInput" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="bannerDescriptionInput">Banner Description</label>
-          <textarea id="bannerDescriptionInput" class="form-control" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="bannerImageUrl">Banner Image URL</label>
-          <input type="text" id="bannerImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="form-group">
-          <label for="bannerImageUpload">Or Upload Banner Image</label>
-          <input type="file" id="bannerImageUpload" class="form-control" accept="image/*">
-          <div class="image-preview" id="bannerImagePreview">
-            <div class="image-preview-text">Banner image preview will appear here</div>
-          </div>
-        </div>
-        <button type="submit" class="submit-btn">Update Banner</button>
+      <form id="bannerForm">
+        <div class="form-group"><label>Banner Title</label><input type="text" id="bannerTitleInput" required /></div>
+        <div class="form-group"><label>Banner Description</label><textarea id="bannerDescInput" required></textarea></div>
+        <div class="form-group"><label>Banner Image URL</label><input type="text" id="bannerImgInput" required /></div>
+        <div class="img-preview" id="bannerImgPreviewModal"></div>
+        <div class="modal-footer"><button type="submit" class="admin-btn">Update Banner</button></div>
       </form>
     </div>
   </div>
-
-  <!-- Manage Products Modal -->
-  <div id="manageProductsModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Manage Products</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <div class="admin-product-list">
-        <div id="adminProductsList">
-          <!-- Admin products will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Manage Categories Modal -->
-  <div id="manageCategoriesModal" class="modal">
+  <!-- Category Modal -->
+  <div id="catModal" class="manage-modal">
     <div class="modal-content">
       <div class="modal-header">
         <h3>Manage Categories</h3>
-        <button class="close-modal">&times;</button>
+        <button class="close-modal" onclick="closeCatModal()">&times;</button>
       </div>
-      <div class="category-management">
-        <form id="addCategoryForm">
-          <div class="form-group">
-            <label for="newCategoryName">Category Name</label>
-            <input type="text" id="newCategoryName" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="newCategoryValue">Category Value (English, without spaces)</label>
-            <input type="text" id="newCategoryValue" class="form-control" required>
-          </div>
-          <button type="submit" class="submit-btn">Add Category</button>
-        </form>
-        
-        <div class="category-list">
-          <h4>Existing Categories</h4>
-          <div id="categoriesList">
-            <!-- Categories will be loaded here -->
-          </div>
-        </div>
-      </div>
+      <div id="catList"></div>
+      <form id="addCatForm" style="margin-top:18px;">
+        <label>Add New Category</label>
+        <input type="text" id="newCatInput" placeholder="New Category Name" required />
+        <div class="modal-footer"><button type="submit" class="admin-btn">Add Category</button></div>
+      </form>
     </div>
   </div>
-
-  <!-- Sign In Modal -->
-  <div id="signInModal" class="modal">
+  <!-- Login Modal -->
+  <div id="loginModal" class="manage-modal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3>Sign In</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <form id="signInForm">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" class="form-control" required>
-        </div>
-        <div id="signInError" style="color: red; margin-bottom: 1rem;"></div>
-        <button type="submit" class="submit-btn">Sign In</button>
+      <button class="close-modal" onclick="closeLoginModal()">&times;</button>
+      <h3 style="margin-bottom:16px;">Admin Login</h3>
+      <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required autocomplete="username" />
+        <label>Password</label>
+        <input type="password" id="loginPass" required autocomplete="current-password" />
+        <div id="loginError" style="margin-bottom: 8px;"></div>
+        <button type="submit" class="admin-btn" style="width:100%;">Login</button>
       </form>
       <p style="margin-top: 1rem; text-align: center;">
-        Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
+        Admin: apparel.machinery.pk@gmail.com / admin123
       </p>
     </div>
   </div>
-
-  <!-- Sign Up Modal -->
-  <div id="signUpModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Sign Up</h3>
-        <button class="close-modal">&times;</button>
-      </div>
-      <form id="signUpForm">
-        <div class="form-group">
-          <label for="signupName">Full Name</label>
-          <input type="text" id="signupName" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="signupEmail">Email</label>
-          <input type="email" id="signupEmail" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="signupPassword">Password (at least 6 characters)</label>
-          <input type="password" id="signupPassword" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="signupConfirmPassword">Confirm Password</label>
-          <input type="password" id="signupConfirmPassword" class="form-control" required>
-        </div>
-        <div id="signUpError" style="color: red; margin-bottom: 1rem;"></div>
-        <button type="submit" class="submit-btn">Sign Up</button>
-      </form>
-      <p style="margin-top: 1rem; text-align: center;">
-        Already have an account? <a href="#" id="showSignIn">Sign In</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Notification -->
-  <div id="notification" class="notification"></div>
-
-  <!-- Place Order Button -->
-  <button id="placeOrderBtn" class="place-order-btn">
-    <i class="fas fa-shopping-cart"></i> Place Your Order
-  </button>
-
   <script>
-    // Global variables
-    let currentUser = null;
+    // Admin credentials
+    const ADMIN_EMAIL = "apparel.machinery.pk@gmail.com";
+    const ADMIN_PASS = "admin123";
+    // Categories
+    let categories = [
+      "Sewing Machines", "Cutting Machines", "Pressing Equipment", "Embroidery Machines", "Washing Machines", "Boiler Machines", "Generators", "Compressors", "Accessories", "Management Equipment"
+    ];
+    let products = [
+      {id:1,title:"Industrial Sewing Machine",code:"SM-1234",manufacturer:"Brother",description:"Heavy-duty sewing machine.",price:85000,image:"https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?auto=format&fit=crop&w=600&q=80",category:"Sewing Machines",condition:"New"},
+      {id:2,title:"Fabric Cutting Machine",code:"CM-5678",manufacturer:"Eastman",description:"Precision cutting machine.",price:120000,image:"https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?auto=format&fit=crop&w=600&q=80",category:"Cutting Machines",condition:"Refurbished"}
+    ];
+    let selectedCategory = categories[0];
     let isAdmin = false;
-    let cart = [];
-    const adminEmails = ["apparel.machinery.pk@gmail.com"];
-    const adminPassword = "admin123"; // Default admin password
-    let products = [];
-    let categories = [];
-    let users = []; // Added users array
-
-    // Initialize the application when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      // Load initial data
-      loadInitialData();
-      
-      // Set up event listeners for buttons
-      setupEventListeners();
-      
-      // Update cart UI
-      updateCartUI();
-      
-      // Check if user is already logged in (from localStorage)
-      checkAuthState();
-      
-      // Render products
-      renderProducts();
-    });
-
-    function loadInitialData() {
-      // Load users from localStorage or set default
-      const savedUsers = localStorage.getItem('users');
-      if (savedUsers) {
-        users = JSON.parse(savedUsers);
-      } else {
-        // Add default admin user
-        users = [
-          {
-            name: "Admin",
-            email: "apparel.machinery.pk@gmail.com",
-            password: "admin123"
-          }
-        ];
-        localStorage.setItem('users', JSON.stringify(users));
-      }
-      
-      // Load products from localStorage or set default
-      const savedProducts = localStorage.getItem('products');
-      if (savedProducts) {
-        products = JSON.parse(savedProducts);
-      } else {
-        // Default products
-        products = [
-          {
-            id: 1,
-            code: 'AM-SM001',
-            title: 'Industrial Sewing Machine',
-            description: 'Heavy-duty sewing machine for industrial use with automatic threading.',
-            manufacturer: 'Brother Industries',
-            price: 85000,
-            category: 'sewing',
-            condition: 'New',
-            image: 'https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-            isDefault: true,
-            position: 1
-          },
-          {
-            id: 2,
-            code: 'AM-FC002',
-            title: 'Fabric Cutting Machine',
-            description: 'Precision fabric cutting machine with laser guidance system.',
-            manufacturer: 'Eastman Machine Company',
-            price: 120000,
-            category: 'cutting',
-            condition: 'Refurbished',
-            image: 'https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-            isDefault: true,
-            position: 2
-          },
-          {
-            id: 3,
-            code: 'AM-PM003',
-            title: 'Production Management Suite',
-            description: 'Complete software solution for apparel production management.',
-            manufacturer: 'Apparel Management Solutions',
-            price: 45000,
-            category: 'management',
-            condition: 'New',
-            image: 'https://images.unsplash.com/photo-1611019130372-e64d1cdc241e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-            isDefault: true,
-            position: 3
-          }
-        ];
-        localStorage.setItem('products', JSON.stringify(products));
-      }
-      
-      // Load categories from localStorage or set default
-      const savedCategories = localStorage.getItem('categories');
-      if (savedCategories) {
-        categories = JSON.parse(savedCategories);
-      } else {
-        // Default categories
-        categories = [
-          { name: 'Sewing Machines', value: 'sewing' },
-          { name: 'Cutting Machines', value: 'cutting' },
-          { name: 'Pressing Equipment', value: 'pressing' },
-          { name: 'Embroidery Machines', value: 'embroidery' },
-          { name: 'Washing Machines', value: 'washing' },
-          { name: 'Boiler Machines', value: 'boiler' },
-          { name: 'Generators', value: 'generator' },
-          { name: 'Compressors', value: 'compressor' },
-          { name: 'Accessories', value: 'accessories' },
-          { name: 'Management Equipment', value: 'management' }
-        ];
-        localStorage.setItem('categories', JSON.stringify(categories));
-      }
+    // UI
+    function updateAdminUI() {
+      document.getElementById('adminBar').classList.toggle('hidden', !isAdmin);
+      document.getElementById('logoutBtn').classList.toggle('hidden', !isAdmin);
+      document.getElementById('loginBtn').classList.toggle('hidden', isAdmin);
+      document.getElementById('adminLabel').classList.toggle('hidden', !isAdmin);
     }
-
-    function setupEventListeners() {
-      // Category filter buttons - FIXED: Added proper event delegation
-      document.querySelector('.filters').addEventListener('click', function(e) {
-        if (e.target.classList.contains('filter-btn')) {
-          handleCategoryFilter(e);
-        }
-      });
-      
-      // Search functionality
-      document.getElementById('searchBtn').addEventListener('click', handleSearch);
-      document.getElementById('searchInput').addEventListener('keyup', function(e) {
-        if (e.key === 'Enter') handleSearch();
-      });
-      
-      // Modal close buttons
-      document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', closeAllModals);
-      });
-      
-      // Click outside modal to close
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-          if (e.target === this) closeAllModals();
-        });
-      });
-      
-      // Admin buttons
-      document.getElementById('addProductBtn').addEventListener('click', openAddProductModal);
-      document.getElementById('editBannerBtn').addEventListener('click', openEditBannerModal);
-      document.getElementById('viewProductsBtn').addEventListener('click', openManageProductsModal);
-      document.getElementById('manageCategoriesBtn').addEventListener('click', openManageCategoriesModal);
-      
-      // Form submissions
-      document.getElementById('signInForm').addEventListener('submit', handleSignIn);
-      document.getElementById('signUpForm').addEventListener('submit', handleSignUp);
-      document.getElementById('orderForm').addEventListener('submit', handleOrderForm);
-      document.getElementById('addProductForm').addEventListener('submit', handleAddProduct);
-      document.getElementById('editProductForm').addEventListener('submit', handleEditProduct);
-      document.getElementById('editBannerForm').addEventListener('submit', handleEditBanner);
-      document.getElementById('addCategoryForm').addEventListener('submit', handleAddCategory);
-      
-      // Auth buttons
-      document.getElementById('signInBtn').addEventListener('click', openSignInModal);
-      document.getElementById('signOutBtn').addEventListener('click', handleSignOut);
-      document.getElementById('showSignUp').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('signInModal').style.display = 'none';
-        document.getElementById('signUpModal').style.display = 'flex';
-      });
-      document.getElementById('showSignIn').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('signUpModal').style.display = 'none';
-        document.getElementById('signInModal').style.display = 'flex';
-      });
-      
-      // Place Order button
-      document.getElementById('placeOrderBtn').addEventListener('click', function() {
-        document.getElementById('orderSection').style.display = 'block';
-        window.location.href = '#orderSection';
-      });
-      
-      // Image preview for product image upload
-      document.getElementById('productImage').addEventListener('change', function() {
-        previewImage(this, 'imagePreview');
-      });
-      
-      document.getElementById('editProductImage').addEventListener('change', function() {
-        previewImage(this, 'editImagePreview');
-      });
-      
-      // Banner image upload preview
-      document.getElementById('bannerImageUpload').addEventListener('change', function() {
-        previewImage(this, 'bannerImagePreview');
-      });
-      
-      // Word count for description
-      document.getElementById('productDescription').addEventListener('input', function() {
-        updateWordCount(this, 'descriptionWordCount');
-      });
-      
-      document.getElementById('editProductDescription').addEventListener('input', function() {
-        updateWordCount(this, 'editDescriptionWordCount');
-      });
+    // Login Modal
+    document.getElementById('loginBtn').onclick = function(){
+      document.getElementById('loginModal').classList.add('show');
+      document.getElementById('loginError').textContent = "";
+      document.getElementById('loginEmail').value = "";
+      document.getElementById('loginPass').value = "";
+    };
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('show');
+      document.getElementById('loginError').textContent = "";
     }
-
-    function updateWordCount(textarea, countElementId) {
-      const text = textarea.value;
-      const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-      document.getElementById(countElementId).textContent = `${words}/500 words`;
-      
-      if (words > 500) {
-        document.getElementById(countElementId).style.color = 'red';
-      } else {
-        document.getElementById(countElementId).style.color = '#7f8c8d';
-      }
-    }
-
-    function previewImage(input, previewElementId) {
-      const preview = document.getElementById(previewElementId);
-      const file = input.files[0];
-      
-      if (file) {
-        const reader = new FileReader();
-        
-        reader.addEventListener('load', function() {
-          preview.innerHTML = '';
-          const img = document.createElement('img');
-          img.src = reader.result;
-          preview.appendChild(img);
-        });
-        
-        reader.readAsDataURL(file);
-      } else {
-        preview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
-      }
-    }
-
-    function handleCategoryFilter(e) {
-      // Remove active class from all buttons
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
-      e.target.classList.add('active');
-      
-      const category = e.target.dataset.category;
-      
-      // Filter products
-      renderProducts(category);
-    }
-
-    function handleSearch() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      
-      // Filter products by search term
-      const filteredProducts = products.filter(product => {
-        return (
-          product.title.toLowerCase().includes(searchTerm) ||
-          product.description.toLowerCase().includes(searchTerm) ||
-          product.manufacturer.toLowerCase().includes(searchTerm) ||
-          product.code.toLowerCase().includes(searchTerm)
-        );
-      });
-      
-      renderProducts('all', filteredProducts);
-    }
-
-    function addToCart(product) {
-      cart.push(product);
-      updateCartUI();
-      showNotification(`${product.title} has been added to cart`);
-    }
-
-    function updateCartUI() {
-      const cartCount = document.querySelector('.cart-count');
-      cartCount.textContent = cart.length;
-      
-      // Show/hide place order button based on cart items
-      const placeOrderBtn = document.getElementById('placeOrderBtn');
-      if (cart.length > 0) {
-        placeOrderBtn.style.display = 'block';
-      } else {
-        placeOrderBtn.style.display = 'none';
-      }
-    }
-
-    function openAddProductModal() {
-      if (!isAdmin) {
-        showNotification('Admin access required', 'error');
-        return;
-      }
-      document.getElementById('addProductModal').style.display = 'flex';
-    }
-
-    function openEditProductModal(productId) {
-      if (!isAdmin) {
-        showNotification('Admin access required', 'error');
-        return;
-      }
-      
-      const product = products.find(p => p.id === productId);
-      if (product) {
-        document.getElementById('editProductId').value = product.id;
-        document.getElementById('editProductCode').value = product.code;
-        document.getElementById('editProductTitle').value = product.title;
-        document.getElementById('editProductDescription').value = product.description;
-        document.getElementById('editProductManufacturer').value = product.manufacturer;
-        document.getElementById('editProductPrice').value = product.price;
-        document.getElementById('editProductCategory').value = product.category;
-        document.getElementById('editProductCondition').value = product.condition;
-        document.getElementById('editProductImageUrl').value = product.image || '';
-        document.getElementById('editProductPosition').value = product.position || 0;
-        
-        // Update word count
-        updateWordCount(document.getElementById('editProductDescription'), 'editDescriptionWordCount');
-        
-        // Set image preview
-        const preview = document.getElementById('editImagePreview');
-        preview.innerHTML = '';
-        if (product.image) {
-          const img = document.createElement('img');
-          img.src = product.image;
-          preview.appendChild(img);
-        } else {
-          preview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
-        }
-        
-        document.getElementById('editProductModal').style.display = 'flex';
-      }
-    }
-
-    function openEditBannerModal() {
-      if (!isAdmin) {
-        showNotification('Admin access required', 'error');
-        return;
-      }
-      // Pre-fill current banner data
-      document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitle').textContent;
-      document.getElementById('bannerDescriptionInput').value = document.getElementById('bannerDescription').textContent;
-      
-      // Get current banner background image
-      const bannerStyle = document.querySelector('.banner').style.backgroundImage;
-      const imageUrlMatch = bannerStyle.match(/url\(["']?(.*?)["']?\)/);
-      if (imageUrlMatch && imageUrlMatch[1]) {
-        document.getElementById('bannerImageUrl').value = imageUrlMatch[1];
-      }
-      
-      document.getElementById('editBannerModal').style.display = 'flex';
-    }
-
-    function openManageProductsModal() {
-      if (!isAdmin) {
-        showNotification('Admin access required', 'error');
-        return;
-      }
-      
-      renderAdminProductsList();
-      document.getElementById('manageProductsModal').style.display = 'flex';
-    }
-
-    function openManageCategoriesModal() {
-      if (!isAdmin) {
-        showNotification('Admin access required', 'error');
-        return;
-      }
-      
-      renderCategoriesList();
-      document.getElementById('manageCategoriesModal').style.display = 'flex';
-    }
-
-    function openSignInModal() {
-      document.getElementById('signInModal').style.display = 'flex';
-    }
-
-    function closeAllModals() {
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = 'none';
-      });
-    }
-
-    function handleSignIn(e) {
+    document.getElementById('loginForm').onsubmit = function(e){
       e.preventDefault();
-      
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      // Simple validation
-      if (!email || !password) {
-        document.getElementById('signInError').textContent = 'Please fill all fields';
-        return;
-      }
-      
-      // Check if user exists in users array
-      const user = users.find(u => u.email === email && u.password === password);
-      
-      if (user) {
-        isAdmin = adminEmails.includes(email);
-        currentUser = {
-          email: user.email,
-          name: user.name
-        };
-        
-        // Save to localStorage
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        localStorage.setItem('isAdmin', isAdmin);
-        
-        showNotification('Signed in successfully!');
-        closeAllModals();
-        document.getElementById('signInForm').reset();
-        updateUIAfterAuth();
+      let email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      let pass = document.getElementById('loginPass').value;
+      if(email===ADMIN_EMAIL && pass===ADMIN_PASS) {
+        isAdmin = true;
+        closeLoginModal();
+        updateAdminUI();
+        renderProductsGrid();
       } else {
-        document.getElementById('signInError').textContent = 'Invalid email or password';
+        document.getElementById('loginError').textContent = "Invalid email or password";
       }
-    }
-
-    function handleSignUp(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('signupConfirmPassword').value;
-      
-      // Simple validation
-      if (!name || !email || !password || !confirmPassword) {
-        document.getElementById('signUpError').textContent = 'Please fill all fields';
-        return;
-      }
-      
-      if (password !== confirmPassword) {
-        document.getElementById('signUpError').textContent = 'Passwords do not match';
-        return;
-      }
-      
-      if (password.length < 6) {
-        document.getElementById('signUpError').textContent = 'Password must be at least 6 characters';
-        return;
-      }
-      
-      // Check if user already exists
-      if (users.find(u => u.email === email)) {
-        document.getElementById('signUpError').textContent = 'User with this email already exists';
-        return;
-      }
-      
-      // Create new user
-      const newUser = {
-        name,
-        email,
-        password
-      };
-      
-      // Add to users array
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      
-      // Set as current user
-      isAdmin = adminEmails.includes(email);
-      currentUser = {
-        email,
-        name
-      };
-      
-      // Save to localStorage
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      localStorage.setItem('isAdmin', isAdmin);
-      
-      showNotification('Account created successfully!');
-      closeAllModals();
-      document.getElementById('signUpForm').reset();
-      updateUIAfterAuth();
-    }
-
-    function handleAddProduct(e) {
-      e.preventDefault();
-      
-      const code = document.getElementById('productCode').value;
-      const title = document.getElementById('productTitle').value;
-      const description = document.getElementById('productDescription').value;
-      const manufacturer = document.getElementById('productManufacturer').value;
-      const price = parseInt(document.getElementById('productPrice').value);
-      const category = document.getElementById('productCategory').value;
-      const condition = document.getElementById('productCondition').value;
-      const imageUrl = document.getElementById('productImageUrl').value;
-      const imageFile = document.getElementById('productImage').files[0];
-      
-      // Word count validation
-      const words = description.trim() === '' ? 0 : description.trim().split(/\s+/).length;
-      if (words > 500) {
-        document.getElementById('addProductError').textContent = 'Description cannot exceed 500 words';
-        return;
-      }
-      
-      // Image validation - either URL or file must be provided
-      if (!imageUrl && !imageFile) {
-        document.getElementById('addProductError').textContent = 'Please provide either an image URL or upload an image';
-        return;
-      }
-      
-      // Calculate position for new product (add to end)
-      const maxPosition = Math.max(...products.map(p => p.position || 0), 0);
-      const position = maxPosition + 1;
-      
-      // Read image as base64 if file is selected
-      if (imageFile) {
-        const reader = new FileReader();
-        
-        reader.addEventListener('load', function() {
-          // Create new product
-          const newProduct = {
-            id: Date.now(), // Simple ID generation
-            code,
-            title,
-            description,
-            manufacturer,
-            price,
-            category,
-            condition,
-            image: reader.result,
-            isDefault: false,
-            position: position
-          };
-          
-          // Add to products array
-          products.push(newProduct);
-          
-          // Save to localStorage
-          localStorage.setItem('products', JSON.stringify(products));
-          
-          showNotification('Product added successfully!');
-          closeAllModals();
-          document.getElementById('addProductForm').reset();
-          document.getElementById('imagePreview').innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
-          
-          // Update products grid
-          renderProducts();
-        });
-        
-        reader.readAsDataURL(imageFile);
-      } else {
-        // Create new product with URL
-        const newProduct = {
-          id: Date.now(), // Simple ID generation
-          code,
-          title,
-          description,
-          manufacturer,
-          price,
-          category,
-          condition,
-          image: imageUrl,
-          isDefault: false,
-          position: position
-        };
-        
-        // Add to products array
-        products.push(newProduct);
-        
-        // Save to localStorage
-        localStorage.setItem('products', JSON.stringify(products));
-        
-        showNotification('Product added successfully!');
-        closeAllModals();
-        document.getElementById('addProductForm').reset();
-        document.getElementById('imagePreview').innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
-        
-        // Update products grid
-        renderProducts();
-      }
-    }
-
-    function handleEditProduct(e) {
-      e.preventDefault();
-      
-      const id = parseInt(document.getElementById('editProductId').value);
-      const code = document.getElementById('editProductCode').value;
-      const title = document.getElementById('editProductTitle').value;
-      const description = document.getElementById('editProductDescription').value;
-      const manufacturer = document.getElementById('editProductManufacturer').value;
-      const price = parseInt(document.getElementById('editProductPrice').value);
-      const category = document.getElementById('editProductCategory').value;
-      const condition = document.getElementById('editProductCondition').value;
-      const imageUrl = document.getElementById('editProductImageUrl').value;
-      const imageFile = document.getElementById('editProductImage').files[0];
-      const position = parseInt(document.getElementById('editProductPosition').value);
-      
-      // Word count validation
-      const words = description.trim() === '' ? 0 : description.trim().split(/\s+/).length;
-      if (words > 500) {
-        document.getElementById('editProductError').textContent = 'Description cannot exceed 500 words';
-        return;
-      }
-      
-      // Find product index
-      const productIndex = products.findIndex(p => p.id === id);
-      
-      if (productIndex === -1) {
-        document.getElementById('editProductError').textContent = 'Product not found';
-        return;
-      }
-      
-      // Update product
-      products[productIndex].code = code;
-      products[productIndex].title = title;
-      products[productIndex].description = description;
-      products[productIndex].manufacturer = manufacturer;
-      products[productIndex].price = price;
-      products[productIndex].category = category;
-      products[productIndex].condition = condition;
-      products[productIndex].position = position;
-      
-      // Update image if new one is selected or URL is provided
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.addEventListener('load', function() {
-          products[productIndex].image = reader.result;
-          
-          // Save to localStorage
-          localStorage.setItem('products', JSON.stringify(products));
-          
-          showNotification('Product updated successfully!');
-          closeAllModals();
-          
-          // Update products grid
-          renderProducts();
-          renderAdminProductsList();
-        });
-        
-        reader.readAsDataURL(imageFile);
-      } else if (imageUrl) {
-        products[productIndex].image = imageUrl;
-        
-        // Save to localStorage
-        localStorage.setItem('products', JSON.stringify(products));
-        
-        showNotification('Product updated successfully!');
-        closeAllModals();
-        
-        // Update products grid
-        renderProducts();
-        renderAdminProductsList();
-      } else {
-        // Save to localStorage
-        localStorage.setItem('products', JSON.stringify(products));
-        
-        showNotification('Product updated successfully!');
-        closeAllModals();
-        
-        // Update products grid
-        renderProducts();
-        renderAdminProductsList();
-      }
-    }
-
-    function deleteProduct(productId) {
-      if (!confirm('Are you sure you want to delete this product?')) {
-        return;
-      }
-      
-      // Remove product from array
-      products = products.filter(p => p.id !== productId);
-      
-      // Save to localStorage
-      localStorage.setItem('products', JSON.stringify(products));
-      
-      showNotification('Product deleted successfully!');
-      
-      // Update products grid and admin list
-      renderProducts();
-      renderAdminProductsList();
-    }
-
-    function moveProductPosition(productId, direction) {
-      const productIndex = products.findIndex(p => p.id === productId);
-      if (productIndex === -1) return;
-      
-      const newIndex = productIndex + direction;
-      
-      // Check if new index is valid
-      if (newIndex < 0 || newIndex >= products.length) return;
-      
-      // Swap positions
-      const tempPosition = products[productIndex].position;
-      products[productIndex].position = products[newIndex].position;
-      products[newIndex].position = tempPosition;
-      
-      // Swap products in array
-      [products[productIndex], products[newIndex]] = [products[newIndex], products[productIndex]];
-      
-      // Save to localStorage
-      localStorage.setItem('products', JSON.stringify(products));
-      
-      // Update admin list
-      renderAdminProductsList();
-      
-      // Update products grid
-      renderProducts();
-      
-      showNotification('Product position updated!');
-    }
-
-    function handleEditBanner(e) {
-      e.preventDefault();
-      
-      const title = document.getElementById('bannerTitleInput').value;
-      const description = document.getElementById('bannerDescriptionInput').value;
-      const imageUrl = document.getElementById('bannerImageUrl').value;
-      const imageFile = document.getElementById('bannerImageUpload').files[0];
-      
-      // Update UI
-      document.getElementById('bannerTitle').textContent = title;
-      document.getElementById('bannerDescription').textContent = description;
-      
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.addEventListener('load', function() {
-          document.querySelector('.banner').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${reader.result}')`;
-        });
-        reader.readAsDataURL(imageFile);
-      } else if (imageUrl) {
-        document.querySelector('.banner').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${imageUrl}')`;
-      }
-      
-      showNotification('Banner updated successfully!');
-      closeAllModals();
-    }
-
-    function handleAddCategory(e) {
-      e.preventDefault();
-      showNotification('Category added successfully! (simulated)');
-      closeAllModals();
-    }
-
-    function handleSignOut() {
-      currentUser = null;
+    };
+    document.getElementById('logoutBtn').onclick = function(){
       isAdmin = false;
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('isAdmin');
-      
-      showNotification('Signed out successfully');
-      updateUIAfterAuth();
+      updateAdminUI();
+      renderProductsGrid();
+    };
+    // Category Pills
+    function renderCategoriesPills() {
+      let pills = document.getElementById('categoriesPills');
+      pills.innerHTML = "";
+      categories.forEach((cat,i)=>{
+        let pill = document.createElement('button');
+        pill.className = "cat-pill" + (selectedCategory === cat ? " active" : "");
+        pill.textContent = cat;
+        pill.onclick = function(){
+          selectedCategory = cat;
+          renderCategoriesPills();
+          renderProductsGrid();
+        };
+        pills.appendChild(pill);
+      });
     }
-
-    function handleOrderForm(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('customerName').value;
-      const email = document.getElementById('customerEmail').value;
-      const phone = document.getElementById('customerPhone').value;
-      const product = document.getElementById('productInterest').value;
-      const message = document.getElementById('orderMessage').value;
-      
-      // Create WhatsApp message
-      const whatsappMessage = `Hello! I would like to place an order:%0A%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AProduct: ${product}%0AMessage: ${message}`;
-      
-      // Redirect to WhatsApp
-      window.open(`https://wa.me/923155111330?text=${whatsappMessage}`, '_blank');
-      
-      showNotification('Redirecting to WhatsApp to complete your order');
-    }
-
-    function checkAuthState() {
-      const savedUser = localStorage.getItem('currentUser');
-      const savedAdmin = localStorage.getItem('isAdmin');
-      
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        isAdmin = savedAdmin === 'true';
-        updateUIAfterAuth();
-      }
-    }
-
-    function updateUIAfterAuth() {
-      if (currentUser) {
-        document.getElementById('userInfo').style.display = 'block';
-        document.getElementById('userName').textContent = currentUser.name;
-        document.getElementById('signInBtn').style.display = 'none';
-        document.getElementById('signOutBtn').style.display = 'inline-flex';
-        
-        if (isAdmin) {
-          document.getElementById('adminControls').style.display = 'flex';
-        } else {
-          document.getElementById('adminControls').style.display = 'none';
-        }
+    // Products grid
+    function renderProductsGrid() {
+      let grid = document.getElementById('productsGrid');
+      let msg = document.getElementById('noProductsMsg');
+      let filtered = products.filter(prod=>prod.category===selectedCategory);
+      grid.innerHTML = "";
+      if(!filtered.length) {
+        msg.style.display = "block";
+        return;
       } else {
-        document.getElementById('userInfo').style.display = 'none';
-        document.getElementById('signInBtn').style.display = 'inline-flex';
-        document.getElementById('signOutBtn').style.display = 'none';
-        document.getElementById('adminControls').style.display = 'none';
+        msg.style.display = "none";
       }
-      
-      // Show/hide admin-only elements
-      document.querySelectorAll('.admin-only').forEach(el => {
-        el.style.display = isAdmin ? 'block' : 'none';
+      filtered.forEach(prod=>{
+        let card = document.createElement('div');
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="${prod.image}" alt="${prod.title}" />
+          <div class="product-title">${prod.title}</div>
+          <div class="product-category">${prod.category}</div>
+          ${isAdmin ? `<div class="product-price">PKR ${prod.price.toLocaleString()}</div>` : ""}
+        `;
+        if(isAdmin) {
+          let actions = document.createElement('div');
+          actions.className = "product-actions";
+          actions.innerHTML = `
+            <button class="action-btn edit" onclick="openProductModal(${prod.id})"><i class="fas fa-edit"></i> Edit</button>
+            <button class="action-btn delete" onclick="deleteProduct(${prod.id})"><i class="fas fa-trash"></i> Delete</button>
+          `;
+          card.appendChild(actions);
+        }
+        grid.appendChild(card);
       });
     }
-
-    function renderProducts(category = 'all', productsToRender = null) {
-      const productsGrid = document.getElementById('productsGrid');
-      productsGrid.innerHTML = '';
-      
-      let productsList = productsToRender || products;
-      
-      // Sort products by position
-      productsList.sort((a, b) => (a.position || 0) - (b.position || 0));
-      
-      // Check if we should hide default products (if any custom products exist)
-      const hasCustomProducts = products.some(p => !p.isDefault);
-      if (hasCustomProducts) {
-        productsList = productsList.filter(product => !product.isDefault);
-      }
-      
-      // Filter by category if needed
-      const filteredProducts = category === 'all' 
-        ? productsList 
-        : productsList.filter(product => product.category === category);
-      
-      // Update product interest dropdown in order form
-      updateProductInterestDropdown();
-      
-      if (filteredProducts.length === 0) {
-        productsGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">No products found</p>';
+    // Product Modal
+    function openProductModal(id) {
+      document.getElementById('productModal').classList.add('show');
+      let prod = typeof id === "number" ? products.find(p=>p.id===id):null;
+      document.getElementById('productModalTitle').textContent = prod ? "Edit Product" : "Add New Product";
+      document.getElementById('productId').value = prod ? prod.id : "";
+      document.getElementById('prodTitle').value = prod ? prod.title : "";
+      document.getElementById('prodCode').value = prod ? prod.code || "" : "";
+      document.getElementById('prodDesc').value = prod ? prod.description : "";
+      document.getElementById('descWordsCount').textContent = prod ? prod.description.length : "0";
+      document.getElementById('prodManufacturer').value = prod ? prod.manufacturer : "";
+      document.getElementById('prodPrice').value = prod ? prod.price : "";
+      renderProductCategoryOptions();
+      document.getElementById('prodCategory').value = prod ? prod.category : (categories[0]||"");
+      document.getElementById('prodCondition').value = prod ? prod.condition : "New";
+      document.getElementById('prodImage').value = prod ? prod.image : "";
+      document.getElementById('prodImgFile').value = "";
+      showProductImgPreview(prod && prod.image ? prod.image : "");
+    }
+    function closeProductModal(){
+      document.getElementById('productModal').classList.remove('show');
+      document.getElementById('productForm').reset();
+      showProductImgPreview("");
+    }
+    function renderProductCategoryOptions(){
+      let sel = document.getElementById('prodCategory');
+      sel.innerHTML = "";
+      categories.forEach(function(cat){
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        sel.appendChild(opt);
+      });
+    }
+    document.getElementById('productForm').onsubmit = function(e){
+      e.preventDefault();
+      let id = document.getElementById('productId').value;
+      let obj = {
+        id: id ? Number(id) : Date.now(),
+        title: document.getElementById('prodTitle').value,
+        code: document.getElementById('prodCode').value,
+        description: document.getElementById('prodDesc').value,
+        manufacturer: document.getElementById('prodManufacturer').value,
+        price: Number(document.getElementById('prodPrice').value),
+        image: document.getElementById('prodImage').value || document.getElementById('productImgPreview').dataset.url || "",
+        category: document.getElementById('prodCategory').value,
+        condition: document.getElementById('prodCondition').value
+      };
+      if(!obj.title || !obj.code || !obj.manufacturer || !obj.price || !obj.category || !obj.condition || !obj.description) {
+        alert("Fill all required fields!");
         return;
       }
-      
-      filteredProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        
-        // Get category name
-        const categoryObj = categories.find(c => c.value === product.category);
-        const categoryName = categoryObj ? categoryObj.name : product.category;
-        
-        productCard.innerHTML = `
-          ${product.isDefault ? '<div class="default-product-badge">Default</div>' : ''}
-          <div class="product-image">
-            <img src="${product.image}" alt="${product.title}">
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">${product.title}</h3>
-            <div class="admin-only product-price">PKR ${product.price.toLocaleString()}</div>
-            <div class="product-code">Code: ${product.code}</div>
-            <div class="product-manufacturer">Manufacturer: ${product.manufacturer}</div>
-            <p class="product-description">${product.description}</p>
-            <span class="product-condition condition-${product.condition.toLowerCase()}">${product.condition}</span>
-            <div class="product-category">Category: ${categoryName}</div>
-            <div class="admin-only">Position: ${product.position || 'Not set'}</div>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        `;
-        
-        // Add event listener to Add to Cart button
-        productCard.querySelector('.add-to-cart-btn').addEventListener('click', function() {
-          addToCart(product);
-        });
-        
-        productsGrid.appendChild(productCard);
-      });
-      
-      // Show/hide admin-only elements
-      document.querySelectorAll('.admin-only').forEach(el => {
-        el.style.display = isAdmin ? 'block' : 'none';
-      });
-    }
-
-    function renderAdminProductsList() {
-      const adminProductsList = document.getElementById('adminProductsList');
-      adminProductsList.innerHTML = '';
-      
-      // Sort products by position for admin view
-      const sortedProducts = [...products].sort((a, b) => (a.position || 0) - (b.position || 0));
-      
-      if (sortedProducts.length === 0) {
-        adminProductsList.innerHTML = '<p style="text-align: center;">No products available</p>';
-        return;
+      if(id){ let idx = products.findIndex(p=>p.id==id); products[idx]=obj; }
+      else { products.push(obj); }
+      renderProductsGrid();
+      closeProductModal();
+    };
+    document.getElementById('prodDesc').addEventListener('input', function() {
+      document.getElementById('descWordsCount').textContent = this.value.length;
+    });
+    document.getElementById('prodImage').addEventListener('input', function(){
+      let val = this.value.trim();
+      showProductImgPreview(val);
+      document.getElementById('prodImgFile').value = "";
+    });
+    document.getElementById('prodImgFile').addEventListener('change', function(e){
+      let f = this.files[0];
+      if(f){
+        let reader = new FileReader();
+        reader.onload = function(evt){
+          showProductImgPreview(evt.target.result, true);
+        };
+        reader.readAsDataURL(f);
       }
-      
-      sortedProducts.forEach((product, index) => {
-        const productItem = document.createElement('div');
-        productItem.className = 'admin-product-item';
-        
-        // Get category name
-        const categoryObj = categories.find(c => c.value === product.category);
-        const categoryName = categoryObj ? categoryObj.name : product.category;
-        
-        productItem.innerHTML = `
-          <div>
-            <strong>${product.title}</strong> (${product.code})
-            <div>Price: PKR ${product.price.toLocaleString()}</div>
-            <div>Category: ${categoryName}</div>
-            <div>Position: ${product.position || 'Not set'} ${product.isDefault ? '<span style="color: #f39c12;">(Default Product)</span>' : ''}</div>
-          </div>
-          <div class="admin-product-actions">
-            <div class="position-controls">
-              <button class="position-up-btn" data-id="${product.id}" ${index === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
-              <button class="position-down-btn" data-id="${product.id}" ${index === sortedProducts.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
-            </div>
-            <button class="edit-btn" data-id="${product.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="delete-btn" data-id="${product.id}" ${product.isDefault ? 'disabled' : ''}><i class="fas fa-trash"></i> Delete</button>
-          </div>
-        `;
-        
-        // Add event listeners to buttons
-        productItem.querySelector('.edit-btn').addEventListener('click', function() {
-          const productId = parseInt(this.dataset.id);
-          openEditProductModal(productId);
-        });
-        
-        productItem.querySelector('.delete-btn').addEventListener('click', function() {
-          if (!this.disabled) {
-            const productId = parseInt(this.dataset.id);
-            deleteProduct(productId);
-          }
-        });
-        
-        productItem.querySelector('.position-up-btn').addEventListener('click', function() {
-          if (!this.disabled) {
-            const productId = parseInt(this.dataset.id);
-            moveProductPosition(productId, -1);
-          }
-        });
-        
-        productItem.querySelector('.position-down-btn').addEventListener('click', function() {
-          if (!this.disabled) {
-            const productId = parseInt(this.dataset.id);
-            moveProductPosition(productId, 1);
-          }
-        });
-        
-        adminProductsList.appendChild(productItem);
-      });
-    }
-
-    function renderCategoriesList() {
-      const categoriesList = document.getElementById('categoriesList');
-      categoriesList.innerHTML = '';
-      
-      categories.forEach(category => {
-        const categoryItem = document.createElement('div');
-        categoryItem.className = 'category-item';
-        categoryItem.innerHTML = `
-          <span>${category.name} (${category.value})</span>
-          <div>
-            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-          </div>
-        `;
-        categoriesList.appendChild(categoryItem);
-      });
-    }
-
-    function updateProductInterestDropdown() {
-      const productInterest = document.getElementById('productInterest');
-      
-      // Clear existing options except the first one
-      while (productInterest.options.length > 1) {
-        productInterest.remove(1);
+      document.getElementById('prodImage').value = "";
+    });
+    function showProductImgPreview(src, isFile=false){
+      let prev = document.getElementById('productImgPreview');
+      if(src){
+        prev.innerHTML = `<img src="${src}" alt="Preview" />`;
+        prev.dataset.url = src;
+      }else{
+        prev.innerHTML = "Image preview will appear here";
+        prev.dataset.url = "";
       }
-      
-      // Add products to dropdown
-      products.forEach(product => {
-        const option = document.createElement('option');
-        option.value = product.title;
-        option.textContent = product.title;
-        productInterest.appendChild(option);
+    }
+    // Delete Product
+    window.deleteProduct = function(id){
+      if(confirm('Delete this product?')) {
+        products = products.filter(p=>p.id!==id);
+        renderProductsGrid();
+      }
+    }
+    // Banner Modal
+    function openBannerModal() {
+      document.getElementById('bannerModal').classList.add('show');
+      document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitleText') ? document.getElementById('bannerTitleText').textContent : "Premium Industrial Machinery";
+      document.getElementById('bannerDescInput').value = document.getElementById('bannerDescText') ? document.getElementById('bannerDescText').textContent : "";
+      let bannerImg = document.getElementById('bannerImgPreview') ? document.getElementById('bannerImgPreview').src : "";
+      document.getElementById('bannerImgInput').value = bannerImg;
+      document.getElementById('bannerImgPreviewModal').innerHTML = bannerImg ? `<img src="${bannerImg}" style="max-width:220px;max-height:110px;" />` : "";
+    }
+    function closeBannerModal(){
+      document.getElementById('bannerModal').classList.remove('show');
+    }
+    document.getElementById('bannerImgInput').addEventListener('input', function(){
+      let val = this.value.trim();
+      document.getElementById('bannerImgPreviewModal').innerHTML = val ? `<img src="${val}" style="max-width:220px;max-height:110px;" />` : "";
+    });
+    document.getElementById('bannerForm').onsubmit = function(e){
+      e.preventDefault();
+      document.getElementById('bannerTitleText').textContent = document.getElementById('bannerTitleInput').value;
+      document.getElementById('bannerDescText').textContent = document.getElementById('bannerDescInput').value;
+      document.getElementById('bannerImgPreview').src = document.getElementById('bannerImgInput').value;
+      closeBannerModal();
+    };
+    // View All Products
+    window.viewAllProducts = function() {
+      selectedCategory = categories[0];
+      renderCategoriesPills();
+      renderProductsGrid();
+      window.scrollTo({top:document.getElementById('categoriesPills').offsetTop-40,behavior:'smooth'});
+    }
+    // Category Modal
+    function openCatModal() {
+      document.getElementById('catModal').classList.add('show');
+      renderCatList();
+    }
+    function closeCatModal() {
+      document.getElementById('catModal').classList.remove('show');
+    }
+    function renderCatList() {
+      let catList = document.getElementById('catList');
+      catList.innerHTML = "";
+      categories.forEach((cat, i)=>{
+        let row = document.createElement('div');
+        row.style = "display:flex;align-items:center;gap:14px;margin:7px 0;";
+        let name = document.createElement('span');
+        name.textContent = cat;
+        name.style = "font-size:1.08rem;font-weight:500;color:#223449";
+        row.appendChild(name);
+        let delBtn = document.createElement('button');
+        delBtn.type = "button";
+        delBtn.className = "action-btn delete";
+        delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        delBtn.onclick = function(){
+          if(confirm("Delete this category?")) {
+            categories.splice(i,1);
+            renderCategoriesPills();
+            renderCatList();
+            renderProductCategoryOptions();
+            if(selectedCategory==cat && categories.length) {
+              selectedCategory=categories[0];
+              renderProductsGrid();
+            }
+          }
+        };
+        if(categories.length>1) row.appendChild(delBtn);
+        catList.appendChild(row);
       });
     }
-
-    function showNotification(message, type = 'success') {
-      const notification = document.getElementById('notification');
-      notification.textContent = message;
-      notification.className = 'notification ' + type;
-      
-      // Hide notification after 3 seconds
-      setTimeout(() => {
-        notification.className = 'notification';
-      }, 3000);
-    }
+    document.getElementById('addCatForm').onsubmit = function(e){
+      e.preventDefault();
+      let val = document.getElementById('newCatInput').value.trim();
+      if(!val || categories.includes(val)) return;
+      categories.push(val);
+      renderCategoriesPills();
+      renderCatList();
+      renderProductCategoryOptions();
+      document.getElementById('newCatInput').value="";
+    };
+    // INIT
+    renderCategoriesPills();
+    renderProductsGrid();
+    updateAdminUI();
   </script>
 </body>
 </html>
