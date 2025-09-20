@@ -1,546 +1,1248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Apparel Machinery | Admin Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family:sans-serif; background:#f5f5f5; }
-    .container { max-width:1100px; margin:30px auto; background:#fff; border-radius:8px; box-shadow:0 3px 16px #0002;}
-    .header-content { background:#223449; color:#fff; padding:18px 30px; border-radius:8px 8px 0 0; display:flex; align-items:center; }
-    .logo { font-size:2rem; font-weight:bold; margin-right:40px;}
-    .logo span { color:#62a6e7;}
-    nav { flex:1;}
-    nav ul { list-style:none; display:flex; gap:30px; margin:0; padding:0;}
-    nav ul li a { color:#fff; text-decoration:none; font-size:1.1rem;}
-    nav ul li a:hover { color:#62a6e7;}
-    .cart-icon { position:relative;}
-    .cart-badge { position:absolute; top:-9px; right:-7px; background:#e74c3c; color:#fff; font-size:0.8rem; border-radius:50%; padding:4px 7px; font-weight:bold;}
-    .admin-label {margin-left:10px;}
-    .admin-btn { background:#e74c3c; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:1rem; font-weight:500; cursor:pointer; transition:background 0.2s;}
-    .admin-btn:hover { background:#c0392b;}
-    .banner-section { position:relative; width:100%; min-height:270px; background:#223449;}
-    .banner-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.60; border-radius:0;}
-    .banner-content { position:relative; z-index:3; text-align:center; padding:70px 20px 55px 20px;}
-    .banner-content h1 { color:#fff; font-size:2.7rem; font-weight:700; margin-bottom:16px;}
-    .banner-content p { color:#fafafa; font-size:1.14rem; max-width:700px; margin:0 auto;}
-    .admin-action-bar { display:flex; gap:16px; justify-content:center; margin:32px 0 0 0;}
-    .admin-action-btn { background:#e74c3c; color:#fff; border:none; padding:13px 24px; font-size:1.1rem; border-radius:6px; font-weight:500; cursor:pointer; transition:background 0.2s;}
-    .admin-action-btn i { margin-right:8px;}
-    .admin-action-btn:hover { background:#c0392b;}
-    .section {padding:36px 24px 10px 24px;}
-    .section-title {text-align:center; font-size:2.2rem; font-weight:700; color:#223449; margin-bottom:28px;}
-    .category-pills { display: flex; flex-wrap: wrap; gap: 14px; justify-content:center; margin-bottom:22px;}
-    .cat-pill { background: #f1f5f9; border-radius: 22px; padding: 11px 26px; font-size: 1.09rem; color: #222; font-weight: 500; cursor: pointer; border: none; outline: none; transition: background 0.18s, color 0.18s; box-shadow:0 2px 9px #0001;}
-    .cat-pill.active, .cat-pill:hover { background: #62a6e7; color: #fff;}
-    .products-grid { display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin-top:24px;}
-    .product-card { background:#fff; border-radius:10px; box-shadow:0 2px 12px #0001; padding:18px 19px 13px 19px; width:260px; position:relative; display:flex; flex-direction:column; align-items:center;}
-    .product-card img { width:100%; height:140px; object-fit:cover; border-radius:8px; background:#f4f4f4;}
-    .product-title { font-size:1.11rem; font-weight:700; margin-top:11px; color:#223449;}
-    .product-category { color:#62a6e7; font-size:0.94rem; margin:5px 0 2px 0;}
-    .product-price { font-size:1.09rem; color:#e74c3c; font-weight:600;}
-    .product-actions {display:flex; gap:7px; margin-top:6px;}
-    .action-btn { border: none; padding: 6px 13px; border-radius: 6px; font-size: 0.98rem; font-weight:500; cursor:pointer; }
-    .action-btn.edit { background:#62a6e7; color:#fff;}
-    .action-btn.delete { background:#e74c3c; color:#fff;}
-    .action-btn.edit:hover { background:#223449;}
-    .action-btn.delete:hover { background:#c0392b;}
-    .footer { background:#223449; color:#fff; padding:36px 0 18px 0; text-align:center; margin-top:40px;}
-    .footer-title { font-size:1.3rem; font-weight:700;}
-    .footer-tagline { font-size:1.08rem; margin-bottom:18px;}
-    .footer-social { display:flex; justify-content:center; gap:18px; margin-bottom:16px;}
-    .footer-social a { color:#fff; font-size:1.3rem;}
-    .footer-contact { font-size:1rem; margin-bottom:7px;}
-    .footer-contact a { color:#62a6e7;}
-    .footer-author { font-size:1rem; opacity:0.8;}
-    .manage-modal { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(30,40,60,0.80); justify-content:center; align-items:center; z-index:9999;}
-    .manage-modal.show { display:flex; }
-    #productModal .modal-content, #bannerModal .modal-content, #catModal .modal-content {
-      background:#fff;color:#223449;
-      width:99vw;
-      max-width:650px;
-      min-height:400px;
-      padding:32px 30px 24px 30px;
-      border-radius:12px;
-      box-shadow:0 4px 32px #0003;
-      overflow-y:auto;
-      max-height:90vh;
-      position:relative;
-    }
-    #productModal .modal-content::-webkit-scrollbar,
-    #bannerModal .modal-content::-webkit-scrollbar,
-    #catModal .modal-content::-webkit-scrollbar {
-      width: 9px;
-      background: #e0e5f5;
-      border-radius: 16px;
-    }
-    #productModal .modal-content::-webkit-scrollbar-thumb,
-    #bannerModal .modal-content::-webkit-scrollbar-thumb,
-    #catModal .modal-content::-webkit-scrollbar-thumb {
-      background: #62a6e7;
-      border-radius: 16px;
-    }
-    #productModal .modal-header, #bannerModal .modal-header, #catModal .modal-header { margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;}
-    #productModal label, #bannerModal label, #catModal label { font-weight:500; margin-bottom:5px; display:block; color:#222; }
-    #productModal input, #productModal textarea, #productModal select,
-    #bannerModal input, #bannerModal textarea,
-    #catModal input { margin-bottom:18px; width:100%; border-radius:6px; border:1px solid #ccc; padding:10px; font-size:1rem; background:#f9f9f9; box-sizing:border-box; resize:none; }
-    #productModal textarea { min-height:100px; max-height:220px; font-size:1rem; }
-    #productModal .form-group, #bannerModal .form-group, #catModal .form-group { margin-bottom:10px;}
-    #productModal .img-preview, #bannerModal .img-preview {
-      width:100%; height:140px; border:1.5px dashed #ddd; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#888; background:#fafbfc; margin-bottom:16px; overflow:hidden;
-    }
-    #productModal .img-preview img, #bannerModal .img-preview img { max-width:100%; max-height:100%; border-radius:6px; display:block;}
-    #productModal .modal-footer, #bannerModal .modal-footer, #catModal .modal-footer { margin-top:22px; display:flex; justify-content:flex-end;}
-    #productModal .admin-btn, #bannerModal .admin-btn, #catModal .admin-btn {
-      background:#62a6e7; color:white; border:none; padding:12px 0; border-radius:6px; width:100%; font-size:1.07rem; font-weight:500; margin-top:8px;
-    }
-    #productModal .close-modal, #bannerModal .close-modal, #catModal .close-modal { font-size:2rem; margin-left:10px; cursor:pointer;border:none;background:none;}
-    #loginModal .modal-content {
-      background:#223449; color:#fff; border-radius:14px; min-width:320px; max-width:350px; margin-top:50px; box-shadow:0 6px 38px #0005; padding:38px 30px 24px 30px; position:relative;
-    }
-    #loginModal label {font-weight:500; margin-bottom:7px; display:block; color:#eee;}
-    #loginModal input[type="email"],#loginModal input[type="password"] { width:100%; border-radius:7px; border:1.5px solid #62a6e7; background:#fff; color:#223449; font-size:1.07rem; padding:11px 14px; margin-bottom:17px;}
-    #loginModal .admin-btn { background:#62a6e7; color:#fff; border:none; border-radius:7px; font-size:1.07rem; padding:12px 0; margin-top:4px;}
-    #loginModal .admin-btn:hover {background:#3568a6;}
-    #loginModal .close-modal {font-size:2rem; position:absolute; right:22px; top:22px; color:#fff;}
-    #loginError {color:#ffd8d8;}
-    #loginModal p {margin-top:10px;}
-    .hidden { display:none !important; }
-    #noProductsMsg{margin-bottom:40px;}
-    @media(max-width:900px){.container{max-width:99vw;}}
-    @media(max-width:700px){
-      #productModal .modal-content, #bannerModal .modal-content, #catModal .modal-content, #loginModal .modal-content {max-width:99vw;padding:18px;}
-      .container {padding:8px;}
-      .modal-content{padding:14px;}
-      .header-content {padding:10px;}
-      .category-pills {gap:7px;}
-      .cat-pill {padding:8px 13px;}
-      .products-grid{gap:16px;}
-      .admin-action-btn{padding:10px 9px;}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apparel Machinery | Industrial Equipment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        /* Header Styles */
+        .header-content {
+            background: #223449;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo span {
+            color: #4a9eff;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        nav ul li a:hover {
+            color: #4a9eff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.65rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .admin-btn:hover {
+            background: #c0392b;
+        }
+        
+        /* Banner Styles */
+        .banner-section {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: #2c3e50;
+            overflow: hidden;
+        }
+        
+        .banner-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+        
+        .banner-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+            color: white;
+        }
+        
+        .banner-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-content p {
+            font-size: 1rem;
+            max-width: 700px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Admin Actions */
+        .admin-action-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 15px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+        
+        .admin-action-btn {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .admin-action-btn:hover {
+            background: #4a9eff;
+            transform: translateY(-2px);
+        }
+        
+        /* Categories Section */
+        .categories-section {
+            padding: 25px 15px;
+            background: white;
+        }
+        
+        .categories-title {
+            text-align: center;
+            font-size: 1.6rem;
+            color: #223449;
+            margin-bottom: 20px;
+        }
+        
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .cat-pill {
+            background: #f1f5f9;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+        }
+        
+        .cat-pill.active, .cat-pill:hover {
+            background: #4a9eff;
+            color: white;
+        }
+        
+        /* Products Section */
+        .products-section {
+            padding: 25px 15px;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 1.7rem;
+            color: #223449;
+            margin-bottom: 20px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #223449;
+        }
+        
+        .product-category {
+            color: #4a9eff;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 12px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .action-btn.edit {
+            background: #4a9eff;
+            color: white;
+        }
+        
+        .action-btn.delete {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .add-to-cart-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+            width: 100%;
+            justify-content: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #219653;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #223449;
+            color: white;
+            padding: 20px 15px 15px;
+            text-align: center;
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        
+        .footer-tagline {
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-social a {
+            color: white;
+            font-size: 1.3rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: #4a9eff;
+        }
+        
+        .footer-contact {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .footer-contact a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        
+        .footer-author {
+            opacity: 0.8;
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 15px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #223449;
+            font-size: 1.2rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .form-footer a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        
+        .modal-footer {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            text-align: right;
+        }
+        
+        .admin-info {
+            padding: 0 15px 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        #noProductsMsg {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 25px;
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .admin-tooltip {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .logo:hover .admin-tooltip {
+            opacity: 1;
+        }
+        
+        /* Image upload styles */
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+        }
+        
+        .image-preview-text {
+            color: #888;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .upload-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .upload-btn {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: background 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #3a8cec;
+        }
+        
+        .upload-btn i {
+            font-size: 0.9rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .or-divider {
+            text-align: center;
+            margin: 5px 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header-content">
-      <div class="logo">Apparel <span>Machinery</span></div>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-      <span class="cart-icon" style="margin-right:18px;">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="cart-badge">0</span>
-      </span>
-      <span class="admin-label" id="adminLabel" style="margin-right:10px;">Admin</span>
-      <button id="loginBtn" class="admin-btn">Admin Login</button>
-      <button id="logoutBtn" class="admin-btn hidden">Sign Out</button>
-    </div>
-    <!-- Banner -->
-    <div class="banner-section">
-      <img class="banner-bg" id="bannerImgPreview"
-        src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80"
-        alt="Banner" />
-      <div class="banner-content">
-        <h1 id="bannerTitleText">Premium Industrial Machinery</h1>
-        <p id="bannerDescText">Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
-      </div>
-    </div>
-    <div class="admin-action-bar hidden" id="adminBar">
-      <button class="admin-action-btn" onclick="openProductModal()"><i class="fas fa-plus"></i> Add New Product</button>
-      <button class="admin-action-btn" onclick="openBannerModal()"><i class="fas fa-edit"></i> Edit Banner</button>
-      <button class="admin-action-btn" onclick="viewAllProducts()"><i class="fas fa-list"></i> View Products</button>
-      <button class="admin-action-btn" onclick="openCatModal()"><i class="fas fa-tags"></i> Manage Categories</button>
-    </div>
-    <div class="section">
-      <div class="section-title">Our Products</div>
-      <div class="category-pills" id="categoriesPills"></div>
-      <div id="productsGrid" class="products-grid"></div>
-      <div id="noProductsMsg" style="text-align:center; color:#888; font-size:1.07rem; margin-top:36px; display:none;">No products found</div>
-    </div>
-    <div class="footer">
-      <div class="footer-title">Apparel Machinery</div>
-      <div class="footer-tagline">Your Trusted Partner for Industrial Equipment</div>
-      <div class="footer-social">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-      </div>
-      <div class="footer-contact">
-        Contact: <a href="mailto:apparel.machinery.pk@gmail.com">apparel.machinery.pk@gmail.com</a> | Phone: +923315111330
-      </div>
-      <div class="footer-author">Muhammad Yameen Ansari</div>
-    </div>
-  </div>
-  <!-- Add/Edit Product Modal -->
-  <div id="productModal" class="manage-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="productModalTitle">Add New Product</h3>
-        <button class="close-modal" onclick="closeProductModal()">&times;</button>
-      </div>
-      <form id="productForm">
-        <input type="hidden" id="productId" />
-        <div class="form-group"><label>Product Name *</label><input type="text" id="prodTitle" required placeholder="Name..." /></div>
-        <div class="form-group"><label>Product Code *</label><input type="text" id="prodCode" required placeholder="Code..." /></div>
-        <div class="form-group"><label>Manufacturer *</label><input type="text" id="prodManufacturer" required placeholder="Brand..." /></div>
-        <div class="form-group"><label>Category *</label>
-          <select id="prodCategory" required></select>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-content">
+            <div class="logo" onclick="openAdminLogin()">
+                Apparel <span>Machinery</span>
+                <span class="admin-tooltip">Click for Admin Login</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#" onclick="openAboutPopup(event)">About Us</a></li>
+                    <li><a href="#footer">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <div class="cart-icon" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </div>
+                <span class="admin-label hidden" id="adminLabel">Admin</span>
+                <button id="logoutBtn" class="admin-btn hidden" onclick="logout()">Sign Out</button>
+            </div>
         </div>
-        <div class="form-group"><label>Condition *</label>
-          <select id="prodCondition" required>
-            <option value="New">New</option>
-            <option value="Used">Used</option>
-            <option value="Refurbished">Refurbished</option>
-          </select>
+        
+        <!-- Banner -->
+        <div class="banner-section">
+            <img class="banner-bg" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80" alt="Banner">
+            <div class="banner-content">
+                <h1>Premium Industrial Machinery</h1>
+                <p>Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
+            </div>
         </div>
-        <div class="form-group"><label>Description (up to 500 words) *</label>
-          <textarea id="prodDesc" maxlength="500" required placeholder="Description..."></textarea>
-          <div style="text-align:right;font-size:0.9em;color:#888;">
-            <span id="descWordsCount">0</span>/500 words
-          </div>
+        
+        <!-- Admin Actions -->
+        <div class="admin-action-bar hidden" id="adminBar">
+            <button class="admin-action-btn" onclick="openProductModal()">
+                <i class="fas fa-plus"></i> Add New Product
+            </button>
+            <button class="admin-action-btn" onclick="openBannerModal()">
+                <i class="fas fa-edit"></i> Edit Banner
+            </button>
+            <button class="admin-action-btn" onclick="viewAllProducts()">
+                <i class="fas fa-list"></i> View Products
+            </button>
+            <button class="admin-action-btn" onclick="openCatModal()">
+                <i class="fas fa-tags"></i> Manage Categories
+            </button>
         </div>
-        <div class="form-group"><label>Price (PKR) *</label><input type="number" id="prodPrice" required placeholder="PKR..." min="0" /></div>
-        <div class="form-group"><label>Image URL</label><input type="text" id="prodImage" placeholder="https://example.com/image.jpg" /></div>
-        <div class="form-group"><label>Or Upload Image *</label><input type="file" id="prodImgFile" accept="image/*" /></div>
-        <div class="img-preview" id="productImgPreview">Image preview will appear here</div>
-        <div class="modal-footer"><button type="submit" class="admin-btn">Save Product</button></div>
-      </form>
+        
+        <!-- Categories Section -->
+        <div class="categories-section">
+            <h2 class="categories-title">Product Categories</h2>
+            <div class="category-pills" id="categoriesPills">
+                <!-- Categories will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Products Section -->
+        <div class="products-section" id="products">
+            <h2 class="section-title">Our Products</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be inserted here by JavaScript -->
+            </div>
+            <div id="noProductsMsg" class="hidden">No products found in this category</div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer" id="footer">
+            <div class="footer-title">Apparel Machinery</div>
+            <div class="footer-tagline">Your Trusted Partner for Industrial Equipment</div>
+            <div class="footer-social">
+                <a href="https://web.facebook.com/Aligo786" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://x.com/m_yameen_ansai1?s=21" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/m.yameenansari?igsh=eDRsdjFhMHJwYjd3&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/muhammad-yameen-1a1a67133/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://wa.me/923155111330" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div class="footer-contact">
+                Contact: <a href="mailto:apparel.machinery.pk@gmail.com">apparel.machinery.pk@gmail.com</a> | Phone: +923155111330
+            </div>
+            <div class="footer-author">© Industrial Sewing Machine | Muhammad Yameen Ansari</div>
+        </div>
+        
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Admin Login</h3>
+                    <button class="close-modal" onclick="closeModal('loginModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" required autocomplete="username" placeholder="Enter admin email">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPass">Password</label>
+                            <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Enter password">
+                        </div>
+                        <div id="loginError" class="hidden" style="color: #e74c3c; margin-bottom: 12px;">
+                            Invalid email or password
+                        </div>
+                    </form>
+                    <div class="form-footer">
+                        <a href="#" onclick="showPasswordReset()">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="admin-btn" onclick="login()">Login</button>
+                </div>
+                <div class="admin-info">
+                    Contact system administrator for access credentials
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Modal -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="productModalTitle">Add New Product</h3>
+                    <button class="close-modal" onclick="closeModal('productModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+                        <div class="form-group">
+                            <label for="prodTitle">Product Name *</label>
+                            <input type="text" id="prodTitle" required placeholder="Enter product name">
+                        </div>
+                        <div class="form-group">
+                            <label for="prodCode">Product Code *</label>
+                            <input type="text" id="prodCode" required placeholder="Enter product code">
+                        </div>
+                        <div class="form-group">
+                            <label for="prodManufacturer">Manufacturer *</label>
+                            <input type="text" id="prodManufacturer" required placeholder="Enter manufacturer">
+                        </div>
+                        <div class="form-group">
+                            <label for="prodCategory">Category *</label>
+                            <select id="prodCategory" required>
+                                <!-- Options will be added by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prodCondition">Condition *</label>
+                            <select id="prodCondition" required>
+                                <option value="New">New</option>
+                                <option value="Used">Used</option>
+                                <option value="Refurbished">Refurbished</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prodDesc">Description *</label>
+                            <textarea id="prodDesc" required placeholder="Enter product description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="prodPrice">Price (PKR) *</label>
+                            <input type="number" id="prodPrice" required min="0" placeholder="Enter price">
+                        </div>
+                        
+                        <!-- Image Upload Section -->
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <div class="image-preview-text">Image preview will appear here</div>
+                                </div>
+                                <div class="upload-options">
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                                        <i class="fas fa-upload"></i> Upload Image
+                                    </button>
+                                    <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleImageUpload(event)">
+                                    <div class="or-divider">OR</div>
+                                    <input type="text" id="prodImage" placeholder="Enter image URL" onchange="handleUrlChange(event)">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="admin-btn" onclick="saveProduct()">Save Product</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category Modal -->
+        <div id="catModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Manage Categories</h3>
+                    <button class="close-modal" onclick="closeModal('catModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="catList">
+                        <!-- Category list will be added by JavaScript -->
+                    </div>
+                    <form id="addCatForm" style="margin-top: 15px;">
+                        <div class="form-group">
+                            <label for="newCatInput">Add New Category</label>
+                            <input type="text" id="newCatInput" placeholder="Enter category name" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="admin-btn" onclick="addCategory()">Add Category</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About Popup Modal -->
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>About Apparel Machinery</h3>
+                    <button class="close-modal" onclick="closeModal('aboutModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Apparel Machinery - Your trusted partner for garment manufacturing equipment. We provide industrial sewing machines, cutting equipment, and complete production solutions for the textile industry. Premium quality machinery with professional technical support and maintenance services.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="admin-btn" onclick="closeModal('aboutModal')">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- Banner Modal -->
-  <div id="bannerModal" class="manage-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Edit Banner</h3>
-        <button class="close-modal" onclick="closeBannerModal()">&times;</button>
-      </div>
-      <form id="bannerForm">
-        <div class="form-group"><label>Banner Title</label><input type="text" id="bannerTitleInput" required /></div>
-        <div class="form-group"><label>Banner Description</label><textarea id="bannerDescInput" required></textarea></div>
-        <div class="form-group"><label>Banner Image URL</label><input type="text" id="bannerImgInput" required /></div>
-        <div class="img-preview" id="bannerImgPreviewModal"></div>
-        <div class="modal-footer"><button type="submit" class="admin-btn">Update Banner</button></div>
-      </form>
-    </div>
-  </div>
-  <!-- Category Modal -->
-  <div id="catModal" class="manage-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Manage Categories</h3>
-        <button class="close-modal" onclick="closeCatModal()">&times;</button>
-      </div>
-      <div id="catList"></div>
-      <form id="addCatForm" style="margin-top:18px;">
-        <label>Add New Category</label>
-        <input type="text" id="newCatInput" placeholder="New Category Name" required />
-        <div class="modal-footer"><button type="submit" class="admin-btn">Add Category</button></div>
-      </form>
-    </div>
-  </div>
-  <!-- Login Modal -->
-  <div id="loginModal" class="manage-modal">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeLoginModal()">&times;</button>
-      <h3 style="margin-bottom:16px;">Admin Login</h3>
-      <form id="loginForm">
-        <label>Email</label>
-        <input type="email" id="loginEmail" required autocomplete="username" />
-        <label>Password</label>
-        <input type="password" id="loginPass" required autocomplete="current-password" />
-        <div id="loginError" style="margin-bottom: 8px;"></div>
-        <button type="submit" class="admin-btn" style="width:100%;">Login</button>
-      </form>
-      <p style="margin-top: 1rem; text-align: center;">
-        Admin: apparel.machinery.pk@gmail.com / admin123
-      </p>
-    </div>
-  </div>
-  <script>
-    // Admin credentials
-    const ADMIN_EMAIL = "apparel.machinery.pk@gmail.com";
-    const ADMIN_PASS = "admin123";
-    // Categories
-    let categories = [
-      "Sewing Machines", "Cutting Machines", "Pressing Equipment", "Embroidery Machines", "Washing Machines", "Boiler Machines", "Generators", "Compressors", "Accessories", "Management Equipment"
-    ];
-    let products = [
-      {id:1,title:"Industrial Sewing Machine",code:"SM-1234",manufacturer:"Brother",description:"Heavy-duty sewing machine.",price:85000,image:"https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?auto=format&fit=crop&w=600&q=80",category:"Sewing Machines",condition:"New"},
-      {id:2,title:"Fabric Cutting Machine",code:"CM-5678",manufacturer:"Eastman",description:"Precision cutting machine.",price:120000,image:"https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?auto=format&fit=crop&w=600&q=80",category:"Cutting Machines",condition:"Refurbished"}
-    ];
-    let selectedCategory = categories[0];
-    let isAdmin = false;
-    // UI
-    function updateAdminUI() {
-      document.getElementById('adminBar').classList.toggle('hidden', !isAdmin);
-      document.getElementById('logoutBtn').classList.toggle('hidden', !isAdmin);
-      document.getElementById('loginBtn').classList.toggle('hidden', isAdmin);
-      document.getElementById('adminLabel').classList.toggle('hidden', !isAdmin);
-    }
-    // Login Modal
-    document.getElementById('loginBtn').onclick = function(){
-      document.getElementById('loginModal').classList.add('show');
-      document.getElementById('loginError').textContent = "";
-      document.getElementById('loginEmail').value = "";
-      document.getElementById('loginPass').value = "";
-    };
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('show');
-      document.getElementById('loginError').textContent = "";
-    }
-    document.getElementById('loginForm').onsubmit = function(e){
-      e.preventDefault();
-      let email = document.getElementById('loginEmail').value.trim().toLowerCase();
-      let pass = document.getElementById('loginPass').value;
-      if(email===ADMIN_EMAIL && pass===ADMIN_PASS) {
-        isAdmin = true;
-        closeLoginModal();
-        updateAdminUI();
-        renderProductsGrid();
-      } else {
-        document.getElementById('loginError').textContent = "Invalid email or password";
-      }
-    };
-    document.getElementById('logoutBtn').onclick = function(){
-      isAdmin = false;
-      updateAdminUI();
-      renderProductsGrid();
-    };
-    // Category Pills
-    function renderCategoriesPills() {
-      let pills = document.getElementById('categoriesPills');
-      pills.innerHTML = "";
-      categories.forEach((cat,i)=>{
-        let pill = document.createElement('button');
-        pill.className = "cat-pill" + (selectedCategory === cat ? " active" : "");
-        pill.textContent = cat;
-        pill.onclick = function(){
-          selectedCategory = cat;
-          renderCategoriesPills();
-          renderProductsGrid();
-        };
-        pills.appendChild(pill);
-      });
-    }
-    // Products grid
-    function renderProductsGrid() {
-      let grid = document.getElementById('productsGrid');
-      let msg = document.getElementById('noProductsMsg');
-      let filtered = products.filter(prod=>prod.category===selectedCategory);
-      grid.innerHTML = "";
-      if(!filtered.length) {
-        msg.style.display = "block";
-        return;
-      } else {
-        msg.style.display = "none";
-      }
-      filtered.forEach(prod=>{
-        let card = document.createElement('div');
-        card.className = "product-card";
-        card.innerHTML = `
-          <img src="${prod.image}" alt="${prod.title}" />
-          <div class="product-title">${prod.title}</div>
-          <div class="product-category">${prod.category}</div>
-          ${isAdmin ? `<div class="product-price">PKR ${prod.price.toLocaleString()}</div>` : ""}
-        `;
-        if(isAdmin) {
-          let actions = document.createElement('div');
-          actions.className = "product-actions";
-          actions.innerHTML = `
-            <button class="action-btn edit" onclick="openProductModal(${prod.id})"><i class="fas fa-edit"></i> Edit</button>
-            <button class="action-btn delete" onclick="deleteProduct(${prod.id})"><i class="fas fa-trash"></i> Delete</button>
-          `;
-          card.appendChild(actions);
-        }
-        grid.appendChild(card);
-      });
-    }
-    // Product Modal
-    function openProductModal(id) {
-      document.getElementById('productModal').classList.add('show');
-      let prod = typeof id === "number" ? products.find(p=>p.id===id):null;
-      document.getElementById('productModalTitle').textContent = prod ? "Edit Product" : "Add New Product";
-      document.getElementById('productId').value = prod ? prod.id : "";
-      document.getElementById('prodTitle').value = prod ? prod.title : "";
-      document.getElementById('prodCode').value = prod ? prod.code || "" : "";
-      document.getElementById('prodDesc').value = prod ? prod.description : "";
-      document.getElementById('descWordsCount').textContent = prod ? prod.description.length : "0";
-      document.getElementById('prodManufacturer').value = prod ? prod.manufacturer : "";
-      document.getElementById('prodPrice').value = prod ? prod.price : "";
-      renderProductCategoryOptions();
-      document.getElementById('prodCategory').value = prod ? prod.category : (categories[0]||"");
-      document.getElementById('prodCondition').value = prod ? prod.condition : "New";
-      document.getElementById('prodImage').value = prod ? prod.image : "";
-      document.getElementById('prodImgFile').value = "";
-      showProductImgPreview(prod && prod.image ? prod.image : "");
-    }
-    function closeProductModal(){
-      document.getElementById('productModal').classList.remove('show');
-      document.getElementById('productForm').reset();
-      showProductImgPreview("");
-    }
-    function renderProductCategoryOptions(){
-      let sel = document.getElementById('prodCategory');
-      sel.innerHTML = "";
-      categories.forEach(function(cat){
-        let opt = document.createElement('option');
-        opt.value = cat;
-        opt.textContent = cat;
-        sel.appendChild(opt);
-      });
-    }
-    document.getElementById('productForm').onsubmit = function(e){
-      e.preventDefault();
-      let id = document.getElementById('productId').value;
-      let obj = {
-        id: id ? Number(id) : Date.now(),
-        title: document.getElementById('prodTitle').value,
-        code: document.getElementById('prodCode').value,
-        description: document.getElementById('prodDesc').value,
-        manufacturer: document.getElementById('prodManufacturer').value,
-        price: Number(document.getElementById('prodPrice').value),
-        image: document.getElementById('prodImage').value || document.getElementById('productImgPreview').dataset.url || "",
-        category: document.getElementById('prodCategory').value,
-        condition: document.getElementById('prodCondition').value
-      };
-      if(!obj.title || !obj.code || !obj.manufacturer || !obj.price || !obj.category || !obj.condition || !obj.description) {
-        alert("Fill all required fields!");
-        return;
-      }
-      if(id){ let idx = products.findIndex(p=>p.id==id); products[idx]=obj; }
-      else { products.push(obj); }
-      renderProductsGrid();
-      closeProductModal();
-    };
-    document.getElementById('prodDesc').addEventListener('input', function() {
-      document.getElementById('descWordsCount').textContent = this.value.length;
-    });
-    document.getElementById('prodImage').addEventListener('input', function(){
-      let val = this.value.trim();
-      showProductImgPreview(val);
-      document.getElementById('prodImgFile').value = "";
-    });
-    document.getElementById('prodImgFile').addEventListener('change', function(e){
-      let f = this.files[0];
-      if(f){
-        let reader = new FileReader();
-        reader.onload = function(evt){
-          showProductImgPreview(evt.target.result, true);
-        };
-        reader.readAsDataURL(f);
-      }
-      document.getElementById('prodImage').value = "";
-    });
-    function showProductImgPreview(src, isFile=false){
-      let prev = document.getElementById('productImgPreview');
-      if(src){
-        prev.innerHTML = `<img src="${src}" alt="Preview" />`;
-        prev.dataset.url = src;
-      }else{
-        prev.innerHTML = "Image preview will appear here";
-        prev.dataset.url = "";
-      }
-    }
-    // Delete Product
-    window.deleteProduct = function(id){
-      if(confirm('Delete this product?')) {
-        products = products.filter(p=>p.id!==id);
-        renderProductsGrid();
-      }
-    }
-    // Banner Modal
-    function openBannerModal() {
-      document.getElementById('bannerModal').classList.add('show');
-      document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitleText') ? document.getElementById('bannerTitleText').textContent : "Premium Industrial Machinery";
-      document.getElementById('bannerDescInput').value = document.getElementById('bannerDescText') ? document.getElementById('bannerDescText').textContent : "";
-      let bannerImg = document.getElementById('bannerImgPreview') ? document.getElementById('bannerImgPreview').src : "";
-      document.getElementById('bannerImgInput').value = bannerImg;
-      document.getElementById('bannerImgPreviewModal').innerHTML = bannerImg ? `<img src="${bannerImg}" style="max-width:220px;max-height:110px;" />` : "";
-    }
-    function closeBannerModal(){
-      document.getElementById('bannerModal').classList.remove('show');
-    }
-    document.getElementById('bannerImgInput').addEventListener('input', function(){
-      let val = this.value.trim();
-      document.getElementById('bannerImgPreviewModal').innerHTML = val ? `<img src="${val}" style="max-width:220px;max-height:110px;" />` : "";
-    });
-    document.getElementById('bannerForm').onsubmit = function(e){
-      e.preventDefault();
-      document.getElementById('bannerTitleText').textContent = document.getElementById('bannerTitleInput').value;
-      document.getElementById('bannerDescText').textContent = document.getElementById('bannerDescInput').value;
-      document.getElementById('bannerImgPreview').src = document.getElementById('bannerImgInput').value;
-      closeBannerModal();
-    };
-    // View All Products
-    window.viewAllProducts = function() {
-      selectedCategory = categories[0];
-      renderCategoriesPills();
-      renderProductsGrid();
-      window.scrollTo({top:document.getElementById('categoriesPills').offsetTop-40,behavior:'smooth'});
-    }
-    // Category Modal
-    function openCatModal() {
-      document.getElementById('catModal').classList.add('show');
-      renderCatList();
-    }
-    function closeCatModal() {
-      document.getElementById('catModal').classList.remove('show');
-    }
-    function renderCatList() {
-      let catList = document.getElementById('catList');
-      catList.innerHTML = "";
-      categories.forEach((cat, i)=>{
-        let row = document.createElement('div');
-        row.style = "display:flex;align-items:center;gap:14px;margin:7px 0;";
-        let name = document.createElement('span');
-        name.textContent = cat;
-        name.style = "font-size:1.08rem;font-weight:500;color:#223449";
-        row.appendChild(name);
-        let delBtn = document.createElement('button');
-        delBtn.type = "button";
-        delBtn.className = "action-btn delete";
-        delBtn.innerHTML = '<i class="fas fa-trash"></i>';
-        delBtn.onclick = function(){
-          if(confirm("Delete this category?")) {
-            categories.splice(i,1);
-            renderCategoriesPills();
-            renderCatList();
-            renderProductCategoryOptions();
-            if(selectedCategory==cat && categories.length) {
-              selectedCategory=categories[0];
-              renderProductsGrid();
+
+    <script>
+        // Data
+        const categories = [
+            "Sewing Machines", "Cutting Machines", "Pressing Equipment", 
+            "Embroidery Machines", "Boiler Machines", "Generators", 
+            "Compressors", "Accessories", "Management Equipment"
+        ];
+        
+        let products = [
+            {
+                id: 1,
+                title: "Industrial Sewing Machine",
+                code: "SM-001",
+                manufacturer: "Brother",
+                category: "Sewing Machines",
+                condition: "New",
+                description: "Heavy-duty industrial sewing machine for professional use.",
+                price: 85000,
+                image: "https://images.unsplash.com/photo-1589254065878-42f9a7a5d26f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                title: "Fabric Cutting Machine",
+                code: "FC-002",
+                manufacturer: "Eastman",
+                category: "Cutting Machines",
+                condition: "Refurbished",
+                description: "Precision fabric cutting machine with automatic features.",
+                price: 120000,
+                image: "https://images.unsplash.com/photo-1598703296251-fdc694f1d6bc?auto=format&fit=crop&w=600&q=80"
             }
-          }
-        };
-        if(categories.length>1) row.appendChild(delBtn);
-        catList.appendChild(row);
-      });
-    }
-    document.getElementById('addCatForm').onsubmit = function(e){
-      e.preventDefault();
-      let val = document.getElementById('newCatInput').value.trim();
-      if(!val || categories.includes(val)) return;
-      categories.push(val);
-      renderCategoriesPills();
-      renderCatList();
-      renderProductCategoryOptions();
-      document.getElementById('newCatInput').value="";
-    };
-    // INIT
-    renderCategoriesPills();
-    renderProductsGrid();
-    updateAdminUI();
-  </script>
+        ];
+        
+        let cart = [];
+        let selectedCategory = "All";
+        let isAdmin = false;
+        let uploadedImage = null;
+        
+        // DOM Elements
+        const categoriesPills = document.getElementById('categoriesPills');
+        const productsGrid = document.getElementById('productsGrid');
+        const noProductsMsg = document.getElementById('noProductsMsg');
+        const adminBar = document.getElementById('adminBar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminLabel = document.getElementById('adminLabel');
+        const cartBadge = document.getElementById('cartBadge');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        // Initialize the page
+        function init() {
+            renderCategories();
+            renderProducts();
+            updateAdminUI();
+            updateCartBadge();
+        }
+        
+        // Render categories
+        function renderCategories() {
+            categoriesPills.innerHTML = '';
+            
+            // Add "All" category
+            const allPill = document.createElement('button');
+            allPill.className = `cat-pill ${selectedCategory === 'All' ? 'active' : ''}`;
+            allPill.textContent = 'All Products';
+            allPill.addEventListener('click', () => selectCategory('All'));
+            categoriesPills.appendChild(allPill);
+            
+            // Add other categories
+            categories.forEach(category => {
+                const pill = document.createElement('button');
+                pill.className = `cat-pill ${selectedCategory === category ? 'active' : ''}`;
+                pill.textContent = category;
+                pill.addEventListener('click', () => selectCategory(category));
+                categoriesPills.appendChild(pill);
+            });
+        }
+        
+        // Select category
+        function selectCategory(category) {
+            selectedCategory = category;
+            renderCategories();
+            renderProducts();
+        }
+        
+        // Render products
+        function renderProducts() {
+            productsGrid.innerHTML = '';
+            
+            let filteredProducts = products;
+            if (selectedCategory !== 'All') {
+                filteredProducts = products.filter(product => product.category === selectedCategory);
+            }
+            
+            if (filteredProducts.length === 0) {
+                noProductsMsg.classList.remove('hidden');
+                return;
+            }
+            
+            noProductsMsg.classList.add('hidden');
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.title}">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <div class="product-category">${product.category}</div>
+                        <div class="product-price">PKR ${product.price.toLocaleString()}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        ${isAdmin ? `
+                        <div class="product-actions">
+                            <button class="action-btn edit" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn delete" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+        }
+        
+        // Update admin UI
+        function updateAdminUI() {
+            if (isAdmin) {
+                adminBar.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                adminLabel.classList.remove('hidden');
+            } else {
+                adminBar.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                adminLabel.classList.add('hidden');
+            }
+            renderProducts(); // Re-render products to show/hide admin buttons
+        }
+        
+        // Open admin login
+        function openAdminLogin() {
+            openModal('loginModal');
+        }
+        
+        // Login function
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+            const loginError = document.getElementById('loginError');
+            
+            // Basic validation
+            if (!email || !password) {
+                loginError.textContent = 'Please enter both email and password';
+                loginError.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const loginBtn = document.querySelector('#loginModal .admin-btn');
+                loginBtn.textContent = 'Logging in...';
+                loginBtn.disabled = true;
+                
+                // Simulate login (replace with actual Firebase auth)
+                if (email === "admin@example.com" && password === "admin123") {
+                    // Successful login
+                    isAdmin = true;
+                    updateAdminUI();
+                    closeModal('loginModal');
+                } else {
+                    throw new Error("Invalid credentials");
+                }
+                
+            } catch (error) {
+                // Handle errors
+                console.error("Login error:", error);
+                
+                // Don't reveal specific error details to users
+                loginError.textContent = 'Invalid email or password';
+                loginError.classList.remove('hidden');
+                
+                // Reset button
+                const loginBtn = document.querySelector('#loginModal .admin-btn');
+                loginBtn.textContent = 'Login';
+                loginBtn.disabled = false;
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            isAdmin = false;
+            updateAdminUI();
+        }
+        
+        // Password reset function
+        function showPasswordReset() {
+            const email = prompt('Please enter your email address to reset password:');
+            if (!email) return;
+            
+            alert('Password reset email sent! Check your inbox.');
+        }
+        
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            updateCartBadge();
+            alert('Product added to cart!');
+        }
+        
+        // Update cart badge
+        function updateCartBadge() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartBadge.textContent = totalItems;
+        }
+        
+        // Open cart
+        function openCart() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Cart functionality will be implemented here.');
+        }
+        
+        // Open about popup
+        function openAboutPopup(e) {
+            e.preventDefault();
+            openModal('aboutModal');
+        }
+        
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Admin functions
+        function openProductModal() {
+            document.getElementById('productModalTitle').textContent = 'Add New Product';
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            uploadedImage = null;
+            imagePreview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
+            openModal('productModal');
+        }
+        
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            document.getElementById('productModalTitle').textContent = 'Edit Product';
+            document.getElementById('productId').value = product.id;
+            document.getElementById('prodTitle').value = product.title;
+            document.getElementById('prodCode').value = product.code;
+            document.getElementById('prodManufacturer').value = product.manufacturer;
+            document.getElementById('prodCategory').value = product.category;
+            document.getElementById('prodCondition').value = product.condition;
+            document.getElementById('prodDesc').value = product.description;
+            document.getElementById('prodPrice').value = product.price;
+            document.getElementById('prodImage').value = product.image;
+            
+            // Show image preview
+            if (product.image) {
+                imagePreview.innerHTML = `<img src="${product.image}" alt="Preview">`;
+            } else {
+                imagePreview.innerHTML = '<div class="image-preview-text">No image available</div>';
+            }
+            
+            uploadedImage = null;
+            openModal('productModal');
+        }
+        
+        function saveProduct() {
+            const id = document.getElementById('productId').value;
+            const title = document.getElementById('prodTitle').value;
+            const code = document.getElementById('prodCode').value;
+            const manufacturer = document.getElementById('prodManufacturer').value;
+            const category = document.getElementById('prodCategory').value;
+            const condition = document.getElementById('prodCondition').value;
+            const description = document.getElementById('prodDesc').value;
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const imageUrl = document.getElementById('prodImage').value;
+            
+            if (!title || !code || !manufacturer || !category || !condition || !description || !price) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            // Use uploaded image if available, otherwise use URL
+            const image = uploadedImage || imageUrl;
+            
+            const productData = {
+                title, code, manufacturer, category, condition, description, price, image
+            };
+            
+            if (id) {
+                // Update existing product
+                const index = products.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    products[index] = { ...products[index], ...productData };
+                }
+            } else {
+                // Add new product
+                productData.id = Date.now();
+                products.push(productData);
+            }
+            
+            renderProducts();
+            closeModal('productModal');
+        }
+        
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== id);
+                renderProducts();
+            }
+        }
+        
+        function openBannerModal() {
+            alert('Edit Banner functionality will be implemented here.');
+        }
+        
+        function viewAllProducts() {
+            selectedCategory = 'All';
+            renderCategories();
+            renderProducts();
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function openCatModal() {
+            openModal('catModal');
+        }
+        
+        function addCategory() {
+            const newCategory = document.getElementById('newCatInput').value.trim();
+            
+            if (!newCategory) {
+                alert('Please enter a category name');
+                return;
+            }
+            
+            if (categories.includes(newCategory)) {
+                alert('This category already exists');
+                return;
+            }
+            
+            categories.push(newCategory);
+            renderCategories();
+            document.getElementById('newCatInput').value = '';
+        }
+        
+        // Handle image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check if file is an image
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Store the base64 image data
+                uploadedImage = e.target.result;
+                
+                // Show preview
+                imagePreview.innerHTML = `<img src="${uploadedImage}" alt="Preview">`;
+                
+                // Clear URL field
+                document.getElementById('prodImage').value = '';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Handle URL change
+        function handleUrlChange(event) {
+            const url = event.target.value;
+            if (!url) return;
+            
+            // Clear uploaded image
+            uploadedImage = null;
+            
+            // Show preview from URL
+            imagePreview.innerHTML = `<img src="${url}" alt="Preview" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-preview-text\'>Failed to load image from URL</div>'; uploadedImage=null;">`;
+        }
+        
+        // Initialize when page loads
+        window.onload = init;
+    </script>
 </body>
 </html>
