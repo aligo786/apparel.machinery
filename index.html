@@ -627,6 +627,7 @@
             justify-content: center;
             gap: 5px;
             transition: background 0.3s;
+            font-size: 0.9rem;
         }
         
         .upload-btn:hover {
@@ -1807,13 +1808,24 @@
             // If a file was uploaded, upload it to Firebase Storage
             if (uploadedFile) {
                 try {
+                    // Create a reference to the file location in Firebase Storage
                     const storageRef = storage.ref();
                     const fileRef = storageRef.child(`products/${Date.now()}_${uploadedFile.name}`);
+                    
+                    // Upload the file to Firebase Storage
                     const snapshot = await fileRef.put(uploadedFile);
+                    
+                    // Get the download URL
                     image = await snapshot.ref.getDownloadURL();
                 } catch (error) {
                     console.error("Error uploading image:", error);
-                    alert("Error uploading image. Using URL instead.");
+                    
+                    // Check if it's a URL validation error
+                    if (error.code === 'storage/invalid-url') {
+                        alert("Invalid storage configuration. Please check your Firebase Storage bucket settings.");
+                    } else {
+                        alert("Error uploading image. Using URL instead.");
+                    }
                 }
             }
             
@@ -1941,13 +1953,24 @@
             // If a file was uploaded, upload it to Firebase Storage
             if (bannerUploadedFile) {
                 try {
+                    // Create a reference to the file location in Firebase Storage
                     const storageRef = storage.ref();
                     const fileRef = storageRef.child(`banner/${Date.now()}_${bannerUploadedFile.name}`);
+                    
+                    // Upload the file to Firebase Storage
                     const snapshot = await fileRef.put(bannerUploadedFile);
+                    
+                    // Get the download URL
                     image = await snapshot.ref.getDownloadURL();
                 } catch (error) {
                     console.error("Error uploading banner image:", error);
-                    alert("Error uploading banner image. Using URL instead.");
+                    
+                    // Check if it's a URL validation error
+                    if (error.code === 'storage/invalid-url') {
+                        alert("Invalid storage configuration. Please check your Firebase Storage bucket settings.");
+                    } else {
+                        alert("Error uploading banner image. Using URL instead.");
+                    }
                 }
             }
             
