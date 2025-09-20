@@ -679,6 +679,18 @@
             border-top: 2px solid #eee;
         }
         
+        /* Word count validation */
+        .word-count {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .word-count.error {
+            color: #e74c3c;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -858,7 +870,8 @@
                         </div>
                         <div class="form-group">
                             <label for="prodDesc">Description *</label>
-                            <textarea id="prodDesc" required placeholder="Enter product description"></textarea>
+                            <textarea id="prodDesc" required placeholder="Enter product description" oninput="validateWordCount()"></textarea>
+                            <div id="wordCount" class="word-count">0/500 words</div>
                         </div>
                         <div class="form-group">
                             <label for="prodPrice">Price (PKR) *</label>
@@ -885,7 +898,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="admin-btn" onclick="saveProduct()">Save Product</button>
+                    <button type="button" class="admin-btn" id="saveProductBtn" onclick="saveProduct()">Save Product</button>
                 </div>
             </div>
         </div>
@@ -994,6 +1007,8 @@
         const cartBadge = document.getElementById('cartBadge');
         const imagePreview = document.getElementById('imagePreview');
         const loginButton = document.getElementById('loginButton');
+        const saveProductBtn = document.getElementById('saveProductBtn');
+        const wordCountElement = document.getElementById('wordCount');
         
         // Initialize the page
         function init() {
@@ -1368,6 +1383,8 @@
             uploadedImage = null;
             uploadedFile = null;
             imagePreview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
+            wordCountElement.textContent = '0/500 words';
+            wordCountElement.classList.remove('error');
             
             // Make sure category dropdown is populated
             populateCategoryDropdown();
@@ -1390,16 +1407,36 @@
             document.getElementById('prodPrice').value = product.price;
             document.getElementById('prodImage').value = product.image;
             
+            // Validate word count
+            validateWordCount();
+            
             // Show image preview
             if (product.image) {
                 imagePreview.innerHTML = `<img src="${product.image}" alt="Preview">`;
             } else {
-                imagePreview.innerHTML = '<div class="image-preview-text">No image available</div>';
+                imagePreview.innerHTML = '<div class="image-preview-text>No image available</div>';
             }
             
             uploadedImage = null;
             uploadedFile = null;
             openModal('productModal');
+        }
+        
+        // Validate word count function
+        function validateWordCount() {
+            const description = document.getElementById('prodDesc').value;
+            const words = description.trim().split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            
+            wordCountElement.textContent = `${wordCount}/500 words`;
+            
+            if (wordCount > 500) {
+                wordCountElement.classList.add('error');
+                saveProductBtn.disabled = true;
+            } else {
+                wordCountElement.classList.remove('error');
+                saveProductBtn.disabled = false;
+            }
         }
         
         async function saveProduct() {
@@ -1412,6 +1449,13 @@
             const description = document.getElementById('prodDesc').value;
             const price = parseFloat(document.getElementById('prodPrice').value);
             const imageUrl = document.getElementById('prodImage').value;
+            
+            // Validate word count again before saving
+            const words = description.trim().split(/\s+/).filter(word => word.length > 0);
+            if (words.length > 500) {
+                alert('Description must be less than 500 words. Current word count: ' + words.length);
+                return;
+            }
             
             if (!title || !code || !manufacturer || !category || !condition || !description || !price) {
                 alert('Please fill all required fields');
@@ -1433,11 +1477,20 @@
                 }
             }
             
+            // If no image is provided, use a placeholder
+            if (!image) {
+                image = "https://via.placeholder.com/300x200?text=No+Image+Available";
+            }
+            
             const productData = {
                 title, code, manufacturer, category, condition, description, price, image
             };
             
             try {
+                // Show loading state
+                saveProductBtn.innerHTML = '<div class="loading"></div> Saving...';
+                saveProductBtn.disabled = true;
+                
                 if (id) {
                     // Update existing product in Firestore
                     await db.collection("products").doc(id).update(productData);
@@ -1453,6 +1506,10 @@
             } catch (error) {
                 console.error("Error saving product:", error);
                 alert("Error saving product: " + error.message);
+            } finally {
+                // Reset button
+                saveProductBtn.innerHTML = 'Save Product';
+                saveProductBtn.disabled = false;
             }
         }
         
