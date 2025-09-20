@@ -32,6 +32,42 @@
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            position: relative;
+        }
+        
+        /* Connection Status Indicator */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .connection-status.online {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .connection-status.offline {
+            background: #f44336;
+            color: white;
+        }
+        
+        .connection-status.connecting {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .connection-status i {
+            font-size: 0.9rem;
         }
         
         /* Header Styles */
@@ -691,6 +727,32 @@
             color: #e74c3c;
         }
         
+        /* Connection Error Banner */
+        .connection-error-banner {
+            background: #ff9800;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .connection-error-banner button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .connection-error-banner button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -710,11 +772,31 @@
             .admin-action-bar {
                 flex-direction: column;
             }
+            
+            .connection-status {
+                top: 5px;
+                right: 5px;
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Connection Status Indicator -->
+    <div id="connectionStatus" class="connection-status hidden">
+        <i class="fas fa-wifi"></i>
+        <span id="connectionStatusText">Connecting...</span>
+    </div>
+    
     <div class="container">
+        <!-- Connection Error Banner -->
+        <div id="connectionErrorBanner" class="connection-error-banner hidden">
+            <i class="fas fa-wifi-slash"></i>
+            <span>You are currently offline. Some features may not be available.</span>
+            <button onclick="retryConnection()">Retry Connection</button>
+        </div>
+        
         <!-- Header -->
         <div class="header-content">
             <div class="logo" onclick="openAdminLogin()">
@@ -741,10 +823,10 @@
         
         <!-- Banner -->
         <div class="banner-section">
-            <img class="banner-bg" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80" alt="Banner">
+            <img class="banner-bg" id="bannerImage" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80" alt="Banner">
             <div class="banner-content">
-                <h1>Premium Industrial Machinery</h1>
-                <p>Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
+                <h1 id="bannerTitle">Premium Industrial Machinery</h1>
+                <p id="bannerDescription">Find the best apparel machinery for your business with our extensive collection of industrial machinery.</p>
             </div>
         </div>
         
@@ -775,10 +857,21 @@
         <!-- Products Section -->
         <div class="products-section" id="products">
             <h2 class="section-title">Our Products</h2>
+            <div id="offlineDataNotice" class="hidden" style="text-align: center; margin-bottom: 15px; padding: 10px; background: #fff3cd; color: #856404; border-radius: 5px;">
+                <i class="fas fa-info-circle"></i> Showing offline data. Some products may not be up to date.
+            </div>
             <div class="products-grid" id="productsGrid">
                 <!-- Products will be inserted here by JavaScript -->
             </div>
             <div id="noProductsMsg" class="hidden">No products found in this category</div>
+            <div id="connectionErrorMsg" class="hidden" style="text-align: center; padding: 25px; color: #666;">
+                <i class="fas fa-wifi-slash" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                <h3>Connection Issue</h3>
+                <p>Unable to load products. Please check your internet connection.</p>
+                <button class="admin-btn" onclick="loadProducts()" style="margin-top: 15px;">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
         </div>
         
         <!-- Footer -->
@@ -927,6 +1020,49 @@
             </div>
         </div>
         
+        <!-- Banner Modal -->
+        <div id="bannerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Banner</h3>
+                    <button class="close-modal" onclick="closeModal('bannerModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="bannerForm">
+                        <div class="form-group">
+                            <label for="bannerTitleInput">Banner Title</label>
+                            <input type="text" id="bannerTitleInput" placeholder="Enter banner title">
+                        </div>
+                        <div class="form-group">
+                            <label for="bannerDescInput">Banner Description</label>
+                            <textarea id="bannerDescInput" placeholder="Enter banner description"></textarea>
+                        </div>
+                        
+                        <!-- Banner Image Upload Section -->
+                        <div class="form-group">
+                            <label>Banner Image</label>
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="bannerImagePreview">
+                                    <div class="image-preview-text">Banner preview will appear here</div>
+                                </div>
+                                <div class="upload-options">
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('bannerFileInput').click()">
+                                        <i class="fas fa-upload"></i> Upload Banner Image
+                                    </button>
+                                    <input type="file" id="bannerFileInput" class="file-input" accept="image/*" onchange="handleBannerImageUpload(event)">
+                                    <div class="or-divider">OR</div>
+                                    <input type="text" id="bannerImageUrl" placeholder="Enter banner image URL" onchange="handleBannerUrlChange(event)">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="admin-btn" id="saveBannerBtn" onclick="saveBanner()">Save Banner</button>
+                </div>
+            </div>
+        </div>
+        
         <!-- Cart Modal -->
         <div id="cartModal" class="modal">
             <div class="modal-content">
@@ -983,6 +1119,17 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
         
+        // Enable offline persistence
+        db.enablePersistence()
+          .catch((err) => {
+              console.error('Firebase persistence error: ', err);
+              if (err.code == 'failed-precondition') {
+                  console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+              } else if (err.code == 'unimplemented') {
+                  console.warn('The current browser does not support all of the features required to enable persistence');
+              }
+          });
+        
         // Data
         let categories = [
             "Sewing Machines", "Cutting Machines", "Pressing Equipment", 
@@ -996,6 +1143,11 @@
         let isAdmin = false;
         let uploadedImage = null;
         let uploadedFile = null;
+        let bannerUploadedImage = null;
+        let bannerUploadedFile = null;
+        let isOnline = true;
+        let connectionRetryCount = 0;
+        const maxRetries = 3;
         
         // DOM Elements
         const categoriesPills = document.getElementById('categoriesPills');
@@ -1006,9 +1158,19 @@
         const adminLabel = document.getElementById('adminLabel');
         const cartBadge = document.getElementById('cartBadge');
         const imagePreview = document.getElementById('imagePreview');
+        const bannerImagePreview = document.getElementById('bannerImagePreview');
         const loginButton = document.getElementById('loginButton');
         const saveProductBtn = document.getElementById('saveProductBtn');
+        const saveBannerBtn = document.getElementById('saveBannerBtn');
         const wordCountElement = document.getElementById('wordCount');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const connectionStatusText = document.getElementById('connectionStatusText');
+        const connectionErrorBanner = document.getElementById('connectionErrorBanner');
+        const connectionErrorMsg = document.getElementById('connectionErrorMsg');
+        const offlineDataNotice = document.getElementById('offlineDataNotice');
+        const bannerImage = document.getElementById('bannerImage');
+        const bannerTitle = document.getElementById('bannerTitle');
+        const bannerDescription = document.getElementById('bannerDescription');
         
         // Initialize the page
         function init() {
@@ -1017,6 +1179,8 @@
             updateAdminUI();
             updateCartBadge();
             loadCartFromStorage();
+            setupConnectionMonitoring();
+            loadBannerData();
             
             // Check if user is already logged in
             auth.onAuthStateChanged(user => {
@@ -1032,8 +1196,89 @@
             });
         }
         
-        // Load products from Firestore
+        // Set up connection monitoring
+        function setupConnectionMonitoring() {
+            // Listen to online/offline events
+            window.addEventListener('online', () => {
+                updateConnectionStatus(true);
+                // Try to reload products when coming back online
+                loadProducts();
+            });
+            
+            window.addEventListener('offline', () => {
+                updateConnectionStatus(false);
+            });
+            
+            // Initial check
+            updateConnectionStatus(navigator.onLine);
+            
+            // Monitor Firestore connection state
+            db.enableNetwork()
+                .then(() => {
+                    console.log("Firestore online");
+                })
+                .catch((err) => {
+                    console.error("Error enabling network: ", err);
+                });
+        }
+        
+        // Update connection status UI
+        function updateConnectionStatus(online) {
+            isOnline = online;
+            connectionRetryCount = 0;
+            
+            if (online) {
+                connectionStatus.className = 'connection-status online';
+                connectionStatusText.innerHTML = 'Online';
+                connectionErrorBanner.classList.add('hidden');
+                connectionStatus.classList.remove('hidden');
+                
+                // Hide the status after 3 seconds if everything is fine
+                setTimeout(() => {
+                    if (isOnline) {
+                        connectionStatus.classList.add('hidden');
+                    }
+                }, 3000);
+            } else {
+                connectionStatus.className = 'connection-status offline';
+                connectionStatusText.innerHTML = 'Offline';
+                connectionErrorBanner.classList.remove('hidden');
+                connectionStatus.classList.remove('hidden');
+            }
+        }
+        
+        // Retry connection
+        function retryConnection() {
+            connectionStatus.className = 'connection-status connecting';
+            connectionStatusText.innerHTML = 'Connecting...';
+            connectionStatus.classList.remove('hidden');
+            
+            connectionRetryCount++;
+            
+            // Try to enable network
+            db.enableNetwork()
+                .then(() => {
+                    console.log("Firestore back online");
+                    updateConnectionStatus(true);
+                    loadProducts(); // Reload products
+                })
+                .catch((err) => {
+                    console.error("Error enabling network: ", err);
+                    if (connectionRetryCount < maxRetries) {
+                        setTimeout(retryConnection, 2000); // Retry after 2 seconds
+                    } else {
+                        updateConnectionStatus(false);
+                    }
+                });
+        }
+        
+        // Load products from Firestore with error handling
         function loadProducts() {
+            // Show loading state
+            productsGrid.innerHTML = '<div style="text-align: center; grid-column: 1 / -1; padding: 30px;"><div class="loading" style="width: 40px; height: 40px; margin: 0 auto;"></div><p>Loading products...</p></div>';
+            connectionErrorMsg.classList.add('hidden');
+            offlineDataNotice.classList.add('hidden');
+            
             db.collection("products").get().then((querySnapshot) => {
                 products = [];
                 querySnapshot.forEach((doc) => {
@@ -1042,14 +1287,62 @@
                     products.push(product);
                 });
                 
+                // Check if we're showing cached data
+                if (querySnapshot.metadata.fromCache) {
+                    offlineDataNotice.classList.remove('hidden');
+                }
+                
                 // Hide sample products if there are any uploaded products
                 if (products.length > 0) {
-                    document.getElementById('noProductsMsg').classList.add('hidden');
+                    noProductsMsg.classList.add('hidden');
+                } else {
+                    noProductsMsg.classList.remove('hidden');
                 }
                 
                 renderProducts();
             }).catch((error) => {
                 console.error("Error loading products: ", error);
+                
+                // Show error message
+                connectionErrorMsg.classList.remove('hidden');
+                productsGrid.innerHTML = '';
+                
+                // Check if we have any cached products to show
+                db.collection("products").get({ source: 'cache' }).then((querySnapshot) => {
+                    if (!querySnapshot.empty) {
+                        products = [];
+                        querySnapshot.forEach((doc) => {
+                            const product = doc.data();
+                            product.id = doc.id;
+                            products.push(product);
+                        });
+                        
+                        offlineDataNotice.classList.remove('hidden');
+                        renderProducts();
+                    }
+                }).catch((cacheError) => {
+                    console.error("Error loading cached products: ", cacheError);
+                });
+            });
+        }
+        
+        // Load banner data from Firestore
+        function loadBannerData() {
+            db.collection("banner").doc("current").get().then((doc) => {
+                if (doc.exists) {
+                    const bannerData = doc.data();
+                    if (bannerData.image) {
+                        bannerImage.src = bannerData.image;
+                    }
+                    if (bannerData.title) {
+                        bannerTitle.textContent = bannerData.title;
+                    }
+                    if (bannerData.description) {
+                        bannerDescription.textContent = bannerData.description;
+                    }
+                }
+            }).catch((error) => {
+                console.error("Error loading banner data: ", error);
             });
         }
         
@@ -1118,7 +1411,7 @@
                 productCard.className = 'product-card';
                 
                 productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.title}">
+                    <img src="${product.image}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Available'">
                     <div class="product-info">
                         <h3 class="product-title">${product.title}</h3>
                         <div class="product-category">${product.category}</div>
@@ -1201,6 +1494,8 @@
                     errorMessage = "No account found with this email";
                 } else if (error.code === "auth/wrong-password") {
                     errorMessage = "Incorrect password";
+                } else if (error.code === "auth/network-request-failed") {
+                    errorMessage = "Network error. Please check your connection.";
                 }
                 
                 loginError.textContent = errorMessage;
@@ -1414,7 +1709,7 @@
             if (product.image) {
                 imagePreview.innerHTML = `<img src="${product.image}" alt="Preview">`;
             } else {
-                imagePreview.innerHTML = '<div class="image-preview-text>No image available</div>';
+                imagePreview.innerHTML = '<div class="image-preview-text">No image available</div>';
             }
             
             uploadedImage = null;
@@ -1528,7 +1823,123 @@
         }
         
         function openBannerModal() {
-            alert('Edit Banner functionality will be implemented here.');
+            // Load current banner data
+            db.collection("banner").doc("current").get().then((doc) => {
+                if (doc.exists) {
+                    const bannerData = doc.data();
+                    document.getElementById('bannerTitleInput').value = bannerData.title || '';
+                    document.getElementById('bannerDescInput').value = bannerData.description || '';
+                    document.getElementById('bannerImageUrl').value = bannerData.image || '';
+                    
+                    if (bannerData.image) {
+                        bannerImagePreview.innerHTML = `<img src="${bannerData.image}" alt="Banner Preview">`;
+                    } else {
+                        bannerImagePreview.innerHTML = '<div class="image-preview-text">Banner preview will appear here</div>';
+                    }
+                }
+            }).catch((error) => {
+                console.error("Error loading banner data: ", error);
+            });
+            
+            openModal('bannerModal');
+        }
+        
+        // Handle banner image upload
+        function handleBannerImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check if file is an image
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file');
+                return;
+            }
+            
+            bannerUploadedFile = file;
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Store the base64 image data for preview
+                bannerUploadedImage = e.target.result;
+                
+                // Show preview
+                bannerImagePreview.innerHTML = `<img src="${bannerUploadedImage}" alt="Banner Preview">`;
+                
+                // Clear URL field
+                document.getElementById('bannerImageUrl').value = '';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Handle banner URL change
+        function handleBannerUrlChange(event) {
+            const url = event.target.value;
+            if (!url) return;
+            
+            // Clear uploaded image
+            bannerUploadedImage = null;
+            bannerUploadedFile = null;
+            
+            // Show preview from URL
+            bannerImagePreview.innerHTML = `<img src="${url}" alt="Banner Preview" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-preview-text\'>Failed to load image from URL</div>'; bannerUploadedImage=null;">`;
+        }
+        
+        // Save banner data
+        async function saveBanner() {
+            const title = document.getElementById('bannerTitleInput').value;
+            const description = document.getElementById('bannerDescInput').value;
+            const imageUrl = document.getElementById('bannerImageUrl').value;
+            
+            let image = imageUrl;
+            
+            // If a file was uploaded, upload it to Firebase Storage
+            if (bannerUploadedFile) {
+                try {
+                    const storageRef = storage.ref();
+                    const fileRef = storageRef.child(`banner/${Date.now()}_${bannerUploadedFile.name}`);
+                    const snapshot = await fileRef.put(bannerUploadedFile);
+                    image = await snapshot.ref.getDownloadURL();
+                } catch (error) {
+                    console.error("Error uploading banner image:", error);
+                    alert("Error uploading banner image. Using URL instead.");
+                }
+            }
+            
+            // If no image is provided, use the default one
+            if (!image) {
+                image = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80";
+            }
+            
+            const bannerData = {
+                title: title || "Premium Industrial Machinery",
+                description: description || "Find the best apparel machinery for your business with our extensive collection of industrial machinery.",
+                image: image
+            };
+            
+            try {
+                // Show loading state
+                saveBannerBtn.innerHTML = '<div class="loading"></div> Saving...';
+                saveBannerBtn.disabled = true;
+                
+                // Save banner data to Firestore
+                await db.collection("banner").doc("current").set(bannerData);
+                
+                // Update the banner on the page
+                bannerImage.src = image;
+                bannerTitle.textContent = bannerData.title;
+                bannerDescription.textContent = bannerData.description;
+                
+                closeModal('bannerModal');
+                alert('Banner updated successfully!');
+            } catch (error) {
+                console.error("Error saving banner:", error);
+                alert("Error saving banner: " + error.message);
+            } finally {
+                // Reset button
+                saveBannerBtn.innerHTML = 'Save Banner';
+                saveBannerBtn.disabled = false;
+            }
         }
         
         function viewAllProducts() {
