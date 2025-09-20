@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apparel Machinery | Industrial Equipment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -270,6 +275,8 @@
         
         .product-info {
             padding: 15px;
+            display: flex;
+            flex-direction: column;
         }
         
         .product-title {
@@ -291,6 +298,13 @@
             font-weight: 700;
             color: #e74c3c;
             margin-bottom: 12px;
+        }
+        
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+            flex-grow: 1;
         }
         
         .product-actions {
@@ -425,6 +439,9 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         
         .modal-header h3 {
@@ -594,6 +611,48 @@
             color: #888;
             font-size: 0.9rem;
         }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .firebase-error {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .admin-action-bar {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -707,7 +766,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="admin-btn" onclick="login()">Login</button>
+                    <button type="button" class="admin-btn" id="loginButton" onclick="login()">Login</button>
                 </div>
                 <div class="admin-info">
                     Contact system administrator for access credentials
@@ -827,8 +886,25 @@
     </div>
 
     <script>
+        // Firebase configuration - Using your provided config
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
+            authDomain: "apparel-machinery.firebaseapp.com",
+            projectId: "apparel-machinery",
+            storageBucket: "apparel-machinery.firebasestorage.app",
+            messagingSenderId: "165173029685",
+            appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
+            measurementId: "G-XHMZ4BP7CW"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
         // Data
-        const categories = [
+        let categories = [
             "Sewing Machines", "Cutting Machines", "Pressing Equipment", 
             "Embroidery Machines", "Boiler Machines", "Generators", 
             "Compressors", "Accessories", "Management Equipment"
@@ -863,6 +939,7 @@
         let selectedCategory = "All";
         let isAdmin = false;
         let uploadedImage = null;
+        let uploadedFile = null;
         
         // DOM Elements
         const categoriesPills = document.getElementById('categoriesPills');
@@ -873,6 +950,7 @@
         const adminLabel = document.getElementById('adminLabel');
         const cartBadge = document.getElementById('cartBadge');
         const imagePreview = document.getElementById('imagePreview');
+        const loginButton = document.getElementById('loginButton');
         
         // Initialize the page
         function init() {
@@ -880,6 +958,19 @@
             renderProducts();
             updateAdminUI();
             updateCartBadge();
+            
+            // Check if user is already logged in
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // User is signed in
+                    isAdmin = true;
+                    updateAdminUI();
+                } else {
+                    // User is signed out
+                    isAdmin = false;
+                    updateAdminUI();
+                }
+            });
         }
         
         // Render categories
@@ -900,6 +991,22 @@
                 pill.textContent = category;
                 pill.addEventListener('click', () => selectCategory(category));
                 categoriesPills.appendChild(pill);
+            });
+            
+            // Also populate the category dropdown in the product modal
+            populateCategoryDropdown();
+        }
+        
+        // Populate category dropdown in product modal
+        function populateCategoryDropdown() {
+            const categoryDropdown = document.getElementById('prodCategory');
+            categoryDropdown.innerHTML = '<option value="">Select a category</option>';
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryDropdown.appendChild(option);
             });
         }
         
@@ -936,6 +1043,7 @@
                         <h3 class="product-title">${product.title}</h3>
                         <div class="product-category">${product.category}</div>
                         <div class="product-price">PKR ${product.price.toLocaleString()}</div>
+                        <div class="product-description">${product.description}</div>
                         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
@@ -975,7 +1083,7 @@
             openModal('loginModal');
         }
         
-        // Login function
+        // Login function with Firebase
         async function login() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPass').value;
@@ -990,47 +1098,64 @@
             
             try {
                 // Show loading state
-                const loginBtn = document.querySelector('#loginModal .admin-btn');
-                loginBtn.textContent = 'Logging in...';
-                loginBtn.disabled = true;
+                loginButton.innerHTML = '<div class="loading"></div> Logging in...';
+                loginButton.disabled = true;
                 
-                // Simulate login (replace with actual Firebase auth)
-                if (email === "admin@example.com" && password === "admin123") {
-                    // Successful login
-                    isAdmin = true;
-                    updateAdminUI();
-                    closeModal('loginModal');
-                } else {
-                    throw new Error("Invalid credentials");
-                }
+                // Sign in with Firebase
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Check if user is admin (you might want to set up custom claims in Firebase)
+                // For now, we'll assume any authenticated user is admin
+                isAdmin = true;
+                updateAdminUI();
+                closeModal('loginModal');
                 
             } catch (error) {
                 // Handle errors
                 console.error("Login error:", error);
                 
-                // Don't reveal specific error details to users
-                loginError.textContent = 'Invalid email or password';
-                loginError.classList.remove('hidden');
+                // Show appropriate error message
+                let errorMessage = "Invalid email or password";
+                if (error.code === "auth/user-not-found") {
+                    errorMessage = "No account found with this email";
+                } else if (error.code === "auth/wrong-password") {
+                    errorMessage = "Incorrect password";
+                }
                 
+                loginError.textContent = errorMessage;
+                loginError.classList.remove('hidden');
+            } finally {
                 // Reset button
-                const loginBtn = document.querySelector('#loginModal .admin-btn');
-                loginBtn.textContent = 'Login';
-                loginBtn.disabled = false;
+                loginButton.innerHTML = 'Login';
+                loginButton.disabled = false;
             }
         }
         
         // Logout function
         function logout() {
-            isAdmin = false;
-            updateAdminUI();
+            auth.signOut().then(() => {
+                isAdmin = false;
+                updateAdminUI();
+            }).catch(error => {
+                console.error("Logout error:", error);
+            });
         }
         
         // Password reset function
         function showPasswordReset() {
-            const email = prompt('Please enter your email address to reset password:');
-            if (!email) return;
+            const email = document.getElementById('loginEmail').value;
+            if (!email) {
+                alert('Please enter your email address first');
+                return;
+            }
             
-            alert('Password reset email sent! Check your inbox.');
+            auth.sendPasswordResetEmail(email).then(() => {
+                alert('Password reset email sent! Check your inbox.');
+            }).catch(error => {
+                console.error("Password reset error:", error);
+                alert('Error sending password reset email: ' + error.message);
+            });
         }
         
         // Add to cart
@@ -1093,7 +1218,12 @@
             document.getElementById('productForm').reset();
             document.getElementById('productId').value = '';
             uploadedImage = null;
+            uploadedFile = null;
             imagePreview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
+            
+            // Make sure category dropdown is populated
+            populateCategoryDropdown();
+            
             openModal('productModal');
         }
         
@@ -1120,10 +1250,11 @@
             }
             
             uploadedImage = null;
+            uploadedFile = null;
             openModal('productModal');
         }
         
-        function saveProduct() {
+        async function saveProduct() {
             const id = document.getElementById('productId').value;
             const title = document.getElementById('prodTitle').value;
             const code = document.getElementById('prodCode').value;
@@ -1139,8 +1270,20 @@
                 return;
             }
             
-            // Use uploaded image if available, otherwise use URL
-            const image = uploadedImage || imageUrl;
+            let image = imageUrl;
+            
+            // If a file was uploaded, upload it to Firebase Storage
+            if (uploadedFile) {
+                try {
+                    const storageRef = storage.ref();
+                    const fileRef = storageRef.child(`products/${Date.now()}_${uploadedFile.name}`);
+                    const snapshot = await fileRef.put(uploadedFile);
+                    image = await snapshot.ref.getDownloadURL();
+                } catch (error) {
+                    console.error("Error uploading image:", error);
+                    alert("Error uploading image. Using URL instead.");
+                }
+            }
             
             const productData = {
                 title, code, manufacturer, category, condition, description, price, image
@@ -1213,10 +1356,11 @@
                 return;
             }
             
+            uploadedFile = file;
             const reader = new FileReader();
             
             reader.onload = function(e) {
-                // Store the base64 image data
+                // Store the base64 image data for preview
                 uploadedImage = e.target.result;
                 
                 // Show preview
@@ -1236,6 +1380,7 @@
             
             // Clear uploaded image
             uploadedImage = null;
+            uploadedFile = null;
             
             // Show preview from URL
             imagePreview.innerHTML = `<img src="${url}" alt="Preview" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-preview-text\'>Failed to load image from URL</div>'; uploadedImage=null;">`;
