@@ -727,6 +727,18 @@
             color: #e74c3c;
         }
         
+        /* URL validation */
+        .url-validation {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .url-validation.error {
+            color: #e74c3c;
+        }
+        
         /* Connection Error Banner */
         .connection-error-banner {
             background: #ff9800;
@@ -985,6 +997,7 @@
                                     <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleImageUpload(event)">
                                     <div class="or-divider">OR</div>
                                     <input type="text" id="prodImage" placeholder="Enter image URL" onchange="handleUrlChange(event)">
+                                    <div id="urlValidation" class="url-validation">URL not validated</div>
                                 </div>
                             </div>
                         </div>
@@ -1163,6 +1176,7 @@
         const saveProductBtn = document.getElementById('saveProductBtn');
         const saveBannerBtn = document.getElementById('saveBannerBtn');
         const wordCountElement = document.getElementById('wordCount');
+        const urlValidationElement = document.getElementById('urlValidation');
         const connectionStatus = document.getElementById('connectionStatus');
         const connectionStatusText = document.getElementById('connectionStatusText');
         const connectionErrorBanner = document.getElementById('connectionErrorBanner');
@@ -1680,6 +1694,8 @@
             imagePreview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
             wordCountElement.textContent = '0/500 words';
             wordCountElement.classList.remove('error');
+            urlValidationElement.textContent = 'URL not validated';
+            urlValidationElement.classList.remove('error');
             
             // Make sure category dropdown is populated
             populateCategoryDropdown();
@@ -1708,8 +1724,11 @@
             // Show image preview
             if (product.image) {
                 imagePreview.innerHTML = `<img src="${product.image}" alt="Preview">`;
+                urlValidationElement.textContent = 'URL validated';
+                urlValidationElement.classList.remove('error');
             } else {
                 imagePreview.innerHTML = '<div class="image-preview-text">No image available</div>';
+                urlValidationElement.textContent = 'URL not validated';
             }
             
             uploadedImage = null;
@@ -1734,6 +1753,26 @@
             }
         }
         
+        // Validate URL function
+        function validateUrl(url) {
+            if (!url) {
+                urlValidationElement.textContent = 'URL not provided';
+                urlValidationElement.classList.remove('error');
+                return false;
+            }
+            
+            try {
+                new URL(url);
+                urlValidationElement.textContent = 'URL validated';
+                urlValidationElement.classList.remove('error');
+                return true;
+            } catch (e) {
+                urlValidationElement.textContent = 'Invalid URL format';
+                urlValidationElement.classList.add('error');
+                return false;
+            }
+        }
+        
         async function saveProduct() {
             const id = document.getElementById('productId').value;
             const title = document.getElementById('prodTitle').value;
@@ -1749,6 +1788,12 @@
             const words = description.trim().split(/\s+/).filter(word => word.length > 0);
             if (words.length > 500) {
                 alert('Description must be less than 500 words. Current word count: ' + words.length);
+                return;
+            }
+            
+            // Validate URL if provided
+            if (imageUrl && !validateUrl(imageUrl)) {
+                alert('Please provide a valid image URL');
                 return;
             }
             
@@ -1961,7 +2006,7 @@
                 return;
             }
             
-            if (categories.includes(newCategory)) {
+            if (categories.includes(newCategory) || newCategory === 'All') {
                 alert('This category already exists');
                 return;
             }
@@ -1994,6 +2039,8 @@
                 
                 // Clear URL field
                 document.getElementById('prodImage').value = '';
+                urlValidationElement.textContent = 'Using uploaded image';
+                urlValidationElement.classList.remove('error');
             };
             
             reader.readAsDataURL(file);
@@ -2002,11 +2049,18 @@
         // Handle URL change
         function handleUrlChange(event) {
             const url = event.target.value;
-            if (!url) return;
             
             // Clear uploaded image
             uploadedImage = null;
             uploadedFile = null;
+            
+            // Validate URL
+            validateUrl(url);
+            
+            if (!url) {
+                imagePreview.innerHTML = '<div class="image-preview-text">Image preview will appear here</div>';
+                return;
+            }
             
             // Show preview from URL
             imagePreview.innerHTML = `<img src="${url}" alt="Preview" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-preview-text\'>Failed to load image from URL</div>'; uploadedImage=null;">`;
