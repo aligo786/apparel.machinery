@@ -51,15 +51,15 @@
         .logo-apparel {
             cursor: pointer;
             position: relative;
-            color: white !important;
-        }
-        
-        .logo-apparel:hover {
             color: #4a9eff !important;
         }
         
+        .logo-apparel:hover {
+            color: white !important;
+        }
+        
         .logo span {
-            color: #4a9eff;
+            color: white;
         }
         
         nav ul {
@@ -371,89 +371,88 @@
             background: #219653;
         }
         
-        /* About Section */
-        .about-section {
+        /* Features Section */
+        .features-section {
             padding: 40px 20px;
             background: white;
-            display: none;
         }
         
-        .about-content {
-            max-width: 800px;
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
-        .about-title {
-            text-align: center;
-            font-size: 1.8rem;
-            color: #223449;
-            margin-bottom: 20px;
-        }
-        
-        .about-text {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #444;
-            margin-bottom: 25px;
-        }
-        
-        .about-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .about-feature {
+        .feature-box {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 25px;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            height: auto;
         }
         
-        .about-feature i {
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
             font-size: 2.5rem;
             color: #4a9eff;
             margin-bottom: 15px;
         }
         
-        .about-feature h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+        .feature-title {
+            font-size: 1.3rem;
             color: #223449;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
         
         /* Footer */
         .footer {
             background: #223449;
             color: white;
-            padding: 15px;
+            padding: 30px 20px;
             text-align: center;
         }
         
         .footer-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
             color: white;
         }
         
         .footer-tagline {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             opacity: 0.9;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         
         .footer-social {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         
         .footer-social a {
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             transition: color 0.3s;
             text-decoration: none;
         }
@@ -463,8 +462,8 @@
         }
         
         .footer-contact {
-            margin-bottom: 8px;
-            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
         }
         
         .footer-contact a {
@@ -474,8 +473,8 @@
         
         .footer-author {
             opacity: 0.8;
-            margin-top: 12px;
-            font-size: 0.8rem;
+            margin-top: 20px;
+            font-size: 0.9rem;
         }
         
         /* Modal Styles */
@@ -509,7 +508,6 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #ddd;
-            position: relative;
         }
         
         .modal-header h3 {
@@ -524,9 +522,6 @@
             font-size: 1.3rem;
             cursor: pointer;
             color: #666;
-            position: absolute;
-            top: 10px;
-            right: 15px;
         }
         
         .modal-body {
@@ -562,89 +557,6 @@
             background: #f8f9fa;
             border-top: 1px solid #ddd;
             text-align: right;
-        }
-        
-        /* Cart Styles */
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .cart-item-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
-        
-        .cart-item-select {
-            margin-right: 10px;
-        }
-        
-        .cart-item-name {
-            font-weight: 500;
-            flex: 1;
-        }
-        
-        .cart-item-price {
-            font-weight: 700;
-            color: #e74c3c;
-            display: none;
-            margin-right: 10px;
-        }
-        
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            margin: 0 10px;
-        }
-        
-        .quantity-btn {
-            width: 25px;
-            height: 25px;
-            background: #f0f2f5;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .quantity-input {
-            width: 35px;
-            height: 25px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            margin: 0 5px;
-        }
-        
-        .cart-item-remove {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .cart-total {
-            padding: 15px;
-            font-weight: 700;
-            text-align: right;
-            border-top: 2px solid #eee;
-            display: none;
-        }
-        
-        .cart-empty {
-            padding: 20px;
-            text-align: center;
-            color: #666;
         }
         
         /* Responsive Design */
@@ -688,21 +600,13 @@
                 font-size: 0.8rem;
             }
             
-            .cart-item {
+            .features-container {
                 flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .cart-item-info {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .cart-item-actions {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
                 align-items: center;
+            }
+            
+            .feature-box {
+                min-width: 100%;
             }
         }
         
@@ -855,36 +759,41 @@
                 <!-- Product Cards will be generated here -->
             </div>
         </div>
-        
-        <!-- About Section -->
-        <div class="about-section" id="aboutSection">
-            <div class="about-content">
-                <h2 class="about-title">About Apparel Machinery</h2>
-                <p class="about-text">
-                    Apparel Machinery - Your trusted partner for garment manufacturing equipment. We provide industrial sewing machines, cutting equipment, and complete production solutions for the textile industry. Premium quality machinery with professional technical support and maintenance services.
-                </p>
-                <p class="about-text">
-                    With over 15 years of experience in the industry, we have established ourselves as a leading supplier of industrial apparel machinery. Our commitment to quality and customer satisfaction has made us the preferred choice for textile manufacturers across the region.
-                </p>
-                
-                <div class="about-features">
-                    <div class="about-feature">
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <div class="features-container">
+                <!-- Feature 1 -->
+                <div class="feature-box">
+                    <div class="feature-icon">
                         <i class="fas fa-cogs"></i>
-                        <h3>Quality Machinery</h3>
-                        <p>We provide high-quality industrial machinery from trusted manufacturers.</p>
                     </div>
-                    
-                    <div class="about-feature">
-                        <i class="fas fa-tools"></i>
-                        <h3>Technical Support</h3>
-                        <p>Our team of experts provides installation, training, and maintenance services.</p>
-                    </div>
-                    
-                    <div class="about-feature">
+                    <h3 class="feature-title">Quality Machinery</h3>
+                    <p class="feature-description">
+                        We provide high-quality industrial machinery for apparel manufacturing with reliable performance.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-box">
+                    <div class="feature-icon">
                         <i class="fas fa-shipping-fast"></i>
-                        <h3>Fast Delivery</h3>
-                        <p>We ensure timely delivery of machinery and spare parts across the country.</p>
                     </div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-description">
+                        We ensure timely delivery of machinery and spare parts to keep your operations running smoothly.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-box" style="min-height: 220px;">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Support</h3>
+                    <p class="feature-description">
+                        Our team of experts provides technical support and maintenance services for all our products.
+                    </p>
                 </div>
             </div>
         </div>
@@ -940,31 +849,35 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="productName">Product Name *</label>
-                    <input type="text" id="productName" placeholder="Enter product name" required>
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" placeholder="Enter product name">
                 </div>
                 <div class="form-group">
-                    <label for="productCategory">Category *</label>
-                    <select id="productCategory" required>
-                        <option value="">Select Category</option>
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory">
+                        <option value="sewing">Sewing Machines</option>
+                        <option value="cutting">Cutting Machines</option>
+                        <option value="pressing">Pressing Equipment</option>
+                        <option value="embroidery">Embroidery Machines</option>
+                        <option value="management">Management Equipment</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="productPrice">Price (PKR) *</label>
-                    <input type="number" id="productPrice" placeholder="Enter price" required>
+                    <label for="productPrice">Price (PKR)</label>
+                    <input type="number" id="productPrice" placeholder="Enter product price">
                 </div>
                 <div class="form-group">
-                    <label for="productDescription">Description *</label>
-                    <textarea id="productDescription" placeholder="Enter product description" required></textarea>
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" placeholder="Enter product description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="productImage">Image URL *</label>
-                    <input type="text" id="productImage" placeholder="Enter image URL" required>
+                    <label for="productImage">Image URL</label>
+                    <input type="text" id="productImage" placeholder="Enter image URL">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeModal('addProductModal')">Cancel</button>
-                <button class="btn-primary" onclick="addProduct()">Add Product</button>
+                <button class="btn-success" onclick="addNewProduct()">Add Product</button>
             </div>
         </div>
     </div>
@@ -992,7 +905,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeModal('editBannerModal')">Cancel</button>
-                <button class="btn-primary" onclick="saveBannerChanges()">Save Changes</button>
+                <button class="btn-success" onclick="saveBannerChanges()">Save Changes</button>
             </div>
         </div>
     </div>
@@ -1012,10 +925,11 @@
                         <button class="btn-primary" onclick="addNewCategory()">Add</button>
                     </div>
                 </div>
-                
-                <h4 style="margin: 15px 0 10px 0;">Existing Categories</h4>
-                <div class="category-list" id="categoryList">
-                    <!-- Categories will be listed here -->
+                <div class="category-list">
+                    <h4>Existing Categories</h4>
+                    <div id="categoriesList">
+                        <!-- Categories will be listed here -->
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1024,67 +938,30 @@
         </div>
     </div>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Your Cart</h3>
-                <button class="close-modal" onclick="closeModal('cartModal')">&times;</button>
-            </div>
-            <div class="modal-body" id="cartItems">
-                <!-- Cart items will be dynamically added here -->
-            </div>
-            <div class="cart-total" id="cartTotal">
-                Total: PKR <span id="totalAmount">0</span>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('cartModal')">Continue Shopping</button>
-                <button class="btn-success" onclick="openOrderForm()">Place Order</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Order Form Modal -->
-    <div id="orderFormModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Place Your Order</h3>
-                <button class="close-modal" onclick="closeModal('orderFormModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="customerName">Full Name *</label>
-                    <input type="text" id="customerName" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="customerMobile">Mobile Number *</label>
-                    <input type="tel" id="customerMobile" placeholder="Enter your mobile number" required>
-                </div>
-                <div class="form-group">
-                    <label for="customerCompany">Company Name</label>
-                    <input type="text" id="customerCompany" placeholder="Enter your company name">
-                </div>
-                <div class="form-group">
-                    <label for="customerPosition">Position</label>
-                    <input type="text" id="customerPosition" placeholder="Enter your position">
-                </div>
-                <div class="form-group">
-                    <label for="customerAddress">Complete Address *</label>
-                    <textarea id="customerAddress" placeholder="Enter your complete address" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="customerNearby">Near By (Landmark)</label>
-                    <input type="text" id="customerNearby" placeholder="Enter a nearby landmark">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('orderFormModal')">Cancel</button>
-                <button class="btn-primary" onclick="confirmOrder()">Confirm Order</button>
-            </div>
-        </div>
-    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9JR7JTfoC8zeKMFqNzOiQn4mAIrvKXSk",
+            authDomain: "apparel-machinery.firebaseapp.com",
+            projectId: "apparel-machinery",
+            storageBucket: "apparel-machinery.firebasestorage.app",
+            messagingSenderId: "165173029685",
+            appId: "1:165173029685:web:23d0bc7f2c0752adc63a7c",
+            measurementId: "G-XHMZ4BP7CW"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const analytics = firebase.analytics();
+
         // Global variables
         let cart = [];
         let isAdmin = false;
@@ -1163,7 +1040,18 @@
                 cart = JSON.parse(savedCart);
                 document.getElementById('cartCount').textContent = getTotalCartItems();
             }
+            
+            // Check if user is already logged in
+            checkAdminStatus();
         };
+        
+        // Check if user is already logged in as admin
+        function checkAdminStatus() {
+            const adminUser = localStorage.getItem('adminUser');
+            if (adminUser === 'true') {
+                enableAdminMode();
+            }
+        }
         
         // Render categories
         function renderCategories() {
@@ -1171,47 +1059,15 @@
             categoryPills.innerHTML = '';
             
             categories.forEach(category => {
-                const pill = document.createElement('button');
-                pill.className = 'cat-pill';
-                if (category.id === 'all') pill.classList.add('active');
-                pill.setAttribute('data-id', category.id);
-                pill.textContent = category.name;
-                pill.onclick = () => selectCategory(category.id);
-                categoryPills.appendChild(pill);
-            });
-
-            // Also update category dropdown in add product modal
-            const categoryDropdown = document.getElementById('productCategory');
-            categoryDropdown.innerHTML = '<option value="">Select Category</option>';
-            
-            categories.filter(cat => cat.id !== 'all').forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.id;
-                option.textContent = category.name;
-                categoryDropdown.appendChild(option);
-            });
-        }
-        
-        // Render category list for management
-        function renderCategoryList() {
-            const categoryList = document.getElementById('categoryList');
-            categoryList.innerHTML = '';
-            
-            categories.filter(cat => cat.id !== 'all').forEach(category => {
-                const categoryItem = document.createElement('div');
-                categoryItem.className = 'category-item';
-                categoryItem.innerHTML = `
-                    <span>${category.name}</span>
-                    <div class="category-actions">
-                        <button class="action-btn edit" onclick="editCategory('${category.id}')">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="action-btn delete" onclick="deleteCategory('${category.id}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </div>
-                `;
-                categoryList.appendChild(categoryItem);
+                if (category.id !== 'all') {
+                    const pill = document.createElement('button');
+                    pill.className = 'cat-pill';
+                    if (category.id === 'sewing') pill.classList.add('active');
+                    pill.setAttribute('data-id', category.id);
+                    pill.textContent = category.name;
+                    pill.onclick = () => selectCategory(category.id);
+                    categoryPills.appendChild(pill);
+                }
             });
         }
         
@@ -1264,41 +1120,6 @@
             document.getElementById('adminLoginModal').style.display = 'flex';
         }
         
-        // Open Add Product Modal
-        function openAddProductModal() {
-            if (!isAdmin) {
-                alert('Please login as admin first.');
-                return;
-            }
-            document.getElementById('addProductModal').style.display = 'flex';
-        }
-        
-        // Open Edit Banner Modal
-        function openEditBannerModal() {
-            if (!isAdmin) {
-                alert('Please login as admin first.');
-                return;
-            }
-            
-            // Pre-fill the form with current banner data
-            document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitle').textContent;
-            document.getElementById('bannerDescriptionInput').value = document.getElementById('bannerDescription').textContent;
-            document.getElementById('bannerImageInput').value = document.getElementById('bannerImage').src;
-            
-            document.getElementById('editBannerModal').style.display = 'flex';
-        }
-        
-        // Open Manage Categories Modal
-        function openManageCategoriesModal() {
-            if (!isAdmin) {
-                alert('Please login as admin first.');
-                return;
-            }
-            
-            renderCategoryList();
-            document.getElementById('manageCategoriesModal').style.display = 'flex';
-        }
-        
         // Close modal function
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
@@ -1312,27 +1133,10 @@
             
             // Simple authentication (for demo purposes)
             if (username === 'admin' && password === 'password') {
-                // Show admin actions
-                document.getElementById('adminActions').style.display = 'flex';
+                enableAdminMode();
                 
-                // Show product actions
-                const productActions = document.querySelectorAll('.product-actions');
-                productActions.forEach(action => {
-                    action.style.display = 'flex';
-                });
-                
-                // Show prices (only for admin)
-                const productPrices = document.querySelectorAll('.product-price');
-                productPrices.forEach(price => {
-                    price.style.display = 'block';
-                });
-                
-                // Show admin indicator and logout button
-                document.getElementById('adminIndicator').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'block';
-                
-                // Set admin flag
-                isAdmin = true;
+                // Save login state
+                localStorage.setItem('adminUser', 'true');
                 
                 // Close modal
                 closeModal('adminLoginModal');
@@ -1347,6 +1151,31 @@
                 // Show error
                 loginError.style.display = 'block';
             }
+        }
+        
+        // Enable admin mode
+        function enableAdminMode() {
+            // Show admin actions
+            document.getElementById('adminActions').style.display = 'flex';
+            
+            // Show product actions
+            const productActions = document.querySelectorAll('.product-actions');
+            productActions.forEach(action => {
+                action.style.display = 'flex';
+            });
+            
+            // Show prices (only for admin)
+            const productPrices = document.querySelectorAll('.product-price');
+            productPrices.forEach(price => {
+                price.style.display = 'block';
+            });
+            
+            // Show admin indicator and logout button
+            document.getElementById('adminIndicator').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'block';
+            
+            // Set admin flag
+            isAdmin = true;
         }
         
         // Logout function
@@ -1373,149 +1202,10 @@
             // Set admin flag
             isAdmin = false;
             
+            // Remove login state
+            localStorage.removeItem('adminUser');
+            
             alert('Admin logout successful!');
-        }
-        
-        // Add product function
-        function addProduct() {
-            const name = document.getElementById('productName').value;
-            const category = document.getElementById('productCategory').value;
-            const price = parseInt(document.getElementById('productPrice').value);
-            const description = document.getElementById('productDescription').value;
-            const image = document.getElementById('productImage').value;
-            
-            // Basic validation
-            if (!name || !category || !price || !description || !image) {
-                alert('Please fill in all fields.');
-                return;
-            }
-            
-            // Create new product
-            const newProduct = {
-                id: Date.now(), // Use timestamp as ID
-                name,
-                category,
-                price,
-                description,
-                image
-            };
-            
-            // Add to products array
-            products.push(newProduct);
-            
-            // Re-render products
-            renderProducts();
-            
-            // Close modal and reset form
-            closeModal('addProductModal');
-            document.getElementById('productName').value = '';
-            document.getElementById('productCategory').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productDescription').value = '';
-            document.getElementById('productImage').value = '';
-            
-            alert('Product added successfully!');
-        }
-        
-        // Save banner changes
-        function saveBannerChanges() {
-            const title = document.getElementById('bannerTitleInput').value;
-            const description = document.getElementById('bannerDescriptionInput').value;
-            const imageUrl = document.getElementById('bannerImageInput').value;
-            
-            // Update banner
-            if (title) document.getElementById('bannerTitle').textContent = title;
-            if (description) document.getElementById('bannerDescription').textContent = description;
-            if (imageUrl) document.getElementById('bannerImage').src = imageUrl;
-            
-            closeModal('editBannerModal');
-            alert('Banner updated successfully!');
-        }
-        
-        // Add new category
-        function addNewCategory() {
-            const categoryName = document.getElementById('newCategoryName').value;
-            
-            if (!categoryName) {
-                alert('Please enter a category name.');
-                return;
-            }
-            
-            // Create a unique ID for the category
-            const categoryId = categoryName.toLowerCase().replace(/\s+/g, '-');
-            
-            // Check if category already exists
-            if (categories.some(cat => cat.id === categoryId)) {
-                alert('This category already exists.');
-                return;
-            }
-            
-            // Add to categories array
-            categories.push({
-                id: categoryId,
-                name: categoryName
-            });
-            
-            // Re-render categories
-            renderCategories();
-            renderCategoryList();
-            
-            // Clear input
-            document.getElementById('newCategoryName').value = '';
-            
-            alert('Category added successfully!');
-        }
-        
-        // Edit category
-        function editCategory(categoryId) {
-            const newName = prompt('Enter new name for this category:');
-            if (newName) {
-                const category = categories.find(cat => cat.id === categoryId);
-                if (category) {
-                    category.name = newName;
-                    renderCategories();
-                    renderCategoryList();
-                    alert('Category updated successfully!');
-                }
-            }
-        }
-        
-        // Delete category
-        function deleteCategory(categoryId) {
-            if (confirm('Are you sure you want to delete this category? Products in this category will not be deleted.')) {
-                categories = categories.filter(cat => cat.id !== categoryId);
-                renderCategories();
-                renderCategoryList();
-                alert('Category deleted successfully!');
-            }
-        }
-        
-        // Edit product function
-        function editProduct(productId) {
-            if (!isAdmin) {
-                alert('Please login as admin to edit products.');
-                return;
-            }
-            
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                alert(`Editing product: ${product.name}`);
-                // In a real application, you would open an edit modal here
-            }
-        }
-        
-        // Delete product function
-        function deleteProduct(productId) {
-            if (!isAdmin) {
-                alert('Please login as admin to delete products.');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to delete this product?')) {
-                products = products.filter(p => p.id !== productId);
-                renderProducts();
-                alert('Product deleted successfully!');
-            }
         }
         
         // Category selection
@@ -1557,8 +1247,7 @@
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    quantity: 1,
-                    selected: true
+                    quantity: 1
                 });
             }
             
@@ -1576,195 +1265,165 @@
             return cart.reduce((total, item) => total + item.quantity, 0);
         }
         
-        // Remove from cart function
-        function removeFromCart(itemId) {
-            cart = cart.filter(item => item.id !== itemId);
-            
-            // Update cart count
-            document.getElementById('cartCount').textContent = getTotalCartItems();
-            
-            // Save to localStorage
-            localStorage.setItem('apparelCart', JSON.stringify(cart));
-            
-            // Refresh cart display
-            renderCart();
-        }
-        
-        // Update quantity function
-        function updateQuantity(itemId, change) {
-            const item = cart.find(item => item.id === itemId);
-            if (item) {
-                item.quantity += change;
-                
-                // Ensure quantity is at least 1
-                if (item.quantity < 1) item.quantity = 1;
-                
-                // Save to localStorage
-                localStorage.setItem('apparelCart', JSON.stringify(cart));
-                
-                // Update cart display
-                renderCart();
-                
-                // Update cart count
-                document.getElementById('cartCount').textContent = getTotalCartItems();
-            }
-        }
-        
-        // Toggle item selection in cart
-        function toggleItemSelection(itemId) {
-            const item = cart.find(item => item.id === itemId);
-            if (item) {
-                item.selected = !item.selected;
-                updateCartTotal();
-            }
-        }
-        
-        // Update cart total
-        function updateCartTotal() {
-            const total = cart.reduce((sum, item) => {
-                return item.selected ? sum + (item.price * item.quantity) : sum;
-            }, 0);
-            
-            document.getElementById('totalAmount').textContent = total.toLocaleString();
-            
-            // Show/hide total based on admin status
-            document.getElementById('cartTotal').style.display = isAdmin ? 'block' : 'none';
-        }
-        
-        // Render cart items
-        function renderCart() {
-            const cartItems = document.getElementById('cartItems');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
-                document.getElementById('cartTotal').style.display = 'none';
-                return;
-            }
-            
-            cartItems.innerHTML = '';
-            
-            cart.forEach(item => {
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                
-                cartItem.innerHTML = `
-                    <div class="cart-item-info">
-                        <input type="checkbox" class="cart-item-select" ${item.selected ? 'checked' : ''} 
-                            onchange="toggleItemSelection(${item.id})">
-                        <span class="cart-item-name">${item.name}</span>
-                    </div>
-                    <div class="cart-item-actions">
-                        <span class="cart-item-price" style="display: ${isAdmin ? 'inline' : 'none'}">PKR ${item.price.toLocaleString()}</span>
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" readonly>
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                        </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                
-                cartItems.appendChild(cartItem);
-            });
-            
-            updateCartTotal();
-        }
-        
         // Open cart function
         function openCart() {
-            renderCart();
-            document.getElementById('cartModal').style.display = 'flex';
-        }
-        
-        // Open order form
-        function openOrderForm() {
-            // Check if at least one item is selected
-            const hasSelectedItems = cart.some(item => item.selected);
-            
-            if (!hasSelectedItems) {
-                alert('Please select at least one item to place an order.');
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
                 return;
             }
             
-            closeModal('cartModal');
-            document.getElementById('orderFormModal').style.display = 'flex';
-        }
-        
-        // Confirm order function
-        function confirmOrder() {
-            const name = document.getElementById('customerName').value;
-            const mobile = document.getElementById('customerMobile').value;
-            const company = document.getElementById('customerCompany').value;
-            const position = document.getElementById('customerPosition').value;
-            const address = document.getElementById('customerAddress').value;
-            const nearby = document.getElementById('customerNearby').value;
+            let cartContents = "Your Cart:\n\n";
+            let total = 0;
             
-            // Basic validation
-            if (!name || !mobile || !address) {
-                alert('Please fill in all required fields (Name, Mobile, Address).');
-                return;
-            }
-            
-            // Get selected items
-            const selectedItems = cart.filter(item => item.selected);
-            
-            // Prepare WhatsApp message (without prices)
-            let message = `New Order from Apparel Machinery Website%0A%0A`;
-            message += `*Customer Details:*%0A`;
-            message += `Name: ${name}%0A`;
-            message += `Mobile: ${mobile}%0A`;
-            message += `Company: ${company || 'N/A'}%0A`;
-            message += `Position: ${position || 'N/A'}%0A`;
-            message += `Address: ${address}%0A`;
-            message += `Near By: ${nearby || 'N/A'}%0A%0A`;
-            message += `*Order Items:*%0A`;
-            
-            selectedItems.forEach((item, index) => {
-                // Only include product name and quantity, no price
-                message += `${index + 1}. ${item.name} (Qty: ${item.quantity})%0A`;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartContents += `${item.name} (Qty: ${item.quantity}) - PKR ${itemTotal.toLocaleString()}\n`;
             });
             
-            // Redirect to WhatsApp
-            window.open(`https://wa.me/923155111330?text=${message}`, '_blank');
+            cartContents += `\nTotal: PKR ${total.toLocaleString()}`;
             
-            // Clear form and remove selected items from cart
-            document.getElementById('customerName').value = '';
-            document.getElementById('customerMobile').value = '';
-            document.getElementById('customerCompany').value = '';
-            document.getElementById('customerPosition').value = '';
-            document.getElementById('customerAddress').value = '';
-            document.getElementById('customerNearby').value = '';
-            
-            // Remove selected items from cart
-            cart = cart.filter(item => !item.selected);
-            document.getElementById('cartCount').textContent = getTotalCartItems();
-            
-            // Save to localStorage
-            localStorage.setItem('apparelCart', JSON.stringify(cart));
-            
-            closeModal('orderFormModal');
-            alert('Your order has been placed successfully! We will contact you shortly.');
+            alert(cartContents);
         }
         
         // Show section function
         function showSection(section) {
-            // Hide all sections
-            document.getElementById('productsSection').style.display = 'none';
-            document.getElementById('aboutSection').style.display = 'none';
+            alert(`Showing section: ${section}`);
+            // In a real application, you would show/hide sections here
+        }
+        
+        // Admin functions
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'flex';
+        }
+        
+        function openEditBannerModal() {
+            // Pre-fill current banner values
+            document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitle').textContent;
+            document.getElementById('bannerDescriptionInput').value = document.getElementById('bannerDescription').textContent;
+            document.getElementById('bannerImageInput').value = document.getElementById('bannerImage').src;
             
-            // Show selected section
-            if (section === 'products') {
-                document.getElementById('productsSection').style.display = 'block';
-            } else if (section === 'about') {
-                document.getElementById('aboutSection').style.display = 'block';
-            } else if (section === 'home') {
-                document.getElementById('productsSection').style.display = 'block';
+            document.getElementById('editBannerModal').style.display = 'flex';
+        }
+        
+        function openManageCategoriesModal() {
+            renderCategoriesList();
+            document.getElementById('manageCategoriesModal').style.display = 'flex';
+        }
+        
+        function editProduct(productId) {
+            alert(`Editing product with ID: ${productId}. In a real application, this would open a form to edit product details.`);
+        }
+        
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                alert(`Product with ID: ${productId} would be deleted. In a real application, this would remove the product from the database.`);
+            }
+        }
+        
+        // Add new product function
+        function addNewProduct() {
+            const name = document.getElementById('productName').value;
+            const category = document.getElementById('productCategory').value;
+            const price = parseInt(document.getElementById('productPrice').value);
+            const description = document.getElementById('productDescription').value;
+            const image = document.getElementById('productImage').value;
+            
+            if (!name || !price || !description || !image) {
+                alert('Please fill in all fields');
+                return;
             }
             
-            // Scroll to top
-            window.scrollTo(0, 0);
+            const newProduct = {
+                id: products.length + 1,
+                name: name,
+                category: category,
+                price: price,
+                description: description,
+                image: image
+            };
+            
+            products.push(newProduct);
+            renderProducts();
+            closeModal('addProductModal');
+            alert('Product added successfully!');
+        }
+        
+        // Save banner changes
+        function saveBannerChanges() {
+            const title = document.getElementById('bannerTitleInput').value;
+            const description = document.getElementById('bannerDescriptionInput').value;
+            const image = document.getElementById('bannerImageInput').value;
+            
+            document.getElementById('bannerTitle').textContent = title;
+            document.getElementById('bannerDescription').textContent = description;
+            document.getElementById('bannerImage').src = image;
+            
+            closeModal('editBannerModal');
+            alert('Banner updated successfully!');
+        }
+        
+        // Render categories list for management
+        function renderCategoriesList() {
+            const categoriesList = document.getElementById('categoriesList');
+            categoriesList.innerHTML = '';
+            
+            categories.forEach(category => {
+                if (category.id !== 'all') {
+                    const categoryItem = document.createElement('div');
+                    categoryItem.className = 'category-item';
+                    categoryItem.innerHTML = `
+                        <span>${category.name}</span>
+                        <div class="category-actions">
+                            <button class="action-btn edit" onclick="editCategory('${category.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteCategory('${category.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    categoriesList.appendChild(categoryItem);
+                }
+            });
+        }
+        
+        // Add new category
+        function addNewCategory() {
+            const name = document.getElementById('newCategoryName').value;
+            if (!name) {
+                alert('Please enter a category name');
+                return;
+            }
+            
+            const id = name.toLowerCase().replace(/\s+/g, '-');
+            categories.push({ id: id, name: name });
+            renderCategories();
+            renderCategoriesList();
+            document.getElementById('newCategoryName').value = '';
+            alert('Category added successfully!');
+        }
+        
+        // Edit category
+        function editCategory(categoryId) {
+            const newName = prompt('Enter new category name:');
+            if (newName) {
+                const category = categories.find(cat => cat.id === categoryId);
+                category.name = newName;
+                renderCategories();
+                renderCategoriesList();
+                alert('Category updated successfully!');
+            }
+        }
+        
+        // Delete category
+        function deleteCategory(categoryId) {
+            if (confirm('Are you sure you want to delete this category?')) {
+                categories = categories.filter(cat => cat.id !== categoryId);
+                renderCategories();
+                renderCategoriesList();
+                alert('Category deleted successfully!');
+            }
         }
     </script>
 </body>
