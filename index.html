@@ -985,6 +985,30 @@
             </div>
         </div>
 
+        <!-- About Section -->
+        <div class="about-section" id="aboutSection">
+            <div class="about-content">
+                <h2 class="about-title">About Apparel Machinery</h2>
+                <div class="about-text">
+                    <p>Apparel Machinery - Your trusted partner for garment manufacturing equipment. We provide industrial sewing machines, cutting equipment, and complete production solutions for the textile industry. Premium quality machinery with professional technical support and maintenance services.</p>
+                </div>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <h3>Our Mission</h3>
+                        <p>To provide high-quality machinery that enhances productivity and efficiency in the apparel industry.</p>
+                    </div>
+                    <div class="about-feature">
+                        <h3>Our Vision</h3>
+                        <p>To be the leading supplier of industrial equipment for textile and garment manufacturers.</p>
+                    </div>
+                    <div class="about-feature">
+                        <h3>Our Values</h3>
+                        <p>Quality, reliability, and customer satisfaction are at the core of everything we do.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Features Section -->
         <div class="features-section">
             <div class="features-container">
@@ -1840,6 +1864,7 @@
             document.getElementById('productsSection').style.display = 'none';
             document.getElementById('categoriesSection').style.display = 'none';
             document.getElementById('featuresSection').style.display = 'none';
+            document.getElementById('aboutSection').style.display = 'none';
             
             // Show the selected section
             if (section === 'home') {
@@ -1848,6 +1873,8 @@
                 document.getElementById('featuresSection').style.display = 'block';
             } else if (section === 'products') {
                 document.getElementById('productsSection').style.display = 'block';
+            } else if (section === 'about') {
+                document.getElementById('aboutSection').style.display = 'block';
             }
         }
         
