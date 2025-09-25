@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apparel Machinery | Industrial Equipment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Cloudinary Upload Widget SDK -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <style>
         * {
             margin: 0;
@@ -858,6 +860,56 @@
             padding-top: 20px;
             border-top: 1px solid #ddd;
         }
+        
+        /* Cloudinary Styles */
+        .cloudinary-upload-btn {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .cloudinary-upload-btn:hover {
+            background: #3a8eee;
+        }
+        
+        .upload-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .upload-status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .upload-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .cloudinary-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1075,14 +1127,18 @@
                     </div>
                 </div>
                 
+                <!-- Cloudinary Upload Section -->
                 <div class="form-group">
-                    <label>Upload Picture</label>
-                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('productImageUpload').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Click to upload product image</p>
-                        <input type="file" id="productImageUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
-                    </div>
-                    <img id="imagePreview" class="image-preview" alt="Image Preview">
+                    <label>Product Image Upload</label>
+                    <button type="button" class="cloudinary-upload-btn" id="cloudinaryUploadBtn">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Image via Cloudinary
+                    </button>
+                    
+                    <div id="uploadStatus" class="upload-status"></div>
+                    
+                    <img id="cloudinaryPreview" class="cloudinary-preview" alt="Cloudinary Image Preview">
+                    
+                    <input type="hidden" id="cloudinaryImageUrl" value="">
                 </div>
                 
                 <div class="form-group">
@@ -1203,6 +1259,85 @@
     </div>
 
     <script>
+        // Cloudinary Configuration
+        const CLOUDINARY_CLOUD_NAME = 'dnnag4avr';
+        const CLOUDINARY_API_KEY = '832167744274516';
+        const CLOUDINARY_UPLOAD_PRESET = 'apparel_machinery';
+
+        // Initialize Cloudinary Upload Widget
+        function initializeCloudinaryUpload() {
+            const uploadButton = document.getElementById('cloudinaryUploadBtn');
+            const uploadStatus = document.getElementById('uploadStatus');
+            const imagePreview = document.getElementById('cloudinaryPreview');
+            const imageUrlInput = document.getElementById('cloudinaryImageUrl');
+            const manualUrlInput = document.getElementById('productImageUrl');
+            
+            uploadButton.addEventListener('click', function() {
+                // Create Cloudinary widget
+                const widget = cloudinary.createUploadWidget({
+                    cloudName: CLOUDINARY_CLOUD_NAME,
+                    uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+                    sources: ['local', 'url', 'camera'],
+                    multiple: false,
+                    maxFiles: 1,
+                    clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                    maxFileSize: 5000000, // 5MB
+                    styles: {
+                        palette: {
+                            window: "#FFFFFF",
+                            windowBorder: "#90A0B3",
+                            tabIcon: "#0078FF",
+                            menuIcons: "#5A616A",
+                            textDark: "#000000",
+                            textLight: "#FFFFFF",
+                            link: "#0078FF",
+                            action: "#FF620C",
+                            inactiveTabIcon: "#0E2F5A",
+                            error: "#F44235",
+                            inProgress: "#0078FF",
+                            complete: "#20B832",
+                            sourceBg: "#E4EBF1"
+                        }
+                    }
+                }, (error, result) => {
+                    if (!error && result && result.event === "success") {
+                        // Image uploaded successfully
+                        const imageUrl = result.info.secure_url;
+                        
+                        // Update hidden input with Cloudinary URL
+                        imageUrlInput.value = imageUrl;
+                        
+                        // Also update manual URL input for consistency
+                        manualUrlInput.value = imageUrl;
+                        
+                        // Show preview
+                        imagePreview.src = imageUrl;
+                        imagePreview.style.display = 'block';
+                        
+                        // Show success message
+                        uploadStatus.textContent = '✅ Image uploaded successfully to Cloudinary!';
+                        uploadStatus.className = 'upload-status success';
+                        uploadStatus.style.display = 'block';
+                        
+                        console.log('Cloudinary upload successful:', imageUrl);
+                    } else if (error) {
+                        // Handle error
+                        uploadStatus.textContent = '❌ Upload failed: ' + error.message;
+                        uploadStatus.className = 'upload-status error';
+                        uploadStatus.style.display = 'block';
+                        console.error('Cloudinary upload error:', error);
+                    }
+                    
+                    if (result && result.event === "close") {
+                        console.log('Upload widget closed');
+                    }
+                });
+                
+                // Open the widget
+                widget.open();
+            });
+        }
+
         // Global variables
         let cart = [];
         let isAdmin = false;
@@ -1281,6 +1416,9 @@
             document.getElementById('adminActions').style.display = 'none';
             document.getElementById('adminIndicator').style.display = 'none';
             document.getElementById('logoutBtn').style.display = 'none';
+            
+            // Initialize Cloudinary upload functionality
+            initializeCloudinaryUpload();
             
             // Render categories
             renderCategories();
@@ -1704,8 +1842,12 @@
             document.getElementById('productPrice').value = '';
             document.getElementById('productDescription').value = '';
             document.getElementById('productImageUrl').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('cloudinaryImageUrl').value = '';
             document.getElementById('aiDescriptionBox').style.display = 'none';
+            
+            // Reset Cloudinary preview and status
+            document.getElementById('cloudinaryPreview').style.display = 'none';
+            document.getElementById('uploadStatus').style.display = 'none';
             
             document.getElementById('addProductModal').style.display = 'flex';
         }
@@ -1742,15 +1884,19 @@
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productDescription').value = product.description;
             document.getElementById('productImageUrl').value = product.image;
+            document.getElementById('cloudinaryImageUrl').value = product.image;
             document.getElementById('aiDescriptionBox').style.display = 'none';
             
             // Show image preview if available
             if (product.image) {
-                document.getElementById('imagePreview').src = product.image;
-                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('cloudinaryPreview').src = product.image;
+                document.getElementById('cloudinaryPreview').style.display = 'block';
             } else {
-                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('cloudinaryPreview').style.display = 'none';
             }
+            
+            // Reset upload status
+            document.getElementById('uploadStatus').style.display = 'none';
             
             document.getElementById('addProductModal').style.display = 'flex';
         }
@@ -1773,7 +1919,11 @@
             const condition = document.getElementById('productCondition').value;
             const price = parseInt(document.getElementById('productPrice').value);
             const description = document.getElementById('productDescription').value;
-            const imageUrl = document.getElementById('productImageUrl').value;
+            
+            // Use Cloudinary URL first, then manual URL, then default image
+            const cloudinaryUrl = document.getElementById('cloudinaryImageUrl').value;
+            const manualUrl = document.getElementById('productImageUrl').value;
+            const imageUrl = cloudinaryUrl || manualUrl || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=500&q=80";
             
             if (!name || !model || !price || !description) {
                 alert('Please fill in all required fields');
@@ -1792,7 +1942,7 @@
                         condition: condition,
                         price: price,
                         description: description,
-                        image: imageUrl || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=500&q=80"
+                        image: imageUrl
                     };
                 }
                 alert('Product updated successfully!');
@@ -1806,7 +1956,7 @@
                     condition: condition,
                     price: price,
                     description: description,
-                    image: imageUrl || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=500&q=80"
+                    image: imageUrl
                 };
                 products.push(newProduct);
                 alert('Product added successfully!');
@@ -1953,23 +2103,6 @@
         // Clear AI generated description
         function clearAIDescription() {
             document.getElementById('aiDescriptionBox').style.display = 'none';
-        }
-        
-        // Preview uploaded image
-        function previewImage(event) {
-            const input = event.target;
-            const preview = document.getElementById('imagePreview');
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
         }
     </script>
 </body>
