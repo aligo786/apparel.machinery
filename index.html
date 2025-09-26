@@ -248,9 +248,45 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 0.85rem;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .cat-pill.active, .cat-pill:hover {
+            background: #4a9eff;
+            color: white;
+        }
+        
+        .subcategories-box {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .subcategories-box.active {
+            display: flex;
+        }
+        
+        .subcategory-item {
+            background: #e9ecef;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .subcategory-item:hover, .subcategory-item.active {
             background: #4a9eff;
             color: white;
         }
@@ -609,6 +645,15 @@
             .feature-box {
                 min-width: 100%;
             }
+            
+            .subcategories-box {
+                padding: 10px;
+            }
+            
+            .subcategory-item {
+                font-size: 0.75rem;
+                padding: 5px 10px;
+            }
         }
         
         .admin-btn {
@@ -944,8 +989,8 @@
                 <ul>
                     <li><a href="#" onclick="showSection('home')">Home</a></li>
                     <li><a href="#" onclick="showSection('products')">Products</a></li>
-                    <li><a href="#" onclick="showSection('about')">About Us</a></li>
-                    <li><a href="#" onclick="scrollToContact()">Contact</a></li>
+                    <li><a href="#" onclick="showAboutSection()">About Us</a></li>
+                    <li><a href="#" id="contactLink">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-right">
@@ -988,8 +1033,15 @@
         <div class="categories-section">
             <h2 class="categories-title">Product Categories</h2>
             <div class="category-pills" id="categoryPills">
-                <!-- Category pills will be generated here -->
+                <!-- All Products Button -->
+                <button class="cat-pill active" data-id="all" onclick="selectCategory('all')">
+                    <i class="fas fa-th-large"></i> All Products
+                </button>
+                
+                <!-- Main Categories will be added here by JavaScript -->
             </div>
+            
+            <!-- Subcategories boxes will be added here by JavaScript -->
         </div>
         
         <!-- Products Section -->
@@ -1126,18 +1178,25 @@
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="productCategory">Category</label>
-                        <select id="productCategory">
-                            <option value="sewing">Sewing Machines</option>
-                            <option value="cutting">Cutting Machines</option>
-                            <option value="pressing">Pressing Equipment</option>
-                            <option value="embroidery">Embroidery Machines</option>
-                            <option value="management">Management Equipment</option>
-                            <option value="boiler">Boiler Machines</option>
-                            <option value="generators">Generators</option>
-                            <option value="compressors">Compressors</option>
-                            <option value="accessories">Accessories</option>
+                        <label for="productMainCategory">Main Category</label>
+                        <select id="productMainCategory" onchange="updateSubcategories()">
+                            <option value="">Select Main Category</option>
+                            <!-- Main categories will be populated by JavaScript -->
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productSubCategory">Sub Category</label>
+                        <select id="productSubCategory">
+                            <option value="">Select Sub Category</option>
+                            <!-- Subcategories will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productManufacturer">Manufacturer</label>
+                        <input type="text" id="productManufacturer" placeholder="Enter manufacturer name">
                     </div>
                     <div class="form-group">
                         <label for="productCondition">Condition</label>
@@ -1148,9 +1207,11 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="productPrice">Price (PKR) - Admin Only</label>
-                    <input type="number" id="productPrice" placeholder="Enter product price in PKR">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Price (PKR) - Admin Only</label>
+                        <input type="number" id="productPrice" placeholder="Enter product price in PKR">
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -1236,7 +1297,11 @@
                 <div class="form-group">
                     <label for="newCategoryName">Add New Category</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="newCategoryName" placeholder="Enter category name" style="flex: 1;">
+                        <select id="parentCategory" style="flex: 1;">
+                            <option value="">Main Category</option>
+                            <!-- Main categories will be populated by JavaScript -->
+                        </select>
+                        <input type="text" id="newCategoryName" placeholder="Enter category name" style="flex: 2;">
                         <button class="btn-primary" onclick="addNewCategory()">Add</button>
                     </div>
                 </div>
@@ -1313,67 +1378,135 @@
         let products = [
             {
                 id: 1,
-                name: "Industrial Sewing Machine",
-                model: "ISM-2023",
-                category: "sewing",
+                name: "Industrial Lockstitch Machine",
+                model: "LS-2023",
+                manufacturer: "Brother",
+                mainCategory: "sewing-machines",
+                subCategory: "lockstitch",
                 condition: "new",
                 price: 125000,
-                description: "High-speed industrial sewing machine with automatic thread cutter and advanced stitching patterns.",
+                description: "High-speed industrial lockstitch machine with automatic thread cutter and advanced stitching patterns.",
                 image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=500&q=80"
             },
             {
                 id: 2,
-                name: "Fabric Cutting Machine",
-                model: "FCM-2022",
-                category: "cutting",
+                name: "Overlock Sewing Machine",
+                model: "OL-2022",
+                manufacturer: "Juki",
+                mainCategory: "sewing-machines",
+                subCategory: "overlock",
                 condition: "used",
                 price: 85000,
-                description: "Precision fabric cutting machine with laser guidance for accurate cuts every time.",
+                description: "Professional overlock machine for finishing edges and seams with precision.",
                 image: "https://images.unsplash.com/photo-1595425970377-2f8ded7c7b19?auto=format&fit=crop&w=500&q=80"
             },
             {
                 id: 3,
-                name: "Steam Pressing Machine",
-                model: "SPM-2023",
-                category: "pressing",
+                name: "Industrial Bobbin",
+                model: "B-2023",
+                manufacturer: "Singer",
+                mainCategory: "accessories",
+                subCategory: "bobbin",
                 condition: "new",
-                price: 65000,
-                description: "Professional steam pressing machine for wrinkle-free finishing of garments.",
+                price: 500,
+                description: "High-quality industrial bobbin for smooth thread feeding.",
                 image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 4,
-                name: "Embroidery Machine",
-                model: "EMB-2023",
-                category: "embroidery",
-                condition: "new",
-                price: 195000,
-                description: "Computerized embroidery machine with 15 needle positions and 500+ built-in designs.",
-                image: "https://images.unsplash.com/photo-1611019130374-9ec6d667f1fa?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 5,
-                name: "Production Management Software",
-                model: "PMS-2023",
-                category: "management",
-                condition: "new",
-                price: 75000,
-                description: "Complete production management solution for apparel manufacturing businesses.",
-                image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=500&q=80"
             }
         ];
 
-        let categories = [
-            { id: 'all', name: 'All Products' },
-            { id: 'sewing', name: 'Sewing Machines' },
-            { id: 'cutting', name: 'Cutting Machines' },
-            { id: 'pressing', name: 'Pressing Equipment' },
-            { id: 'embroidery', name: 'Embroidery Machines' },
-            { id: 'boiler', name: 'Boiler Machines' },
-            { id: 'generators', name: 'Generators' },
-            { id: 'compressors', name: 'Compressors' },
-            { id: 'accessories', name: 'Accessories' },
-            { id: 'management', name: 'Management Equipment' }
+        // Updated main categories with 9 categories and their subcategories
+        let mainCategories = [
+            {
+                id: 'sewing-machines',
+                name: 'Sewing Machines',
+                subcategories: [
+                    { id: 'lockstitch', name: 'Lockstitch machine' },
+                    { id: 'overlock', name: 'Overlock Machines' },
+                    { id: 'interlock', name: 'Interlock Machines' },
+                    { id: 'leather', name: 'Leather Machine' },
+                    { id: 'bartack', name: 'Bartack / Buttoning / Button Hole' }
+                ]
+            },
+            {
+                id: 'cutting-machines',
+                name: 'Cutting Machines',
+                subcategories: [
+                    { id: 'straight-knife-cutter', name: 'Straight Knife Cutter' },
+                    { id: 'round-knife-cutter', name: 'Round Knife Cutter' },
+                    { id: 'die-press', name: 'Die Press / Clicker Press' },
+                    { id: 'cnc-oscillating', name: 'CNC Oscillating Knife Cutters' },
+                    { id: 'spreader-machine', name: 'Spreader Machine' } // Added as requested
+                ]
+            },
+            {
+                id: 'pressing-equipment',
+                name: 'Pressing Equipment',
+                subcategories: [
+                    { id: 'steam-press', name: 'Steam Press' },
+                    { id: 'ironing-table', name: 'Ironing Table' },
+                    { id: 'fusing-machine', name: 'Fusing Machine' },
+                    { id: 'vacuum-table', name: 'Vacuum Table' }
+                ]
+            },
+            {
+                id: 'embroidery-machines',
+                name: 'Embroidery Machines',
+                subcategories: [
+                    { id: 'single-head', name: 'Single Head' },
+                    { id: 'multi-head', name: 'Multi Head' },
+                    { id: 'tajima', name: 'Tajima' },
+                    { id: 'barudan', name: 'Barudan' }
+                ]
+            },
+            {
+                id: 'generators',
+                name: 'Generators',
+                subcategories: [
+                    { id: 'diesel', name: 'Diesel' },
+                    { id: 'gasoline', name: 'Gasoline' },
+                    { id: 'silent', name: 'Silent' },
+                    { id: 'industrial', name: 'Industrial' }
+                ]
+            },
+            {
+                id: 'compressors',
+                name: 'Compressors',
+                subcategories: [
+                    { id: 'piston', name: 'Piston' },
+                    { id: 'screw', name: 'Screw' },
+                    { id: 'oil-free', name: 'Oil Free' },
+                    { id: 'portable', name: 'Portable' }
+                ]
+            },
+            {
+                id: 'accessories',
+                name: 'Accessories',
+                subcategories: [
+                    { id: 'bobbin', name: 'Bobbin' },
+                    { id: 'bobbin-case', name: 'Bobbin Case' },
+                    { id: 'feed-dog', name: 'Feed Dog' },
+                    { id: 'needle', name: 'Needle' }
+                ]
+            },
+            {
+                id: 'management-equipment',
+                name: 'Management Equipment',
+                subcategories: [
+                    { id: 'software', name: 'Software' },
+                    { id: 'hardware', name: 'Hardware' },
+                    { id: 'rfid', name: 'RFID' },
+                    { id: 'barcode', name: 'Barcode' }
+                ]
+            },
+            {
+                id: 'other-equipment',
+                name: 'Other Equipment',
+                subcategories: [
+                    { id: 'miscellaneous', name: 'Miscellaneous' },
+                    { id: 'spare-parts', name: 'Spare Parts' },
+                    { id: 'tools', name: 'Tools' }
+                ]
+            }
         ];
         
         // Firebase Admin Password
@@ -1388,6 +1521,32 @@
             
             // Initialize Cloudinary upload functionality
             initializeCloudinaryUpload();
+            
+            // Load products from localStorage if available
+            const savedProducts = localStorage.getItem('apparelProducts');
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+            } else {
+                // Save initial products to localStorage
+                localStorage.setItem('apparelProducts', JSON.stringify(products));
+            }
+            
+            // Load categories from localStorage if available
+            const savedCategories = localStorage.getItem('apparelCategories');
+            if (savedCategories) {
+                const parsedCategories = JSON.parse(savedCategories);
+                // Check if the saved categories have the new category we added (e.g., 'pressing-equipment')
+                const hasNewCategories = parsedCategories.some(cat => cat.id === 'pressing-equipment');
+                if (!hasNewCategories) {
+                    // Use the updated mainCategories and save them
+                    localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+                } else {
+                    mainCategories = parsedCategories;
+                }
+            } else {
+                // Save initial categories to localStorage
+                localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+            }
             
             // Render categories
             renderCategories();
@@ -1407,6 +1566,12 @@
             
             // Add test button for debugging
             addTestButton();
+            
+            // Fix contact link
+            document.getElementById('contactLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('footerContact').scrollIntoView({ behavior: 'smooth' });
+            });
         });
         
         // Improved Cloudinary initialization
@@ -1538,20 +1703,70 @@
             }
         }
         
-        // Render categories
+        // Render categories with expandable subcategories
         function renderCategories() {
             const categoryPills = document.getElementById('categoryPills');
-            categoryPills.innerHTML = '';
             
-            categories.forEach(category => {
-                const pill = document.createElement('button');
-                pill.className = 'cat-pill';
-                if (category.id === 'all') pill.classList.add('active');
-                pill.setAttribute('data-id', category.id);
-                pill.textContent = category.name;
-                pill.onclick = () => selectCategory(category.id);
-                categoryPills.appendChild(pill);
+            // Clear existing categories except "All Products"
+            const allProductsBtn = categoryPills.querySelector('.cat-pill[data-id="all"]');
+            categoryPills.innerHTML = '';
+            categoryPills.appendChild(allProductsBtn);
+            
+            // Add main category buttons
+            mainCategories.forEach(mainCat => {
+                // Create main category button
+                const mainCatBtn = document.createElement('button');
+                mainCatBtn.className = 'cat-pill';
+                mainCatBtn.setAttribute('data-id', mainCat.id);
+                mainCatBtn.innerHTML = `<i class="fas fa-chevron-down"></i> ${mainCat.name}`;
+                
+                mainCatBtn.addEventListener('click', function() {
+                    toggleSubcategories(mainCat.id);
+                });
+                
+                categoryPills.appendChild(mainCatBtn);
+                
+                // Create subcategories box
+                const subcategoriesBox = document.createElement('div');
+                subcategoriesBox.className = 'subcategories-box';
+                subcategoriesBox.id = `subcategories-${mainCat.id}`;
+                
+                mainCat.subcategories.forEach(subCat => {
+                    const subCatBtn = document.createElement('button');
+                    subCatBtn.className = 'subcategory-item';
+                    subCatBtn.setAttribute('data-id', subCat.id);
+                    subCatBtn.textContent = subCat.name;
+                    subCatBtn.addEventListener('click', function() {
+                        selectCategory(subCat.id);
+                    });
+                    subcategoriesBox.appendChild(subCatBtn);
+                });
+                
+                // Add subcategories box after the category pills container
+                categoryPills.parentNode.insertBefore(subcategoriesBox, categoryPills.nextSibling);
             });
+        }
+        
+        // Toggle subcategories box
+        function toggleSubcategories(categoryId) {
+            // Close all other subcategory boxes
+            document.querySelectorAll('.subcategories-box').forEach(box => {
+                if (box.id !== `subcategories-${categoryId}`) {
+                    box.classList.remove('active');
+                }
+            });
+            
+            // Toggle the clicked category's subcategory box
+            const subcategoriesBox = document.getElementById(`subcategories-${categoryId}`);
+            subcategoriesBox.classList.toggle('active');
+            
+            // Update chevron icon
+            const mainCatBtn = document.querySelector(`.cat-pill[data-id="${categoryId}"] i`);
+            if (subcategoriesBox.classList.contains('active')) {
+                mainCatBtn.className = 'fas fa-chevron-up';
+            } else {
+                mainCatBtn.className = 'fas fa-chevron-down';
+            }
         }
         
         // Render products
@@ -1562,13 +1777,13 @@
             products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
-                productCard.setAttribute('data-category', product.category);
+                productCard.setAttribute('data-category', product.subCategory);
                 
                 productCard.innerHTML = `
                     <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=500&q=80'">
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>
-                        <div class="product-category">${getCategoryName(product.category)} | ${product.condition} | Model: ${product.model}</div>
+                        <div class="product-category">${getMainCategoryName(product.mainCategory)} | ${getSubCategoryName(product.subCategory)} | ${product.condition} | Model: ${product.model} | Manufacturer: ${product.manufacturer || 'N/A'}</div>
                         <div class="product-price" style="display: ${isAdmin ? 'block' : 'none'}">PKR ${product.price.toLocaleString()}</div>
                         <p class="product-description">${product.description}</p>
                         <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
@@ -1589,10 +1804,19 @@
             });
         }
         
-        // Get category name from category code
-        function getCategoryName(categoryCode) {
-            const category = categories.find(cat => cat.id === categoryCode);
-            return category ? category.name : 'Uncategorized';
+        // Get main category name from main category code
+        function getMainCategoryName(mainCategoryCode) {
+            const mainCat = mainCategories.find(cat => cat.id === mainCategoryCode);
+            return mainCat ? mainCat.name : 'Uncategorized';
+        }
+        
+        // Get subcategory name from subcategory code
+        function getSubCategoryName(subCategoryCode) {
+            for (const mainCat of mainCategories) {
+                const subCat = mainCat.subcategories.find(sub => sub.id === subCategoryCode);
+                if (subCat) return subCat.name;
+            }
+            return 'Uncategorized';
         }
         
         // Admin login function
@@ -1699,13 +1923,23 @@
         
         // Category selection
         function selectCategory(categoryId) {
-            // Remove active class from all pills
+            // Remove active class from all pills and subcategory items
             document.querySelectorAll('.cat-pill').forEach(pill => {
                 pill.classList.remove('active');
             });
+            document.querySelectorAll('.subcategory-item').forEach(item => {
+                item.classList.remove('active');
+            });
             
-            // Add active class to clicked pill
-            event.target.classList.add('active');
+            // Add active class to selected category
+            if (categoryId === 'all') {
+                document.querySelector('.cat-pill[data-id="all"]').classList.add('active');
+            } else {
+                const selectedItem = document.querySelector(`.subcategory-item[data-id="${categoryId}"]`);
+                if (selectedItem) {
+                    selectedItem.classList.add('active');
+                }
+            }
             
             // Filter products
             const productCards = document.querySelectorAll('.product-card');
@@ -1736,6 +1970,7 @@
                     id: product.id,
                     name: product.name,
                     model: product.model,
+                    manufacturer: product.manufacturer,
                     condition: product.condition,
                     price: product.price,
                     quantity: 1
@@ -1790,7 +2025,7 @@
                     cartItem.innerHTML = `
                         <div class="cart-item-details">
                             <strong>${item.name}</strong>
-                            <div>Model: ${item.model} | Condition: ${item.condition}</div>
+                            <div>Model: ${item.model} | Manufacturer: ${item.manufacturer || 'N/A'} | Condition: ${item.condition}</div>
                             <div style="display: ${isAdmin ? 'block' : 'none'}">Price: PKR ${item.price.toLocaleString()} x ${item.quantity} = PKR ${itemTotal.toLocaleString()}</div>
                         </div>
                         <div class="cart-item-actions">
@@ -1872,7 +2107,7 @@
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
-                message += `${item.name} (Model: ${item.model}, Condition: ${item.condition}) - Qty: ${item.quantity}\n`;
+                message += `${item.name} (Model: ${item.model}, Manufacturer: ${item.manufacturer || 'N/A'}, Condition: ${item.condition}) - Qty: ${item.quantity}\n`;
             });
             
             message += `\nTotal Items: ${getTotalCartItems()}`;
@@ -1902,20 +2137,20 @@
         function showSection(section) {
             // Hide all sections first
             document.getElementById('productsSection').style.display = 'none';
-            document.getElementById('categoriesSection').style.display = 'none';
-            document.getElementById('featuresSection').style.display = 'none';
             document.getElementById('aboutSection').style.display = 'none';
             
             // Show the selected section
             if (section === 'home') {
-                document.getElementById('categoriesSection').style.display = 'block';
                 document.getElementById('productsSection').style.display = 'block';
-                document.getElementById('featuresSection').style.display = 'block';
             } else if (section === 'products') {
                 document.getElementById('productsSection').style.display = 'block';
-            } else if (section === 'about') {
-                document.getElementById('aboutSection').style.display = 'block';
             }
+        }
+        
+        // Show About section
+        function showAboutSection() {
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('aboutSection').style.display = 'block';
         }
         
         // Scroll to contact section
@@ -1933,7 +2168,9 @@
             // Clear form fields
             document.getElementById('productName').value = '';
             document.getElementById('productModel').value = '';
-            document.getElementById('productCategory').value = 'sewing';
+            document.getElementById('productManufacturer').value = '';
+            document.getElementById('productMainCategory').value = '';
+            document.getElementById('productSubCategory').value = '';
             document.getElementById('productCondition').value = 'new';
             document.getElementById('productPrice').value = '';
             document.getElementById('productDescription').value = '';
@@ -1945,7 +2182,42 @@
             document.getElementById('cloudinaryPreview').style.display = 'none';
             document.getElementById('uploadStatus').style.display = 'none';
             
+            // Populate main category dropdown
+            populateMainCategoryDropdown();
+            
             document.getElementById('addProductModal').style.display = 'flex';
+        }
+        
+        // Populate main category dropdown
+        function populateMainCategoryDropdown() {
+            const mainCategorySelect = document.getElementById('productMainCategory');
+            mainCategorySelect.innerHTML = '<option value="">Select Main Category</option>';
+            
+            mainCategories.forEach(mainCat => {
+                const option = document.createElement('option');
+                option.value = mainCat.id;
+                option.textContent = mainCat.name;
+                mainCategorySelect.appendChild(option);
+            });
+        }
+        
+        // Update subcategories based on selected main category
+        function updateSubcategories() {
+            const mainCategoryId = document.getElementById('productMainCategory').value;
+            const subCategorySelect = document.getElementById('productSubCategory');
+            subCategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+            
+            if (mainCategoryId) {
+                const mainCat = mainCategories.find(cat => cat.id === mainCategoryId);
+                if (mainCat) {
+                    mainCat.subcategories.forEach(subCat => {
+                        const option = document.createElement('option');
+                        option.value = subCat.id;
+                        option.textContent = subCat.name;
+                        subCategorySelect.appendChild(option);
+                    });
+                }
+            }
         }
         
         function openEditBannerModal() {
@@ -1975,13 +2247,23 @@
             // Pre-fill form with product data
             document.getElementById('productName').value = product.name;
             document.getElementById('productModel').value = product.model;
-            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productManufacturer').value = product.manufacturer || '';
             document.getElementById('productCondition').value = product.condition;
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productDescription').value = product.description;
             document.getElementById('productImageUrl').value = product.image;
             document.getElementById('cloudinaryImageUrl').value = product.image;
             document.getElementById('aiDescriptionBox').style.display = 'none';
+            
+            // Populate main category dropdown and select the correct one
+            populateMainCategoryDropdown();
+            document.getElementById('productMainCategory').value = product.mainCategory;
+            
+            // Update and populate subcategory dropdown
+            updateSubcategories();
+            setTimeout(() => {
+                document.getElementById('productSubCategory').value = product.subCategory;
+            }, 100);
             
             // Show image preview if available
             if (product.image) {
@@ -2001,6 +2283,10 @@
         function deleteProduct(productId) {
             if (confirm('Are you sure you want to delete this product?')) {
                 products = products.filter(p => p.id !== productId);
+                
+                // Save to localStorage
+                localStorage.setItem('apparelProducts', JSON.stringify(products));
+                
                 renderProducts();
                 alert('Product deleted successfully!');
             }
@@ -2011,7 +2297,9 @@
             const editingId = document.getElementById('editingProductId').value;
             const name = document.getElementById('productName').value;
             const model = document.getElementById('productModel').value;
-            const category = document.getElementById('productCategory').value;
+            const manufacturer = document.getElementById('productManufacturer').value;
+            const mainCategory = document.getElementById('productMainCategory').value;
+            const subCategory = document.getElementById('productSubCategory').value;
             const condition = document.getElementById('productCondition').value;
             const price = parseInt(document.getElementById('productPrice').value);
             const description = document.getElementById('productDescription').value;
@@ -2021,7 +2309,7 @@
             const manualUrl = document.getElementById('productImageUrl').value;
             const imageUrl = cloudinaryUrl || manualUrl || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=500&q=80";
             
-            if (!name || !model || !price || !description) {
+            if (!name || !model || !manufacturer || !mainCategory || !subCategory || !price || !description) {
                 alert('Please fill in all required fields');
                 return;
             }
@@ -2034,7 +2322,9 @@
                         ...products[productIndex],
                         name: name,
                         model: model,
-                        category: category,
+                        manufacturer: manufacturer,
+                        mainCategory: mainCategory,
+                        subCategory: subCategory,
                         condition: condition,
                         price: price,
                         description: description,
@@ -2048,7 +2338,9 @@
                     id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                     name: name,
                     model: model,
-                    category: category,
+                    manufacturer: manufacturer,
+                    mainCategory: mainCategory,
+                    subCategory: subCategory,
                     condition: condition,
                     price: price,
                     description: description,
@@ -2057,6 +2349,9 @@
                 products.push(newProduct);
                 alert('Product added successfully!');
             }
+            
+            // Save to localStorage
+            localStorage.setItem('apparelProducts', JSON.stringify(products));
             
             renderProducts();
             closeModal('addProductModal');
@@ -2079,63 +2374,173 @@
         // Render categories list for management
         function renderCategoriesList() {
             const categoriesList = document.getElementById('categoriesList');
-            categoriesList.innerHTML = '';
+            const parentCategorySelect = document.getElementById('parentCategory');
             
-            categories.forEach(category => {
-                if (category.id !== 'all') {
-                    const categoryItem = document.createElement('div');
-                    categoryItem.className = 'category-item';
-                    categoryItem.innerHTML = `
-                        <span>${category.name}</span>
+            categoriesList.innerHTML = '';
+            parentCategorySelect.innerHTML = '<option value="">Main Category</option>';
+            
+            // Populate parent category dropdown
+            mainCategories.forEach(mainCat => {
+                const option = document.createElement('option');
+                option.value = mainCat.id;
+                option.textContent = mainCat.name;
+                parentCategorySelect.appendChild(option);
+            });
+            
+            // Render categories hierarchy
+            mainCategories.forEach(mainCat => {
+                const mainCategoryItem = document.createElement('div');
+                mainCategoryItem.className = 'category-item';
+                mainCategoryItem.innerHTML = `
+                    <span><strong>${mainCat.name}</strong></span>
+                    <div class="category-actions">
+                        <button class="action-btn edit" onclick="editMainCategory('${mainCat.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn delete" onclick="deleteMainCategory('${mainCat.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                categoriesList.appendChild(mainCategoryItem);
+                
+                // Add subcategories
+                mainCat.subcategories.forEach(subCat => {
+                    const subCategoryItem = document.createElement('div');
+                    subCategoryItem.className = 'category-item';
+                    subCategoryItem.style.paddingLeft = '20px';
+                    subCategoryItem.innerHTML = `
+                        <span>${subCat.name}</span>
                         <div class="category-actions">
-                            <button class="action-btn edit" onclick="editCategory('${category.id}')">
-                                <i class="fas fa-edit"></i>
+                            <button class="action-btn edit" onclick="editSubCategory('${mainCat.id}', '${subCat.id}')">
+                                <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="action-btn delete" onclick="deleteCategory('${category.id}')">
-                                <i class="fas fa-trash"></i>
+                            <button class="action-btn delete" onclick="deleteSubCategory('${mainCat.id}', '${subCat.id}')">
+                                <i class="fas fa-trash"></i> Delete
                             </button>
                         </div>
                     `;
-                    categoriesList.appendChild(categoryItem);
-                }
+                    categoriesList.appendChild(subCategoryItem);
+                });
             });
         }
         
         // Add new category
         function addNewCategory() {
+            const parentCategoryId = document.getElementById('parentCategory').value;
             const name = document.getElementById('newCategoryName').value;
+            
             if (!name) {
                 alert('Please enter a category name');
                 return;
             }
             
-            const id = name.toLowerCase().replace(/\s+/g, '-');
-            categories.push({ id: id, name: name });
+            if (parentCategoryId) {
+                // Add subcategory
+                const mainCat = mainCategories.find(cat => cat.id === parentCategoryId);
+                if (mainCat) {
+                    const id = name.toLowerCase().replace(/\s+/g, '-');
+                    mainCat.subcategories.push({ id: id, name: name });
+                }
+            } else {
+                // Add main category
+                const id = name.toLowerCase().replace(/\s+/g, '-');
+                mainCategories.push({ 
+                    id: id, 
+                    name: name,
+                    subcategories: [] 
+                });
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+            
+            // Re-render categories
             renderCategories();
             renderCategoriesList();
+            
+            // Clear form
             document.getElementById('newCategoryName').value = '';
+            document.getElementById('parentCategory').value = '';
+            
             alert('Category added successfully!');
         }
         
-        // Edit category
-        function editCategory(categoryId) {
-            const newName = prompt('Enter new category name:');
-            if (newName) {
-                const category = categories.find(cat => cat.id === categoryId);
-                category.name = newName;
+        // Edit main category
+        function editMainCategory(categoryId) {
+            const mainCat = mainCategories.find(cat => cat.id === categoryId);
+            if (!mainCat) return;
+            
+            const newName = prompt('Enter new category name:', mainCat.name);
+            if (newName && newName.trim() !== '') {
+                mainCat.name = newName.trim();
+                
+                // Save to localStorage
+                localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+                
+                // Re-render categories
                 renderCategories();
                 renderCategoriesList();
+                
                 alert('Category updated successfully!');
             }
         }
         
-        // Delete category
-        function deleteCategory(categoryId) {
-            if (confirm('Are you sure you want to delete this category?')) {
-                categories = categories.filter(cat => cat.id !== categoryId);
+        // Delete main category
+        function deleteMainCategory(categoryId) {
+            if (confirm('Are you sure you want to delete this category? All subcategories will also be deleted.')) {
+                mainCategories = mainCategories.filter(cat => cat.id !== categoryId);
+                
+                // Save to localStorage
+                localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+                
+                // Re-render categories
                 renderCategories();
                 renderCategoriesList();
+                
                 alert('Category deleted successfully!');
+            }
+        }
+        
+        // Edit subcategory
+        function editSubCategory(mainCategoryId, subCategoryId) {
+            const mainCat = mainCategories.find(cat => cat.id === mainCategoryId);
+            if (!mainCat) return;
+            
+            const subCat = mainCat.subcategories.find(sub => sub.id === subCategoryId);
+            if (!subCat) return;
+            
+            const newName = prompt('Enter new subcategory name:', subCat.name);
+            if (newName && newName.trim() !== '') {
+                subCat.name = newName.trim();
+                
+                // Save to localStorage
+                localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+                
+                // Re-render categories
+                renderCategories();
+                renderCategoriesList();
+                
+                alert('Subcategory updated successfully!');
+            }
+        }
+        
+        // Delete subcategory
+        function deleteSubCategory(mainCategoryId, subCategoryId) {
+            if (confirm('Are you sure you want to delete this subcategory?')) {
+                const mainCat = mainCategories.find(cat => cat.id === mainCategoryId);
+                if (mainCat) {
+                    mainCat.subcategories = mainCat.subcategories.filter(sub => sub.id !== subCategoryId);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('apparelCategories', JSON.stringify(mainCategories));
+                    
+                    // Re-render categories
+                    renderCategories();
+                    renderCategoriesList();
+                    
+                    alert('Subcategory deleted successfully!');
+                }
             }
         }
         
@@ -2143,7 +2548,9 @@
         function generateDescription() {
             const productName = document.getElementById('productName').value;
             const model = document.getElementById('productModel').value;
-            const category = document.getElementById('productCategory').value;
+            const manufacturer = document.getElementById('productManufacturer').value;
+            const mainCategory = document.getElementById('productMainCategory').value;
+            const subCategory = document.getElementById('productSubCategory').value;
             const condition = document.getElementById('productCondition').value;
             const userDescription = document.getElementById('productDescription').value;
             
@@ -2160,29 +2567,17 @@
             
             // Simulate API call delay
             setTimeout(() => {
-                const categoryName = getCategoryName(category);
+                const mainCategoryName = getMainCategoryName(mainCategory);
+                const subCategoryName = getSubCategoryName(subCategory);
                 
                 // If user has provided a description, translate and enhance it
                 let aiDescription;
                 if (userDescription) {
                     // Simulate translation and enhancement of user's description
-                    aiDescription = `Translated and enhanced description: ${userDescription} - This ${condition} ${categoryName.toLowerCase()} model ${model} is designed for industrial apparel manufacturing with reliable performance and durability.`;
+                    aiDescription = `Translated and enhanced description: ${userDescription} - This ${condition} ${mainCategoryName.toLowerCase()} (${subCategoryName}) model ${model} by ${manufacturer} is designed for industrial apparel manufacturing with reliable performance and durability.`;
                 } else {
                     // Generate description from scratch
-                    const descriptions = {
-                        sewing: `High-performance ${condition} ${categoryName.toLowerCase()} model ${model}. Perfect for industrial garment production with advanced features for efficiency and precision stitching.`,
-                        cutting: `Professional ${condition} ${categoryName.toLowerCase()} designed for accurate fabric cutting. Model ${model} offers reliability and precision for apparel manufacturing.`,
-                        pressing: `Efficient ${condition} ${categoryName.toLowerCase()} for professional garment finishing. Model ${model} ensures wrinkle-free results with consistent performance.`,
-                        embroidery: `Advanced ${condition} ${categoryName.toLowerCase()} with computerized controls. Model ${model} offers multiple stitch patterns for creative apparel decoration.`,
-                        management: `Comprehensive ${condition} ${categoryName.toLowerCase()} solution. Model ${model} streamlines production processes and improves operational efficiency.`,
-                        boiler: `Reliable ${condition} ${categoryName.toLowerCase()} for industrial steam requirements. Model ${model} ensures consistent performance with safety features.`,
-                        generators: `Powerful ${condition} ${categoryName.toLowerCase()} for uninterrupted operations. Model ${model} provides reliable energy backup for manufacturing facilities.`,
-                        compressors: `Efficient ${condition} ${categoryName.toLowerCase()} for industrial air supply. Model ${model} delivers consistent pressure for machinery operation.`,
-                        accessories: `Essential ${condition} ${categoryName.toLowerCase()} for machinery maintenance. Model ${model} ensures optimal performance and extends equipment lifespan.`
-                    };
-                    
-                    aiDescription = descriptions[category] || 
-                        `High-quality ${condition} ${categoryName.toLowerCase()} model ${model}. Designed for industrial apparel manufacturing with reliable performance and durability.`;
+                    aiDescription = `High-quality ${condition} ${mainCategoryName.toLowerCase()} (${subCategoryName}) model ${model} by ${manufacturer}. Designed for industrial apparel manufacturing with reliable performance and durability.`;
                 }
                 
                 document.getElementById('aiGeneratedDescription').value = aiDescription;
